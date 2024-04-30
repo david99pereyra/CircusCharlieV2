@@ -19,10 +19,10 @@ public class Mundo {
 
  	private static void createInstance() {
         if (INSTANCE == null) {
-            // Sólo se accede a la zona sincronizada
-            // cuando la instancia no está creada
+            // Solo se accede a la zona sincronizada
+            // cuando la instancia no esta creada
             synchronized(Mundo.class) {
-                // En la zona sincronizada sería necesario volver
+                // En la zona sincronizada seria necesario volver
                 // a comprobar que no se ha creado la instancia
                 if (INSTANCE == null) {
                     INSTANCE = new Mundo();
