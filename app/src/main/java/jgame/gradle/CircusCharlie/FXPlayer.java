@@ -18,14 +18,14 @@ public enum FXPlayer {
   FX00("fx00.wav"),
   FX01("fx01.wav"),
   FX02("fx02.wav"),
-  EVENTO1("CircusCharlieAudio1.wav"),
-  EVENTO2("CircusCharlieAudio2.wav"),
-  EVENTO3("CircusCharlieAudio3.wav"),
-  DRAGONBALL("DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
-  DBRAP("DBRap.wav"),
-  DBSUPER("DragonBallSuper.wav"),
-  UI("UltraInstinto.wav"),
-  BARDOCK("DragonBallZ_Bardock.wav");
+  EVENTO1("CircusCharlie/CircusCharlieAudio1.wav"),
+  EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
+  EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
+  DRAGONBALL("CircusCharlie/DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
+  DBRAP("CircusCharlie/DBRap.wav"),
+  DBSUPER("CircusCharlie/DragonBallSuper.wav"),
+  UI("CircusCharlie/UltraInstinto.wav"),
+  BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav");
 
 
    public static enum Volume {

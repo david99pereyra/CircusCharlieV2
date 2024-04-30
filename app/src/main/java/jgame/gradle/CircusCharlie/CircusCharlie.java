@@ -39,7 +39,7 @@ public class CircusCharlie extends JGame {
     }
 
     public void gameStartup() {
-       //   Log.info(getClass().getSimpleName(), "Starting up game");
+      Log.info(getClass().getSimpleName(), "Starting up game");
         try{
 
             FXPlayer.init();
