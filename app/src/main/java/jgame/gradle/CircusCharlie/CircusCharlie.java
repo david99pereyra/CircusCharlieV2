@@ -63,7 +63,7 @@ public class CircusCharlie extends JGame {
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             charlie.quieto();
             
-            FXPlayer.DBSUPER.loop();
+            FXPlayer.EVENTO1.loop();
         
         }catch(Exception ex){
             System.out.println("ERROR en gameStartup");
@@ -96,13 +96,13 @@ public class CircusCharlie extends JGame {
             if ((event.getID() == KeyEvent.KEY_PRESSED) &&
                 (event.getKeyCode() == KeyEvent.VK_SPACE)) {
                 charlie.jump();
-               leon.jump();
+                leon.jump();
                 FXPlayer.FX00.play();
             }
             if ((event.getID() == KeyEvent.KEY_PRESSED) &&
                 (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
 
-                FXPlayer.DBSUPER.stop();
+                FXPlayer.EVENTO1.stop();
                 stop();
             }
         }
