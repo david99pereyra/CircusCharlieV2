@@ -31,7 +31,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	protected double velocityX = 4.0;
 	protected double velocityY = 0.0;
-	protected double gravity = 0.35;
+	protected double gravity = 0.45;
 	protected double angulo=0.0;
 
 	protected int direccionAngulo= 1;
@@ -62,7 +62,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		//acceleration.mult(0);
 	}
 	public void left() {
-		velocityX = -7.0;
+		velocityX = -6.0;
 		positionX += velocityX;
 		direccionActual = DIRECCION_IZQUIERDA;
 		estadoActual = ESTADO_CAMINANDO;
@@ -70,7 +70,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	}
 
 	public void right() {
-		velocityX = 7.0;
+		velocityX = 6.0;
 		positionX += velocityX;
 		direccionActual = DIRECCION_DERECHA;
 		estadoActual = ESTADO_CAMINANDO;
