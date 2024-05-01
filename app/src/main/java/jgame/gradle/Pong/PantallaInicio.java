@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 public class PantallaInicio extends JFrame {
     private BufferedImage imagenFondo;
@@ -22,7 +21,7 @@ public class PantallaInicio extends JFrame {
 
         // Cargar la imagen de fondo
         try {
-            imagenFondo = ImageIO.read(new File("app/src/main/resources/imagenes/JuegoPong/Pong.png"));
+            imagenFondo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoPong/Pong.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error" + e);
