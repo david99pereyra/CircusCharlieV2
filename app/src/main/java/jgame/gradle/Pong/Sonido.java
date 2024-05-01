@@ -1,22 +1,31 @@
 package jgame.gradle.Pong;
 
-import java.io.File;
+import java.io.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-
+import java.net.URL;
 
 public class Sonido {
     public static Clip clip;
 
     public static void iniciar(String nombre){
         try {
-            File file = new File("app/src/main/resources/musica/Pong/" + nombre + ".wav");
+            //app/src/main/resources/musica/Pong/muchachos.wav
+            //File file = new File("app/src/main/resources/musica/Pong/" + nombre + ".wav");
+            InputStream inputStream = Sonido.class.getResourceAsStream("/musica/Pong/" + nombre + ".wav");
+
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(bufferedInputStream);
+            
             clip = AudioSystem.getClip();
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
+
             clip.open(audioInput);
+
             clip.start();
+            
         } catch (Exception e) {
             System.out.println(e);
         }
