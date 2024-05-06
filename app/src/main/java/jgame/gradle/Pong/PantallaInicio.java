@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class PantallaInicio extends JFrame {
@@ -67,7 +66,8 @@ public class PantallaInicio extends JFrame {
         configuracion.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ", "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto, iniciar el juego
+                //JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ", "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto, iniciar el juego
+                new Configuracion();
             }
 
             @Override
