@@ -1,8 +1,13 @@
 package jgame.gradle.Pong;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+
+
+
+
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -27,13 +32,14 @@ public class GamePanel extends JPanel implements Runnable {
     private int puntoJ1 = 1;
     private int puntoJ2 = 1;
     private boolean enPausa = false;
+    private boolean finJuego = false;
 
     GamePanel() {
         newPaddles();
         newBall();
-        //score = new Score(GAME_WIDTH, GAME_HEIGHT);  
-        scoreJ1 = new Score(GAME_WIDTH, GAME_HEIGHT, 1, (GAME_WIDTH/2)-85);
-        scoreJ2 = new Score(GAME_WIDTH, GAME_HEIGHT, 2, (GAME_WIDTH/2)+20);
+        // score = new Score(GAME_WIDTH, GAME_HEIGHT);
+        scoreJ1 = new Score(GAME_WIDTH, GAME_HEIGHT, 1, (GAME_WIDTH / 2) - 85);
+        scoreJ2 = new Score(GAME_WIDTH, GAME_HEIGHT, 2, (GAME_WIDTH / 2) + 20);
 
         this.setFocusable(true);
         this.addKeyListener(new Al());
@@ -69,6 +75,14 @@ public class GamePanel extends JPanel implements Runnable {
             int x = (GAME_WIDTH - metrics.stringWidth("Pausa")) / 2;
             int y = GAME_HEIGHT / 2;
             g.drawString("Pausa", x, y);
+        } else {
+            if (scoreJ1.getPuntos() >= 1) {
+                scoreJ1.mostrarMensaje(g, "Gana Jugador 1");
+                finJuego = !finJuego;
+            } else if (scoreJ2.getPuntos() >= 1) {
+                scoreJ2.mostrarMensaje(g, "Gana Jugador 2");
+                finJuego = !finJuego;
+            }
         }
 
     }
@@ -106,7 +120,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (ball.intersects(paddle1)) {
 
             ball.setXVelocity(Math.abs(ball.getXVelocity()));
-            
+
             // optional for more difficulty
             ball.setXVelocity(ball.getXVelocity() + 1);
             if (ball.getYVelocity() > 0) {
@@ -121,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (ball.intersects(paddle2)) {
             ball.setXVelocity(Math.abs(ball.getXVelocity()));
-            
+
             // optional for more difficulty
             ball.setXVelocity(ball.getXVelocity() + 1);
             if (ball.getYVelocity() > 0) {
@@ -173,7 +187,7 @@ public class GamePanel extends JPanel implements Runnable {
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        while (true) {
+        while (!finJuego) {
 
             if (!enPausa) {
                 long now = System.nanoTime();
@@ -195,7 +209,13 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public class Al extends KeyAdapter { /* PUTO EL QUE LEA */
+    private void cerrarVentana(){
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose(); // Cerrar la ventana actual
+        }
+    }
+    private class Al extends KeyAdapter { 
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -206,6 +226,10 @@ public class GamePanel extends JPanel implements Runnable {
             if (!enPausa) {
                 paddle1.keyPressed(e);
                 paddle2.keyPressed(e);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                cerrarVentana();
+                new PantallaInicio();
             }
         }
 
