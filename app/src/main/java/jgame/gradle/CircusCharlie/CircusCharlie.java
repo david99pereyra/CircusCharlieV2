@@ -4,30 +4,34 @@
 package jgame.gradle.CircusCharlie;
 
 import com.entropyinteractive.*;  //jgame
- 
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Aro;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.CalderoDeFuego;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
+
 import java.awt.*;
 import java.awt.event.*; //eventos
-
 import java.awt.image.*;  //imagenes
 import javax.imageio.*; //imagenes
-
 import java.awt.geom.*; //Point2d
 import java.util.*;
 import java.text.*;
 
- 
 public class CircusCharlie extends JGame {
-
-    Date dInit = new Date( );
-    Date dAhora;
+    private boolean level1 = true, level2 = false, level3 =false;
+    Date dInit = new Date( ), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
-
     Camara cam;
     Fondo fondo;
     Charlie charlie, leon;
+    //Obstaculos level 1
+    private ArrayList<Aro> listaDeAros = new ArrayList<>();
+    private ArrayList<CalderoDeFuego> listaDeCalderos;
+    private Timer timer = new Timer();
+    //Obstaculos level 2
+
+    //Obstaculos level 3
 
     public static void main(String[] args) {
-
         CircusCharlie game = new CircusCharlie();
         game.run(1.0 / 60.0);
         System.exit(0);
@@ -39,17 +43,19 @@ public class CircusCharlie extends JGame {
     }
 
     public void gameStartup() {
-      Log.info(getClass().getSimpleName(), "Starting up game");
-        try{
-
+        Log.info(getClass().getSimpleName(), "Starting up game");
+        if(level1){} //Aca va lo del nivel 1
+        if(level2){} //Aca va lo del nivel 2
+        if(level3){} //Aca va lo del nivel 3
+        try{        
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-
+        
             Mundo m=Mundo.getInstance();
+
             charlie=new Charlie("imagenes/charlie.png");
             charlie.setPISO(412);
             charlie.setPosition(172,charlie.getPISO());
-
             leon=new Charlie("imagenes/leon.png");
             leon.setPISO(475);
             leon.setPosition(143, leon.getPISO());
@@ -62,16 +68,33 @@ public class CircusCharlie extends JGame {
             fondo=new Fondo("imagenes/FONDO.png");
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             charlie.quieto();
+
+            //Creo los aros
             
+
+            for(int i = 0; i < 5; i++){
+                Aro aro = new Aro("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png");
+                Random rand = new Random();
+                int x = rand.nextInt(900 - 810 + 1) + 810; // Hace del 700 al 800
+                aro.setPosition(x, 217);
+                listaDeAros.add(aro);
+            }
+
+
+            
+            listaDeCalderos = CalderoDeFuego.generarCalderos();
+
             FXPlayer.EVENTO1.loop();
-        
         }catch(Exception ex){
             System.out.println("ERROR en gameStartup");
             ex.printStackTrace();
         }
     }
-
+    
     public void gameUpdate(double delta) {
+        if(level1){} //Aca va lo del nivel 1
+        if(level2){} //Aca va lo del nivel 2
+        if(level3){} //Aca va lo del nivel 3
         Keyboard keyboard = getKeyboard();
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
             if(leon.getX() > 10){
@@ -91,7 +114,7 @@ public class CircusCharlie extends JGame {
         for (KeyEvent event: keyEvents) {
             if ((event.getID() == KeyEvent.KEY_RELEASED)){
                 charlie.quieto();
-               leon.quieto();
+                leon.quieto();
             }
             if ((event.getID() == KeyEvent.KEY_PRESSED) &&
                 (event.getKeyCode() == KeyEvent.VK_SPACE)) {
@@ -106,19 +129,28 @@ public class CircusCharlie extends JGame {
                 stop();
             }
         }
-
         leon.update(delta);
         charlie.update(delta);
+        for (Aro aro : listaDeAros) {
+            aro.setAroGrandePosX(aro.getAroGrandePosX() - 0.6);
+        }
+        // aroTimer.scheduleAtFixedRate(new GenerarArosTask(), 0, 5000); // Genera aros cada 5 segundos
 
+        // for (Aro aro : listaDeAros) {
+        //     if(DetectorColiciones.detectarAroGrande(aro, charlie)){
+        //         System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
+        //     }
+        // }
+        
         //charlie.applyForce(gravedad);
-
         cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
-        cam.seguirPersonaje(leon);
-       
+        cam.seguirPersonaje(leon); 
     }
 
     public void gameDraw(Graphics2D g) {
-
+        if(level1){} //Aca va lo del nivel 1
+        if(level2){} //Aca va lo del nivel 2
+        if(level3){} //Aca va lo del nivel 3
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Mundo m=Mundo.getInstance();
@@ -129,6 +161,15 @@ public class CircusCharlie extends JGame {
         m.display(g);
         leon.display(g);
         charlie.display(g);
+
+        for (Aro aro : listaDeAros) {
+
+            aro.display(g);
+        }
+
+        for (CalderoDeFuego calderito : listaDeCalderos) {
+            calderito.display(g);
+        }
 
         g.translate(-cam.getX(),-cam.getY());
 

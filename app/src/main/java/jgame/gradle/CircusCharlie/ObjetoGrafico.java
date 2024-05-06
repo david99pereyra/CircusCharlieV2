@@ -29,9 +29,9 @@ public class ObjetoGrafico {
 		return imagen.getHeight();
 	}
 
-	public void setPosition(int x,int y){
-		this.positionX = x;
-		this.positionY = y;
+	public void setPosition(double d,double e){
+		this.positionX = d;
+		this.positionY = e;
 	}
 
    	public void display(Graphics2D g2) {
