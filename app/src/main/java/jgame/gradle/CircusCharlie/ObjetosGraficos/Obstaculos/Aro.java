@@ -12,9 +12,6 @@ import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 public class Aro extends ObjetoGrafico{
     private BufferedImage aroGrande, aroChico; //Creacion de las imagenes
-    private static final int CANTIDAD_AROS_GRANDES = 50; // Cantidad de aros grandes
-    private static final int RANGO_AROS_CHICOS_MIN = 3; // Rango mínimo para la aparición de aros chicos
-    private static final int RANGO_AROS_CHICOS_MAX = 6; // Rango máximo para la aparición de aros chicos
     public double aroGrandePosX = 800;
     public static int aroGrandePosY = 217;
     public int aroChicoPosX;

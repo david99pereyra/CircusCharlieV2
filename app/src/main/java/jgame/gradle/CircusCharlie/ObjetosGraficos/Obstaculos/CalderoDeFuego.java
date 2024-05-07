@@ -1,13 +1,10 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
-import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import javax.imageio.ImageIO;
 
 public class CalderoDeFuego extends ObjetoGrafico{
@@ -30,7 +27,6 @@ public class CalderoDeFuego extends ObjetoGrafico{
         this.posY = y;
     }
 
-
     public double getPosX() {
         return this.posX;
     }
@@ -42,7 +38,6 @@ public class CalderoDeFuego extends ObjetoGrafico{
     public int getPosY() {
         return this.posY;
     }
-
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {

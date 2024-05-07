@@ -24,11 +24,9 @@ public class CircusCharlie extends JGame {
     Fondo fondo;
     //Variables del level 1
     private ArrayList<Aro> listaDeAros = new ArrayList<>();
-    private ArrayList<CalderoDeFuego> listaDeCalderos;
-    private Timer timer = new Timer();
+    private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     //Variables del level 2
     Charlie charlie, leon,c;
-
     //Variables del level 3
 
     public static void main(String[] args) {
@@ -39,7 +37,7 @@ public class CircusCharlie extends JGame {
 
     public CircusCharlie() {
         // call game constructor
-        super("AppCamaracharlie ", 1500, 600);
+        super("AppCamaracharlie ", 800, 600);
     }
 
     public void gameStartup() {
@@ -122,22 +120,22 @@ public class CircusCharlie extends JGame {
         }
         leon.update(delta);
         charlie.update(delta);
+        //Movimiento de los aros
         for (Aro aro : listaDeAros) {
             aro.setAroGrandePosX(aro.getAroGrandePosX() - 0.6);
         }
-        // aroTimer.scheduleAtFixedRate(new GenerarArosTask(), 0, 5000); // Genera aros cada 5 segundos
+        //Seccion de colisiones
+        // for (Aro aro : listaDeAros) {
+        //     if (DetectorColiciones.detectarAroGrande(aro, charlie)){
+        //         System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
+        //     }
+        // }
 
-        for (Aro aro : listaDeAros) {
-            if (DetectorColiciones.detectarAroGrande(aro, charlie)){
-                System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
-            }
-        }
-
-        for(CalderoDeFuego calderito : listaDeCalderos){
-            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
-                System.out.println("COLISIONASTE, TENE CUIDADO");
-            }
-        }
+        // for(CalderoDeFuego calderito : listaDeCalderos){
+        //     if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
+        //         System.out.println("COLISIONASTE, TENE CUIDADO");
+        //     }
+        // }
         //charlie.applyForce(gravedad);
         cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         cam.seguirPersonaje(leon); 
@@ -157,12 +155,11 @@ public class CircusCharlie extends JGame {
         m.display(g);
         leon.display(g);
         charlie.display(g);
-        //Dibujar aros
+        //Dibujar los aros
         for (Aro aro : listaDeAros) {
-
             aro.display(g);
         }
-        //Dibujar aros
+        //Dibujar los calderos
         for (CalderoDeFuego calderito: listaDeCalderos) {
             calderito.display(g);
         }
