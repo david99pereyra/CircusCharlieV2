@@ -86,7 +86,7 @@ public class PantallaInicio extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelFondo, BorderLayout.CENTER);
 
-        Sonido.iniciar("muchachos");
+        Sonido.iniciar(RWproperties.readProperties("Musica"));
         Sonido.loop();
 
         setVisible(true);

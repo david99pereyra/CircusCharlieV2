@@ -5,36 +5,16 @@ import java.util.*;
 
 public class RWproperties {
 
-    private Properties prop = new Properties();
-
-    public static void main(String[] args) {
-        RWproperties properties = new RWproperties();
-        properties.writeProperties("TeclasJ1", "e - d");
-        // properties.writeProperties("Musica", "muchachos");
-        // properties.writeProperties("Pantalla", "ventana");
-        // properties.readProperties("Movimiento");
-        // properties.readProperties("Musica");
-        // properties.readProperties("Pantalla");
-        // System.out.println(properties.readProperties("Movimiento"));
-    }
-
-    public void writeProperties(String key, String value) {
+    private static Properties prop = new Properties();
+    
+    public static void writeProperties(String key, String value) {
 
         String resourseUrl = RWproperties.class.getClassLoader().getResource("configuracion.properties").getPath();
 
-        // System.out.println(resourseUrl);
-
-        // if(resourseUrl == null){
-        // System.out.println("No se pudo encontrar el archivo properties");
-        // return;
-        // }
-        // //String filePath = resourseUrl.getPath();
-        // //File file = new File(resourseUrl);
         System.out.println("Entro al writeProperties");
         try (OutputStream input = new FileOutputStream(resourseUrl)) {
 
             prop.setProperty(key, value);
-            // prop.setProperty("Musica", "muchachos");
 
             prop.store(input, null);
 
@@ -45,7 +25,7 @@ public class RWproperties {
         }
     }
 
-    public String readProperties(String key) {
+    public static String readProperties(String key) {
 
         try (InputStream input = RWproperties.class.getClassLoader().getResourceAsStream("configuracion.properties")) {
 
