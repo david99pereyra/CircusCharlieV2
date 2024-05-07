@@ -10,7 +10,9 @@ public class Paddle extends Rectangle {
     private int speed = 10;
     private int arriba;
     private int abajo;
-    private RWproperties prop = new RWproperties();
+    private Color color;
+
+    // private RWproperties prop = new RWproperties();
 
     Paddle(int x, int y, int PADDLE_WIDTH, int PADDLE_HEIGHT, int id) {
         super(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -22,7 +24,7 @@ public class Paddle extends Rectangle {
         switch (id) {
 
             case 1:
-                if (prop.readProperties("TeclasJ1").equals("w - s")) {
+                if (RWproperties.readProperties("TeclasJ1").equals("w - s")) {
                     this.arriba = KeyEvent.VK_W;
                     this.abajo = KeyEvent.VK_S;
                 } else {
@@ -41,7 +43,7 @@ public class Paddle extends Rectangle {
                 break;
             case 2:
 
-                if (prop.readProperties("TeclasJ2").equals("UP - DOWN")) {
+                if (RWproperties.readProperties("TeclasJ2").equals("UP - DOWN")) {
                     this.arriba = KeyEvent.VK_UP;
                     this.abajo = KeyEvent.VK_DOWN;
                 } else {
@@ -95,10 +97,29 @@ public class Paddle extends Rectangle {
     }
 
     public void draw(Graphics g) {
+
         if (id == 1) {
-            g.setColor(Color.blue);
+            if (RWproperties.readProperties("ModoJuego").equals("Modo harcord extremo")) {
+                color = Color.black;
+            } else {
+                if (RWproperties.readProperties("ColorJ1").equals("azul")) {
+                    color = Color.blue;
+                } else if (RWproperties.readProperties("ColorJ1").equals("amarillo")) {
+                    color = Color.yellow;
+                }
+            }
+            g.setColor(color);
         } else {
-            g.setColor(Color.red);
+            if (RWproperties.readProperties("ModoJuego").equals("Modo harcord extremo")) {
+                color = Color.black;
+            } else {
+                if (RWproperties.readProperties("ColorJ2").equals("rojo")) {
+                    color = Color.red;
+                } else if (RWproperties.readProperties("ColorJ2").equals("azul")) {
+                    color = Color.BLUE;
+                }
+            }
+            g.setColor(color);
         }
         g.fillRect(x, y, width, height);
 
