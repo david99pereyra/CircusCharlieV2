@@ -23,13 +23,12 @@ public class CircusCharlie extends JGame {
     Camara cam;
     Fondo fondo;
     Charlie charlie, leon;
-    //Obstaculos level 1
+    //Variables del level 1
     private ArrayList<Aro> listaDeAros = new ArrayList<>();
-    private ArrayList<CalderoDeFuego> listaDeCalderos;
-    private Timer timer = new Timer();
-    //Obstaculos level 2
+    private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
+    //Variables del level 2
 
-    //Obstaculos level 3
+    //Variables del level 3
 
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
@@ -39,7 +38,7 @@ public class CircusCharlie extends JGame {
 
     public CircusCharlie() {
         // call game constructor
-        super("AppCamaracharlie ", 800, 600);
+        super("AppCamaracharlie ", 1500, 600);
     }
 
     public void gameStartup() {
@@ -69,20 +68,10 @@ public class CircusCharlie extends JGame {
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             charlie.quieto();
 
-            //Creo los aros
-            
-
-            for(int i = 0; i < 5; i++){
-                Aro aro = new Aro("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png");
-                Random rand = new Random();
-                int x = rand.nextInt(900 - 810 + 1) + 810; // Hace del 700 al 800
-                aro.setPosition(x, 217);
-                listaDeAros.add(aro);
-            }
-
-
-            
-            listaDeCalderos = CalderoDeFuego.generarCalderos();
+            //Crear los aros
+            crearAros();
+            //Crear los calderos
+            crearCalderos();
 
             FXPlayer.EVENTO1.loop();
         }catch(Exception ex){
@@ -136,12 +125,17 @@ public class CircusCharlie extends JGame {
         }
         // aroTimer.scheduleAtFixedRate(new GenerarArosTask(), 0, 5000); // Genera aros cada 5 segundos
 
-        // for (Aro aro : listaDeAros) {
-        //     if(DetectorColiciones.detectarAroGrande(aro, charlie)){
-        //         System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
-        //     }
-        // }
-        
+        for (Aro aro : listaDeAros) {
+            if (DetectorColiciones.detectarAroGrande(aro, charlie)){
+                System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
+            }
+        }
+
+        for(CalderoDeFuego calderito : listaDeCalderos){
+            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
+                System.out.println("COLISIONASTE, TENE CUIDADO");
+            }
+        }
         //charlie.applyForce(gravedad);
         cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         cam.seguirPersonaje(leon); 
@@ -161,13 +155,13 @@ public class CircusCharlie extends JGame {
         m.display(g);
         leon.display(g);
         charlie.display(g);
-
+        //Dibujar aros
         for (Aro aro : listaDeAros) {
 
             aro.display(g);
         }
-
-        for (CalderoDeFuego calderito : listaDeCalderos) {
+        //Dibujar aros
+        for (CalderoDeFuego calderito: listaDeCalderos) {
             calderito.display(g);
         }
 
@@ -177,6 +171,40 @@ public class CircusCharlie extends JGame {
         
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }
+    //Funcion para crear aros
+    public void crearAros(){
+        String imagenAroGrande = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png";
+        String imagenAroChico = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png";
+        int posXPixel = 800, count = 1; //count hasta 30 y count2 que controla con numerorandom
+        Random random = new Random();
+
+        while(posXPixel <= 8272 ){
+            int numeroRandom = random.nextInt(4) + 3;
+            int count2 = 1; // Inicio y reinicio count2 en cada iteración
+            while (count2 <= numeroRandom){
+                Aro aro = new Aro(imagenAroGrande);
+                aro.setPosition(posXPixel, 217);
+                listaDeAros.add(aro);
+                posXPixel += 450;
+                count2++;
+            }
+            Aro aro = new Aro(imagenAroGrande);
+            aro.setPosition(posXPixel, 217);
+            listaDeAros.add(aro);
+            posXPixel += 300;
+        }
+    }
+    //Funcion para crear calderos
+    public void crearCalderos(){
+        String imagen = "imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png";
+        int[] posicionesX = {1550, 2390, 3180, 3990, 4795, 5600, 6400, 7160, 7970};
+        int posY = 435;
+        for (int posX : posicionesX) {
+            CalderoDeFuego caldero = new CalderoDeFuego(imagen);
+            caldero.setPosition(posX, posY);
+            listaDeCalderos.add(caldero);
+        }
+    } 
 
     public void gameShutdown() {
        //Log.info(getClass().getSimpleName(), "Shutting down game");

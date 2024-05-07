@@ -34,9 +34,9 @@ public class ObjetoGrafico {
 		this.positionY = e;
 	}
 
-   	public void display(Graphics2D g2) {
+	public void display(Graphics2D g2) {
 		g2.drawImage(imagen,(int) this.positionX,(int) this.positionY,null);
-  	}
+	}
 
 	public double getX(){
 		return positionX;
