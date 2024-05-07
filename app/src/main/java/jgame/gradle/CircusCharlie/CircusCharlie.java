@@ -22,11 +22,12 @@ public class CircusCharlie extends JGame {
     SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
     Camara cam;
     Fondo fondo;
-    Charlie charlie, leon;
     //Variables del level 1
     private ArrayList<Aro> listaDeAros = new ArrayList<>();
-    private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
+    private ArrayList<CalderoDeFuego> listaDeCalderos;
+    private Timer timer = new Timer();
     //Variables del level 2
+    Charlie charlie, leon,c;
 
     //Variables del level 3
 
@@ -49,31 +50,32 @@ public class CircusCharlie extends JGame {
         try{        
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-        
+            FXPlayer.EVENTO1.loop();
+
             Mundo m=Mundo.getInstance();
 
-            charlie=new Charlie("imagenes/charlie.png");
+            charlie=new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
             charlie.setPISO(412);
-            charlie.setPosition(172,charlie.getPISO());
-            leon=new Charlie("imagenes/leon.png");
-            leon.setPISO(475);
+            charlie.setPosition(174,charlie.getPISO());
+            leon=new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
+            leon.setPISO(477);
             leon.setPosition(143, leon.getPISO());
-
+            
             cam =new Camara(0,0);
 
-            cam.setRegionVisible(getWidth(),480);
+            cam.setRegionVisible(300,480);
 
             //fondo=new Fondo("imagenes/background.png");
-            fondo=new Fondo("imagenes/FONDO.png");
+            fondo=new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             charlie.quieto();
+            leon.quietoLeon();
 
             //Crear los aros
             crearAros();
             //Crear los calderos
             crearCalderos();
 
-            FXPlayer.EVENTO1.loop();
         }catch(Exception ex){
             System.out.println("ERROR en gameStartup");
             ex.printStackTrace();
@@ -86,15 +88,16 @@ public class CircusCharlie extends JGame {
         if(level3){} //Aca va lo del nivel 3
         Keyboard keyboard = getKeyboard();
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
+            
             if(leon.getX() > 10){
                 charlie.left();
-                leon.left();
+                leon.leftLeon();
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)){
             if(leon.getX()<(fondo.getWidth()-116)){
                 charlie.right();
-                leon.right();
+                leon.rightLeon();
             }
         }
 
@@ -103,17 +106,16 @@ public class CircusCharlie extends JGame {
         for (KeyEvent event: keyEvents) {
             if ((event.getID() == KeyEvent.KEY_RELEASED)){
                 charlie.quieto();
-                leon.quieto();
+                leon.quietoLeon();
             }
             if ((event.getID() == KeyEvent.KEY_PRESSED) &&
                 (event.getKeyCode() == KeyEvent.VK_SPACE)) {
                 charlie.jump();
-                leon.jump();
+                leon.jumpLeon();
                 FXPlayer.FX00.play();
             }
             if ((event.getID() == KeyEvent.KEY_PRESSED) &&
                 (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-
                 FXPlayer.EVENTO1.stop();
                 stop();
             }
