@@ -8,19 +8,17 @@ public class DetectorColiciones extends Rectangle{
         // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
         int aroQuarterHeight = aro.getHeight() / 4;
         Rectangle rectAroTopQuarter = new Rectangle((int) aro.getX(), (int) aro.getY(), aro.getWidth(), aroQuarterHeight);
-        Rectangle rectAroBottomQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + 3 * aroQuarterHeight), aro.getWidth(), aroQuarterHeight);
         Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
         // Verificar si los rectángulos se superponen
-        return rectAroTopQuarter.intersects(rectCharlie) || rectAroBottomQuarter.intersects(rectCharlie);
+        return rectAroTopQuarter.intersects(rectCharlie);
     }
     public static boolean detectarAroChico(Aro aro, Charlie charlie){
         // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
-        int aroQuarterHeight = aro.getHeight() / 4;
+        int aroQuarterHeight = aro.getHeight() / 4; //
         Rectangle rectAroTopQuarter = new Rectangle((int) aro.getX(), (int) aro.getY(), aro.getWidth(), aroQuarterHeight);
-        Rectangle rectAroBottomQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + 3 * aroQuarterHeight), aro.getWidth(), aroQuarterHeight);
         Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
         // Verificar si los rectángulos se superponen
-        return rectAroTopQuarter.intersects(rectCharlie) || rectAroBottomQuarter.intersects(rectCharlie);
+        return rectAroTopQuarter.intersects(rectCharlie);
     }
     public static boolean detectarCalderoDeFuego(CalderoDeFuego calderito, Charlie charlie){
         // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
