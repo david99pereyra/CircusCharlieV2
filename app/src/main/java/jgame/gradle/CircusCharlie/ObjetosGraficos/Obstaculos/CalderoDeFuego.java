@@ -5,24 +5,55 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-import javax.imageio.ImageIO;
+import java.util.logging.Logger;
 
-public class CalderoDeFuego extends ObjetoGrafico{
-    BufferedImage Caldero;
+import javax.imageio.ImageIO;
+import java.util.ArrayList;
+
+
+public class CalderoDeFuego extends ObjetoGrafico {
     private double posX;
     private int posY;
-    
-    public CalderoDeFuego(String filename){
+    private ArrayList<BufferedImage> imagenes = new ArrayList<>();
+    private int indiceImagenActual = 0;
+    private Thread hilo;
+
+    public CalderoDeFuego(String filename) {
         super(filename);
-        try{
-            this.Caldero = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png")));
-            
-        }catch (IOException e){
-            throw new RuntimeException();
+        try {
+            BufferedImage imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png")));
+            imagenes.add(imagen1);
+            BufferedImage imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png")));
+            imagenes.add(imagen2);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar la imagen del caldero", e);
+        }
+        hilo = new Thread(this :: SwapImage);
+        hilo.start(); // Iniciar el hilo
+    }
+
+    public void display(Graphics2D g) {
+        if (!imagenes.isEmpty()) {
+            BufferedImage imagenCaldero = imagenes.get(indiceImagenActual); // Mostrar la imagen actual
+            if (imagenCaldero != null) {
+                g.drawImage(imagenCaldero, (int) Math.round(posX), posY, null);
+            }
         }
     }
 
-    public void setPosition(double x, int y){
+    public void SwapImage() {
+        while (true) {
+            try {
+                Thread.sleep(500); // Esperar 100 milisegundos
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("Error al cargar la imagen del caldero", ex);
+            }
+            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size(); // Cambiar a la siguiente imagen
+            
+        }
+    }
+
+    public void setPosition(double x, int y) {
         this.posX = x;
         this.posY = y;
     }
@@ -37,10 +68,5 @@ public class CalderoDeFuego extends ObjetoGrafico{
 
     public int getPosY() {
         return this.posY;
-    }
-
-    // Dibujar el aro en la posición especificada
-    public void display(Graphics2D g) {
-        g.drawImage(Caldero, (int)getPosX(), getPosY(), null);
     }
 }

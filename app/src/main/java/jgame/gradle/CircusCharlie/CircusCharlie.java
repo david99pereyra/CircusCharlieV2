@@ -86,7 +86,6 @@ public class CircusCharlie extends JGame {
         if(level3){} //Aca va lo del nivel 3
         Keyboard keyboard = getKeyboard();
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
-            
             if(leon.getX() > 10){
                 charlie.left();
                 leon.leftLeon();
@@ -121,21 +120,27 @@ public class CircusCharlie extends JGame {
         leon.update(delta);
         charlie.update(delta);
         //Movimiento de los aros
+        
         for (Aro aro : listaDeAros) {
-            aro.setAroGrandePosX(aro.getAroGrandePosX() - 0.6);
+            aro.update(delta);
+            aro.setPosition(aro.getAroPosX() - 0.6, 217);
         }
-        //Seccion de colisiones
-        // for (Aro aro : listaDeAros) {
-        //     if (DetectorColiciones.detectarAroGrande(aro, charlie)){
-        //         System.out.println("COLISIONASTE ESTUPIDO, TENE CUIDADO");
-        //     }
-        // }
 
-        // for(CalderoDeFuego calderito : listaDeCalderos){
-        //     if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
-        //         System.out.println("COLISIONASTE, TENE CUIDADO");
-        //     }
-        // }
+        //Seccion de colisiones
+        for (Aro aro : listaDeAros) {
+            if (DetectorColiciones.detectarAro(aro, charlie)){
+                System.out.println("COLISIONASTE CON UN ARO, TENE CUIDADO");
+                System.out.println("123");
+            }
+        }
+
+        for(CalderoDeFuego calderito : listaDeCalderos){
+            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
+                System.out.println("COLISIONASTE CON UN CALDERO, TENE CUIDADO");
+                System.out.println("123");
+            }
+        }
+
         //charlie.applyForce(gravedad);
         cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         cam.seguirPersonaje(leon); 
@@ -165,34 +170,33 @@ public class CircusCharlie extends JGame {
         }
 
         g.translate(-cam.getX(),-cam.getY());
-
         g.setColor(Color.red);
-        
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }
     //Funcion para crear aros
     public void crearAros(){
         String imagenAroGrande = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png";
-        String imagenAroChico = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png";
-        int posXPixel = 800, count = 1; //count hasta 30 y count2 que controla con numerorandom
-        Random random = new Random();
-
-        while(posXPixel <= 8272 ){
-            int numeroRandom = random.nextInt(4) + 3;
-            int count2 = 1; // Inicio y reinicio count2 en cada iteración
-            while (count2 <= numeroRandom){
-                Aro aro = new Aro(imagenAroGrande);
-                aro.setPosition(posXPixel, 217);
-                listaDeAros.add(aro);
-                posXPixel += 450;
-                count2++;
+        String imagenAroChico = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png";
+        int posXPixel = 800;
+        for (int i = 0; i < 25; i++){
+            // Generar un número aleatorio entre 2 y 5
+            int numeroAleatorio2 = 2 + (int)(Math.random() * ((5 - 2) + 1)); 
+            for (int j = 0; j < numeroAleatorio2; j ++){
+                // Generar un número aleatorio entre 350 y 600 para los pixeles
+                int numeroAleatorio1 = 350 + (int)(Math.random() * ((600 - 350) + 1));
+                posXPixel += numeroAleatorio1;
+                Aro aroGrande = new Aro(imagenAroGrande, true);
+                aroGrande.setPosition(posXPixel, 217);
+                listaDeAros.add(aroGrande);
             }
-            Aro aro = new Aro(imagenAroGrande);
-            aro.setPosition(posXPixel, 217);
-            listaDeAros.add(aro);
-            posXPixel += 300;
+            int numeroAleatorio1 = 250 + (int)(Math.random() * ((400 - 250) + 1));
+            posXPixel += numeroAleatorio1;
+            Aro aroChico = new Aro(imagenAroChico, false);
+            aroChico.setPosition(posXPixel, 217);
+            listaDeAros.add(aroChico);
         }
-    }
+    }   
+
     //Funcion para crear calderos
     public void crearCalderos(){
         String imagen = "imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png";
