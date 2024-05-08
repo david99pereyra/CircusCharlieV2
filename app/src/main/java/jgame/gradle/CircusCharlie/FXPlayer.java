@@ -25,6 +25,7 @@ public enum FXPlayer {
   DBRAP("CircusCharlie/DBRap.wav"),
   DBSUPER("CircusCharlie/DragonBallSuper.wav"),
   UI("CircusCharlie/UltraInstinto.wav"),
+  PB("CircusCharlie/PeakyBlinders.wav"),
   BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav");
 
 

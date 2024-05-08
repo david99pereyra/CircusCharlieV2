@@ -15,7 +15,7 @@ public class Camara {
 	public void seguirPersonaje(Charlie obj){
 		Mundo m=Mundo.getInstance();
 		//this.x = -b.getX()+(m.getWidth()/8);
-		this.x = -obj.getX()+resX/2;
+		this.x = -obj.getX()+143;
 		if (this.x>0){
 			this.x=0;
 		}

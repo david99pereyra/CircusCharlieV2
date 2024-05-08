@@ -23,13 +23,42 @@ public class CalderoDeFuego extends ObjetoGrafico {
         try {
             BufferedImage imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png")));
             imagenes.add(imagen1);
-            BufferedImage imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png")));
+            BufferedImage imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
             imagenes.add(imagen2);
         } catch (IOException e) {
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }
         hilo = new Thread(this :: SwapImage);
         hilo.start(); // Iniciar el hilo
+    }
+
+    public void setPosition(double x, int y) {
+        this.posX = x;
+        this.posY = y;
+    }
+    
+    public double getPosX() {
+        return this.posX;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+    
+    public int getPosY() {
+        return this.posY;
+    }
+
+    public void SwapImage() {
+        while (true) {
+            try {
+                Thread.sleep(100); // Esperar 100 milisegundos
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("Error al cargar la imagen del caldero", ex);
+            }
+            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size(); // Cambiar a la siguiente imagen
+            
+        }
     }
 
     public void display(Graphics2D g) {
@@ -39,34 +68,5 @@ public class CalderoDeFuego extends ObjetoGrafico {
                 g.drawImage(imagenCaldero, (int) Math.round(posX), posY, null);
             }
         }
-    }
-
-    public void SwapImage() {
-        while (true) {
-            try {
-                Thread.sleep(500); // Esperar 100 milisegundos
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del caldero", ex);
-            }
-            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size(); // Cambiar a la siguiente imagen
-            
-        }
-    }
-
-    public void setPosition(double x, int y) {
-        this.posX = x;
-        this.posY = y;
-    }
-
-    public double getPosX() {
-        return this.posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return this.posY;
     }
 }

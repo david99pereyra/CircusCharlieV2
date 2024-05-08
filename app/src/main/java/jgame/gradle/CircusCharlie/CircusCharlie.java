@@ -23,10 +23,11 @@ public class CircusCharlie extends JGame {
     Camara cam;
     Fondo fondo;
     //Variables del level 1
-    private ArrayList<Aro> listaDeAros = new ArrayList<>();
+    private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
+    private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     //Variables del level 2
-    Charlie charlie, leon,c;
+    Charlie charlie, leon;
     //Variables del level 3
 
     public static void main(String[] args) {
@@ -48,7 +49,7 @@ public class CircusCharlie extends JGame {
         try{        
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-            FXPlayer.EVENTO1.loop();
+            //FXPlayer.EVENTO1.loop();
 
             Mundo m=Mundo.getInstance();
 
@@ -61,7 +62,7 @@ public class CircusCharlie extends JGame {
             
             cam =new Camara(0,0);
 
-            cam.setRegionVisible(300,480);
+            cam.setRegionVisible(getWidth(),480);
 
             //fondo=new Fondo("imagenes/background.png");
             fondo=new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
@@ -121,13 +122,17 @@ public class CircusCharlie extends JGame {
         charlie.update(delta);
         //Movimiento de los aros
         
-        for (Aro aro : listaDeAros) {
+        for (Aro aro : listaDeArosIzquierdo) {
+            aro.update(delta);
+            aro.setPosition(aro.getAroPosX() - 0.6, 217);
+        }
+        for (Aro aro : listaDeArosDerecho) {
             aro.update(delta);
             aro.setPosition(aro.getAroPosX() - 0.6, 217);
         }
 
         //Seccion de colisiones
-        for (Aro aro : listaDeAros) {
+        for (Aro aro : listaDeArosIzquierdo) {
             if (DetectorColiciones.detectarAro(aro, charlie)){
                 System.out.println("COLISIONASTE CON UN ARO, TENE CUIDADO");
                 System.out.println("123");
@@ -158,12 +163,15 @@ public class CircusCharlie extends JGame {
 
         fondo.display(g);
         m.display(g);
-        leon.display(g);
-        charlie.display(g);
-        //Dibujar los aros
-        for (Aro aro : listaDeAros) {
+        for (Aro aro : listaDeArosIzquierdo) {
             aro.display(g);
         }
+        leon.display(g);
+        charlie.display(g);
+        for (Aro aro1 : listaDeArosDerecho) {
+            aro1.display1(g);
+        }
+        //Dibujar los aros
         //Dibujar los calderos
         for (CalderoDeFuego calderito: listaDeCalderos) {
             calderito.display(g);
@@ -175,8 +183,10 @@ public class CircusCharlie extends JGame {
     }
     //Funcion para crear aros
     public void crearAros(){
-        String imagenAroGrande = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1.png";
-        String imagenAroChico = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png";
+        String imagenAroGrandeIzquierda = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png";
+        String imagenAroGrandeDerecha = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
+        String imagenAroChicoIzquierdo = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png";
+        String imagenAroChicoDerecho = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png";
         int posXPixel = 800;
         for (int i = 0; i < 25; i++){
             // Generar un número aleatorio entre 2 y 5
@@ -185,15 +195,29 @@ public class CircusCharlie extends JGame {
                 // Generar un número aleatorio entre 350 y 600 para los pixeles
                 int numeroAleatorio1 = 350 + (int)(Math.random() * ((600 - 350) + 1));
                 posXPixel += numeroAleatorio1;
-                Aro aroGrande = new Aro(imagenAroGrande, true);
-                aroGrande.setPosition(posXPixel, 217);
-                listaDeAros.add(aroGrande);
+
+                Aro aroGrandeIzquierda = new Aro(imagenAroGrandeIzquierda, true);
+                aroGrandeIzquierda.setPosition(posXPixel, 217);
+                listaDeArosIzquierdo.add(aroGrandeIzquierda);
+
+                Aro aroGrandeDerecha = new Aro(imagenAroGrandeDerecha, true);
+                aroGrandeDerecha.setPosition(posXPixel, 217);
+                listaDeArosDerecho.add(aroGrandeDerecha);
             }
             int numeroAleatorio1 = 250 + (int)(Math.random() * ((400 - 250) + 1));
             posXPixel += numeroAleatorio1;
-            Aro aroChico = new Aro(imagenAroChico, false);
-            aroChico.setPosition(posXPixel, 217);
-            listaDeAros.add(aroChico);
+
+            // Aro aroChico = new Aro(imagenAroChico, false);
+            // aroChico.setPosition(posXPixel, 217);
+            // listaDeArosIzquierdo.add(aroChico);
+
+            Aro aroChicoIzquierdo = new Aro(imagenAroChicoIzquierdo, false);
+            aroChicoIzquierdo.setPosition(posXPixel, 217);
+            listaDeArosIzquierdo.add(aroChicoIzquierdo);
+
+            Aro aroChicoDerecho = new Aro(imagenAroChicoDerecho, false);
+            aroChicoDerecho.setPosition(posXPixel, 217);
+            listaDeArosDerecho.add(aroChicoDerecho);
         }
     }   
 
