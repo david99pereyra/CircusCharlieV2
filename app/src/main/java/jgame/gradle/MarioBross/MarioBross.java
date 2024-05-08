@@ -17,9 +17,6 @@ public class MarioBross extends Juego{
     }
 
     @Override
-    public void run(double fps) {}
-
-    @Override
     public void run() {
         JOptionPane.showMessageDialog(null, "Mario Bross no esta disponible.\n Pero puedes jugar al Circus Charlie", "Error", JOptionPane.ERROR_MESSAGE);
     }

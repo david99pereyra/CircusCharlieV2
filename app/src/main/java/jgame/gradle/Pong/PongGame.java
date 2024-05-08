@@ -19,10 +19,6 @@ public class PongGame extends Juego {
     }
 
     @Override
-    public void run(double fps) {
-    }
-
-    @Override
     public void run() {
         new PantallaInicio();
     }
