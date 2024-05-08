@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import jgame.Lanzador.gui.RecuadroJuego;
-import jgame.gradle.CircusCharlie.JuegoCircusCharlie;
 import jgame.gradle.MarioBross.MarioBross;
 import jgame.gradle.Pong.PongGame;
 
@@ -35,7 +34,7 @@ public class SistemaDeJuego extends JFrame{
         //add juegos 
         juegos.add(new RecuadroJuego(new PongGame(), this));
         juegos.add(new RecuadroJuego(new MarioBross(), this));
-        juegos.add(new RecuadroJuego(new JuegoCircusCharlie(), this));
+        // juegos.add(new RecuadroJuego(new CircusCharlie(), this));
 
         this.add(juegos, BorderLayout.CENTER);
         this.add(panelTitulo, BorderLayout.NORTH);
