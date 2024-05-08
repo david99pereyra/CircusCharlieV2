@@ -18,9 +18,9 @@ public class PongGame extends Juego {
         setImplementado(false);
     }
 
-    @Override
-    public void run(double fps) {
-    }
+    // @Override
+    // public void run(double fps) {
+    // }
 
     @Override
     public void run() {

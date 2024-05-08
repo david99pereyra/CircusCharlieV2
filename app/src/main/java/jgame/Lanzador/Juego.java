@@ -59,7 +59,7 @@ public abstract class Juego {
         this.implementado = implementado;
     }
 
-    public abstract void run(double fps);
+    //public abstract void run(double fps);
     public abstract void run();
 
 }

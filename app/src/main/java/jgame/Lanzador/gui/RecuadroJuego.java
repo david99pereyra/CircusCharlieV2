@@ -57,6 +57,7 @@ public class RecuadroJuego extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(juego.isImplementado()){
             sistemaDeJuego.setVisible(false);
+            sistemaDeJuego.setFocusable(false);
         }
         if(!e.getSource().equals(btn)) return;
         juego.run();
