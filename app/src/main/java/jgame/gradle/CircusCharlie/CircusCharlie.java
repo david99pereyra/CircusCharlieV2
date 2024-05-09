@@ -93,7 +93,7 @@ public class CircusCharlie extends JGame {
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)){
-            if(leon.getX()<(fondo.getWidth()-116)){
+            if(leon.getX()+leon.getWidth()<fondo.getWidth()){
                 charlie.right();
                 leon.rightLeon();
             }
@@ -185,7 +185,7 @@ public class CircusCharlie extends JGame {
     public void crearAros(){
         String imagenAroGrandeIzquierda = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png";
         String imagenAroGrandeDerecha = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
-        String imagenAroChicoIzquierdo = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1.png";
+        String imagenAroChicoIzquierdo = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Izquierdo.png";
         String imagenAroChicoDerecho = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png";
         int posXPixel = 800;
         for (int i = 0; i < 25; i++){
@@ -206,10 +206,6 @@ public class CircusCharlie extends JGame {
             }
             int numeroAleatorio1 = 250 + (int)(Math.random() * ((400 - 250) + 1));
             posXPixel += numeroAleatorio1;
-
-            // Aro aroChico = new Aro(imagenAroChico, false);
-            // aroChico.setPosition(posXPixel, 217);
-            // listaDeArosIzquierdo.add(aroChico);
 
             Aro aroChicoIzquierdo = new Aro(imagenAroChicoIzquierdo, false);
             aroChicoIzquierdo.setPosition(posXPixel, 217);
