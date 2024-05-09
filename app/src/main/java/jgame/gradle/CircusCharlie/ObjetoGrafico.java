@@ -45,4 +45,12 @@ public class ObjetoGrafico {
 	public double getY(){
 		return positionY;
 	}
+
+	public void setX(double x){
+		this.positionX = x;
+	}
+
+	public void setY(double y){
+		this.positionY = y;
+	}
 }
