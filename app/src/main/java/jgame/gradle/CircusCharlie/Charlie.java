@@ -131,8 +131,8 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	}
 	
 	public void quietoLeon(){
+		this.setImagen(leon);
 		if(ESTA_SALTANTO){
-			this.setImagen(leon);
 			estadoActual = ESTADO_QUIETO;
 		}
 	}
