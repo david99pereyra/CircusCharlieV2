@@ -9,10 +9,16 @@ public class DetectorColiciones extends Rectangle{
     //Detectar si colisiona con un aro
     public static boolean detectarAro(Aro aro, Charlie charlie){
         // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
-        int aroQuarterHeight = aro.getHeight() / 4;
-        Rectangle rectAroQuarter = new Rectangle((int) aro.getAroPosX(), (int) (aro.getAroPosY() + aroQuarterHeight * 3), aro.getWidth(), aroQuarterHeight);
         Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
-        // Verificar si los rectángulos se superponen
+        Rectangle rectAroQuarter = new Rectangle();
+        int aroQuarterHeight;
+        if(aro.verificarTamaño == true){ //Detecto el aro grande  
+            aroQuarterHeight = aro.getHeight() / 4;
+            rectAroQuarter = new Rectangle((int) aro.getAroPosX(), (int) (aro.getAroPosY() + aroQuarterHeight * 3), aro.getWidth(), aroQuarterHeight);
+        }else if(aro.verificarTamaño == false){ //Detecto el aro chico
+            aroQuarterHeight = aro.getHeight() / 6;
+            rectAroQuarter = new Rectangle((int) aro.getAroPosX(), (int) (aro.getAroPosY() + aroQuarterHeight * 5), aro.getWidth(), aroQuarterHeight);
+        }
         return rectAroQuarter.intersects(rectCharlie);
     }
     //Detectar si colisiona con un caldero de fuego

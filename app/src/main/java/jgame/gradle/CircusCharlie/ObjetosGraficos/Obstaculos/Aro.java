@@ -13,7 +13,7 @@ public class Aro extends ObjetoGrafico{
 
     BufferedImage imagen1, imagen2, imagen3, imagen4, imagen5, imagen6,imagen7, imagen8;
     public double posX = 800, idx = 0;
-    public static int posY = 217;
+    public final int posY = 217;
     private ArrayList<BufferedImage> imageAroGrande = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroGrandeDerecho = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroChico = new ArrayList<>();
@@ -105,7 +105,6 @@ public class Aro extends ObjetoGrafico{
 
     public void setPosition(double x, int y){
         this.posX = x;
-        this.posY = y;
     }
 
     public double getAroPosX (){

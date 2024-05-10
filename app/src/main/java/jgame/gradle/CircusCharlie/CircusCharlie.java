@@ -22,10 +22,12 @@ public class CircusCharlie extends JGame {
     SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
     Camara cam;
     Fondo fondo;
+    int cantPuntos = 0;
     //Variables del level 1
     private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
+
     //Variables del level 2
     Charlie charlie, leon;
     //Variables del level 3
@@ -69,7 +71,6 @@ public class CircusCharlie extends JGame {
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             charlie.quieto();
             leon.quietoLeon();
-
             //Crear los aros
             crearAros();
             //Crear los calderos
@@ -121,7 +122,6 @@ public class CircusCharlie extends JGame {
         leon.update(delta);
         charlie.update(delta);
         //Movimiento de los aros
-        
         for (Aro aro : listaDeArosIzquierdo) {
             aro.update(delta);
             aro.setPosition(aro.getAroPosX() - 0.6, 217);
@@ -131,18 +131,23 @@ public class CircusCharlie extends JGame {
             aro.setPosition(aro.getAroPosX() - 0.6, 217);
         }
 
+        eliminarArosDesplazados();
+
         //Seccion de colisiones
         for (Aro aro : listaDeArosIzquierdo) {
             if (DetectorColiciones.detectarAro(aro, charlie)){
-                System.out.println("COLISIONASTE CON UN ARO, TENE CUIDADO");
+                System.out.println("COLISIONASTE CON UN ARO GRANDE, TENE CUIDADO");
                 System.out.println("123");
+                reiniciarJuegoXColisiones(charlie.getX());
             }
         }
+
 
         for(CalderoDeFuego calderito : listaDeCalderos){
             if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
                 System.out.println("COLISIONASTE CON UN CALDERO, TENE CUIDADO");
                 System.out.println("123");
+                reiniciarJuegoXColisiones(charlie.getX());
             }
         }
 
@@ -163,15 +168,16 @@ public class CircusCharlie extends JGame {
 
         fondo.display(g);
         m.display(g);
+        leon.display(g);
+        charlie.display(g);
+        //Dibujar los aros
         for (Aro aro : listaDeArosIzquierdo) {
             aro.display(g);
         }
-        leon.display(g);
-        charlie.display(g);
         for (Aro aro1 : listaDeArosDerecho) {
             aro1.display1(g);
         }
-        //Dibujar los aros
+
         //Dibujar los calderos
         for (CalderoDeFuego calderito: listaDeCalderos) {
             calderito.display(g);
@@ -181,21 +187,63 @@ public class CircusCharlie extends JGame {
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }
+
+    // Funcion que detecta los aros y calderos que ya pasaron y los va eliminando
+    public void eliminarArosDesplazados(){
+    // Iterar sobre la lista original en sentido inverso para evitar problemas al eliminar elementos
+        for (int i =  listaDeArosIzquierdo.size() - 1; i >= 0; i--) {
+            Aro aro = listaDeArosIzquierdo.get(i);
+            if (aro.getAroPosX() <= leon.getX() - 145 ) {
+                listaDeArosIzquierdo.remove(i); // Eliminar el aro de la lista original
+                listaDeArosDerecho.remove(i); // Eliminar el aro de la lista original
+            }
+        }
+    }
+
+    //Cuando detecta una colision, reiniciamos el juego en ese punto
+    public void reiniciarJuegoXColisiones(double x1){
+        // Busca el checkpoint más cercano a la posición x
+        int[] checkpointsEjeX = {201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433};
+        int pos = 0, i, posAEnviar;
+        for (i = 1; i < checkpointsEjeX.length; i++) {
+            if (checkpointsEjeX[i] < x1) {
+                pos = i - 1;
+            }
+        }
+        // Reinicia el juego en el checkpoint más cercano
+        int newX = checkpointsEjeX[pos]; 
+        reiniciarJuego(newX);
+    }
+    // Método para reiniciar el juego en una posición específica
+    private void reiniciarJuego(double x) {
+        charlie.setPISO(412);
+        charlie.setPosition(x + 31,charlie.getPISO());
+        leon.setPISO(477);
+        leon.setPosition(x, leon.getPISO());
+    }
+
     //Funcion para crear aros
     public void crearAros(){
         String imagenAroGrandeIzquierda = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png";
         String imagenAroGrandeDerecha = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
         String imagenAroChicoIzquierdo = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Izquierdo.png";
         String imagenAroChicoDerecho = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png";
-        int posXPixel = 800;
-        for (int i = 0; i < 25; i++){
+        int posXPixel = 850;
+        
+        Aro primerAroIzquierda = new Aro(imagenAroGrandeIzquierda, true);
+        primerAroIzquierda.setPosition(posXPixel, 217);
+        listaDeArosIzquierdo.add(primerAroIzquierda);
+
+        Aro primerAroDerecha = new Aro(imagenAroGrandeDerecha, true);
+        primerAroDerecha.setPosition(posXPixel, 217);
+        listaDeArosDerecho.add(primerAroDerecha);
+        for (int i = 0; i < 20; i++){
             // Generar un número aleatorio entre 2 y 5
             int numeroAleatorio2 = 2 + (int)(Math.random() * ((5 - 2) + 1)); 
             for (int j = 0; j < numeroAleatorio2; j ++){
                 // Generar un número aleatorio entre 350 y 600 para los pixeles
                 int numeroAleatorio1 = 350 + (int)(Math.random() * ((600 - 350) + 1));
                 posXPixel += numeroAleatorio1;
-
                 Aro aroGrandeIzquierda = new Aro(imagenAroGrandeIzquierda, true);
                 aroGrandeIzquierda.setPosition(posXPixel, 217);
                 listaDeArosIzquierdo.add(aroGrandeIzquierda);
