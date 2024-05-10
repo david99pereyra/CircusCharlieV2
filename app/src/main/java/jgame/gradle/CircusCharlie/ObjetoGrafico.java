@@ -21,6 +21,12 @@ public class ObjetoGrafico {
 		}
     }
 
+	public ObjetoGrafico(){}
+
+	public void setImagen(BufferedImage imagen){
+		this.imagen = imagen;
+	}
+
 	public int getWidth(){
 		return imagen.getWidth();
 	}
