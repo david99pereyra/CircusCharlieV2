@@ -80,7 +80,7 @@ public enum FXPlayer {
       }
    }
  
-   static void init() {
+   public static void init() {
       values();
    }
 }
