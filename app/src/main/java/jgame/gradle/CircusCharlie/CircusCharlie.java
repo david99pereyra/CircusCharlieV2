@@ -14,7 +14,7 @@ import java.util.*;
 import java.text.*;
 
 public class CircusCharlie extends JGame {
-    private boolean level1 = false, level2 = true, level3 =false;
+    private boolean level1 = true, level2 = false, level3 =false;
     Date dInit = new Date( ), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
     Camara cam;
@@ -26,6 +26,7 @@ public class CircusCharlie extends JGame {
     //Variables del level 2
     Nivel2 evento2;
     //Variables del level 3
+    
 
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
@@ -175,11 +176,12 @@ public class CircusCharlie extends JGame {
         fondo.display(g);
         m.display(g);
 
-        // evento1.dibujar(g, charlie, leon);
+        evento1.dibujar(g, charlie, leon);
 
-        evento2.dibujar(g, charlie);
+        //evento2.dibujar(g, charlie);
 
         g.translate(-cam.getX(),-cam.getY());
+        evento1.dibujarScore(g);
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }
