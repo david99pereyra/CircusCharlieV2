@@ -29,34 +29,26 @@ public class DetectorColiciones extends Rectangle{
         // Verificar si los rectángulos se superponen
         return recCaldero.intersects(rectCharlie);
     }
-    public static boolean detectarPodio(Fondo fondo, Charlie charlie){
-        int tamañoFondo = fondo.getWidth() / 100;
-        Rectangle recPodio = new Rectangle((int)fondo.getX(), (int) (fondo.getY() + tamañoFondo * 99), fondo.getWidth(), fondo.getHeight());
-        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
-        return recPodio.intersects(rectCharlie);
-    }
 
     //Colisiones 2Do nivel
-    public static boolean detectarMonoNormal(MonoNormal monito, Charlie charlie){
-        //Completar con lo que falta
-        // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
-        // Verificar si los rectángulos se superponen
-        return false;
+    public static boolean detectarMonoNormal(MonoMarron monito, Charlie charlie){
+        Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(), monito.getHeight());
+        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+        return rectMonito.intersects(rectCharlie);
     }
-
 
     public static boolean detectarMonoAzul(MonoAzul monito, Charlie charlie){
-        //Completar con lo que falta
-        // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
-        // Verificar si los rectángulos se superponen
-        return false;
+        Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(), monito.getHeight());
+        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+        return rectMonito.intersects(rectCharlie);
     }
-    public static boolean detectarEntreMonos(MonoNormal monitonormal, MonoAzul monitoazul){
-        //Completar con lo que falta
-        // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los objetos
-        // Verificar si los rectángulos se superponen
-        return false; 
+
+    public static boolean detectarEntreMonos(MonoMarron monitoMarron, MonoAzul monitoazul){
+        Rectangle rectMonitoMarron = new Rectangle((int) monitoMarron.getX(), (int) monitoMarron.getY(), monitoMarron.getWidth(), monitoMarron.getHeight());
+        Rectangle rectMonitoAzul = new Rectangle((int) monitoazul.getX(), (int) monitoazul.getY(), monitoazul.getWidth(), monitoazul.getHeight());
+        return rectMonitoMarron.intersects(rectMonitoAzul); 
     }
+
     //Colisiones 3Er nivel
     public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){
         //Completar con lo que falta

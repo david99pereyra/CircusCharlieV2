@@ -1,18 +1,16 @@
-package jgame.gradle.CircusCharlie.ObjetosGraficos.Eventos;
+package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import jgame.gradle.CircusCharlie.FXPlayer;
-//import jgame.gradle.CircusCharlie.Camara;
-import jgame.gradle.CircusCharlie.Mundo;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Aro;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.CalderoDeFuego;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 
-public class Evento1 {
+public class Nivel1 {
     private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
@@ -21,12 +19,12 @@ public class Evento1 {
 
     //Camara cam;
     
-    public Evento1(Charlie charlie, Charlie leon, Fondo fondo ) {
+    public Nivel1(Charlie charlie, Charlie leon, Fondo fondo) {
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO1.loop(); 
-
+            
             //Crear los aros
             this.crearAros();
             //Crear los calderos
@@ -35,7 +33,6 @@ public class Evento1 {
             System.out.println("ERROR");
             e.printStackTrace();
         }
-
     }
 
     public static boolean llegoAMeta(){
