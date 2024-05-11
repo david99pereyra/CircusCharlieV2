@@ -89,11 +89,17 @@ public class DetectorColiciones extends Rectangle {
     }
 
     // Colisiones 3Er nivel
-    public static boolean detectarEntrePelotas(Pelota p1, Pelota p2) {
-        // Completar con lo que falta
-        // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los
-        // objetos
-        // Verificar si los rectángulos se superponen
-        return false;
+    public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){
+        Rectangle rectPelota1 = new Rectangle((int) p1.getX(), (int) p1.getY(), p1.getWidth(), p1.getHeight());
+        Rectangle rectPelota2 = new Rectangle((int) p2.getX(), (int) p2.getY(), p2.getWidth(), p2.getHeight());
+        return rectPelota1.intersects(rectPelota2); 
+    }
+
+    public static boolean detectarCharlieParteSuperiorPelota(Pelota p, Charlie charlie){
+        int pelotaQuarterHeight;
+        pelotaQuarterHeight = p.getHeight() / 4;
+        Rectangle rectPelota1 = new Rectangle((int) p.getX(), (int) (p.getY() + pelotaQuarterHeight), p.getWidth(), pelotaQuarterHeight);
+        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+        return rectPelota1.intersects(rectCharlie);
     }
 }
