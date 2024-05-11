@@ -5,18 +5,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
 
 public class CalderoDeFuego extends ObjetoGrafico {
-    private double posX;
+    private double posX, idx;
     private int posY;
     private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
-    private Thread hilo;
 
     public CalderoDeFuego(String filename) {
         super(filename);
@@ -28,8 +26,6 @@ public class CalderoDeFuego extends ObjetoGrafico {
         } catch (IOException e) {
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }
-        hilo = new Thread(this :: SwapImage);
-        hilo.start(); // Iniciar el hilo
     }
 
     public void setPosition(double x, int y) {
@@ -49,24 +45,29 @@ public class CalderoDeFuego extends ObjetoGrafico {
         return this.posY;
     }
 
-    public void SwapImage() {
-        while (true) {
-            try {
-                Thread.sleep(100); // Esperar 100 milisegundos
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del caldero", ex);
+    // Dibujar el aro en la posición especificada
+    public void display(Graphics2D g) {
+        if (!imagenes.isEmpty()){
+            BufferedImage imagenActualMonoMarron = imagenes.get(indiceImagenActual);
+            if (imagenActualMonoMarron != null){
+                g.drawImage(imagenActualMonoMarron, (int) Math.round(posX), posY, null);
             }
-            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size(); // Cambiar a la siguiente imagen
-            
         }
     }
 
-    public void display(Graphics2D g) {
-        if (!imagenes.isEmpty()) {
-            BufferedImage imagenCaldero = imagenes.get(indiceImagenActual); // Mostrar la imagen actual
-            if (imagenCaldero != null) {
-                g.drawImage(imagenCaldero, (int) Math.round(posX), posY, null);
+    public void SwapImage(){
+        while (true) {
+            try{
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("Error al cargar la imagen del Mono Marron", ex);
             }
+            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size();
         }
+    }
+
+    public void update(double delta){
+        idx += 0.04;
+        indiceImagenActual = ((int)idx) % imagenes.size();
     }
 }
