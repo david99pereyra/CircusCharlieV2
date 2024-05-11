@@ -7,12 +7,7 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoAzul;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.awt.Graphics2D;
-
-
 
 public class Nivel2 {
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();

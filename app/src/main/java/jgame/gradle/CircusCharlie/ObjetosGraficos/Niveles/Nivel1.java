@@ -18,7 +18,6 @@ public class Nivel1 {
     private static boolean llegoAMeta = false;
     private static boolean bandera;
     private Score puntosJuego;
-    //Camara cam;
     
     public Nivel1(Charlie charlie, Charlie leon, Fondo fondo) {
         try {
@@ -79,6 +78,10 @@ public class Nivel1 {
         for (Aro aro : listaDeArosDerecho) {
             aro.update(delta);
             aro.setPosition(aro.getAroPosX() - 0.6, 217);
+        }
+        //Swap de imagenes calderos
+        for (CalderoDeFuego calderito : listaDeCalderos){
+            calderito.update(delta);
         }
         eliminarArosDesplazados(leon);
 

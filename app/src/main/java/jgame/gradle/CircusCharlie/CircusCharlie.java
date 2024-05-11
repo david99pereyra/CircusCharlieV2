@@ -7,6 +7,7 @@ import com.entropyinteractive.*;  //jgame
 
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel1;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel2;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel3;
 
 import java.awt.*;
 import java.awt.event.*; //eventos
@@ -26,7 +27,7 @@ public class CircusCharlie extends JGame {
     //Variables del level 2
     Nivel2 evento2;
     //Variables del level 3
-    
+    Nivel3 evento3;
 
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
@@ -72,7 +73,16 @@ public class CircusCharlie extends JGame {
                 charlie.quieto();
             }
 
-            if(level3){} //Aca va lo del nivel 3
+            if(level3){//Aca va lo del nivel 3
+                evento3 = new Nivel3(charlie, fondo);
+                charlie.setPISO(430);
+                charlie.setPosition(174,charlie.getPISO());      
+                cam = new Camara(0,0);
+                cam.setRegionVisible(getWidth(),480);
+                fondo=new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
+                m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
+                charlie.quieto();
+            } 
         }catch(Exception ex){
             System.out.println("ERROR en gameStartup");
             ex.printStackTrace();
@@ -123,8 +133,6 @@ public class CircusCharlie extends JGame {
         } 
         
         if(level2){ //Aca va lo del nivel 2
-
-            //Made in Joaquinho
             Keyboard keyboard = getKeyboard();
             if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
                 if(charlie.getX() > 10 && Nivel2.llegoAMeta() == false){
@@ -159,7 +167,39 @@ public class CircusCharlie extends JGame {
             cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         } 
 
-        if(level3){} //Aca va lo del nivel 3 
+        if(level3){ //Aca va lo del nivel 3 
+            Keyboard keyboard = getKeyboard();
+            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
+                if(charlie.getX() > 10 && Nivel3.llegoAMeta() == false){
+                    charlie.left();
+                }
+            }
+            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)){
+                if(charlie.getX() + charlie.getWidth()<fondo.getWidth() && Nivel3.llegoAMeta() == false){
+                    charlie.right();
+                }
+            }
+            // check the list of key events for a pressed escape key
+            LinkedList < KeyEvent > keyEvents = keyboard.getEvents();
+            for (KeyEvent event: keyEvents) {
+                if ((event.getID() == KeyEvent.KEY_RELEASED)){
+                    charlie.quieto();
+                }
+                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                    if(Nivel3.llegoAMeta() == false){
+                        charlie.jump();
+                        FXPlayer.FX00.play();
+                    }
+                }
+                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                    FXPlayer.EVENTO1.stop();
+                    stop();
+                }
+            }
+            evento3.actualizar(delta, charlie);
+            charlie.update(delta);
+            cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
+        }
         //charlie.applyForce(gravedad);
     }
 
@@ -177,8 +217,9 @@ public class CircusCharlie extends JGame {
         m.display(g);
 
         evento1.dibujar(g, charlie, leon);
+        // evento2.dibujar(g, charlie);
 
-        //evento2.dibujar(g, charlie);
+        // evento3.dibujar(g, charlie);
 
         g.translate(-cam.getX(),-cam.getY());
         evento1.dibujarScore(g);
