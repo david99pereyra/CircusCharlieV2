@@ -5,6 +5,7 @@ package jgame.gradle.CircusCharlie;
 
 import com.entropyinteractive.*;  //jgame
 
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel1;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel2;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel3;
@@ -16,18 +17,20 @@ import java.text.*;
 
 public class CircusCharlie extends JGame {
     private boolean level1 = true, level2 = false, level3 =false;
+    // private static boolean level1 = false, level2 = true, level3 =false;
     Date dInit = new Date( ), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
     Camara cam;
     Fondo fondo;
     Charlie charlie;
+    Nivel nivelactual;
     //Variables del level 1
-    Nivel1 evento1;
+    Nivel1 nivel1;
     Charlie leon;
     //Variables del level 2
-    Nivel2 evento2;
+    Nivel2 nivel2;
     //Variables del level 3
-    Nivel3 evento3;
+    Nivel3 nivel3;
 
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
@@ -38,71 +41,79 @@ public class CircusCharlie extends JGame {
     public CircusCharlie() {
         // call game constructor
         super("AppCamaracharlie ", 800, 600);
+        //nivelactual = new Nivel1(charlie, leon, fondo);
     }
 
     public void gameStartup() {
         Log.info(getClass().getSimpleName(), "Starting up game");
         Mundo m=Mundo.getInstance();
-        charlie=new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
         try{        
             if(level1){
-                evento1 = new Nivel1(charlie, leon, fondo);
-                charlie.setPISO(412);
-                charlie.setPosition(174,charlie.getPISO());
+                charlie=new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
                 leon = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
-                leon.setPISO(477);
-                leon.setPosition(143, leon.getPISO());
-                
+                nivel1 = new Nivel1(charlie, leon, fondo);
                 cam = new Camara(0,0);
-                cam.setRegionVisible(getWidth(),480);
-    
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
-                m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
-                charlie.quieto();
-                leon.quietoLeon();
+                
             } //Aca va lo del nivel 1
             
             if(level2){ //Aca va lo del nivel 2
-                evento2 = new Nivel2(charlie, fondo);
+                charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
+                nivel2 = new Nivel2(charlie, fondo);
                 charlie.setPISO(220);
-                charlie.setPosition(174,charlie.getPISO());            
+                charlie.setPosition(174,charlie.getPISO());   
+                charlie.cambioImagen1();         
                 cam =new Camara(0,-26);
-                cam.setRegionVisible(getWidth(),480);
                 fondo=new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png");
-                m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
                 charlie.quieto();
             }
-
+            
             if(level3){//Aca va lo del nivel 3
-                evento3 = new Nivel3(charlie, fondo);
+                nivel3 = new Nivel3(charlie, fondo);
                 charlie.setPISO(430);
                 charlie.setPosition(174,charlie.getPISO());      
                 cam = new Camara(0,0);
-                cam.setRegionVisible(getWidth(),480);
                 fondo=new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
-                m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
                 charlie.quieto();
             } 
+            cam.setRegionVisible(getWidth(),480);
+            m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
         }catch(Exception ex){
             System.out.println("ERROR en gameStartup");
             ex.printStackTrace();
         }
     }
+
+    // public void setNivel(Nivel state){
+    //     nivelactual = state;
+    // }
+
+    // public void dibujar(){
+    //     nivelactual.dibujar(this);
+    // }
+
+    // public void actualizar(){
+    //     nivelactual.actualizar(this);
+    // }
     
     public void gameUpdate(double delta) {
         if(level1){ //Aca va lo del nivel 1
             Keyboard keyboard = getKeyboard();
-            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)){
+            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel1.colisiono()){
                 if(leon.getX() > 10 && Nivel1.llegoAMeta() == false){
                     charlie.left();
                     leon.leftLeon();
                 }
             }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)){
+            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel1.colisiono()){
                 if(leon.getX()+leon.getWidth()<fondo.getWidth() && Nivel1.llegoAMeta() == false){
                     charlie.right();
                     leon.rightLeon();
                 }
+            }
+            if (keyboard.isKeyPressed(KeyEvent.VK_Z)){
+                charlie.setPosition(7400+174,charlie.getY() );
+                leon.setPosition(7400+143,leon.getY() );
             }
             // check the list of key events for a pressed escape key
             LinkedList < KeyEvent > keyEvents = keyboard.getEvents();
@@ -112,7 +123,7 @@ public class CircusCharlie extends JGame {
                     leon.quietoLeon();
                 }
                 if ((event.getID() == KeyEvent.KEY_PRESSED) &&
-                    (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                    (event.getKeyCode() == KeyEvent.VK_SPACE) && !nivel1.colisiono()) {
                     if(Nivel1.llegoAMeta() == false){
                         charlie.jump();
                         leon.jumpLeon();
@@ -129,7 +140,7 @@ public class CircusCharlie extends JGame {
             charlie.update(delta);
             cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
             cam.seguirPersonaje(leon); 
-            evento1.actualizar(delta, charlie, leon);
+            nivel1.actualizar(delta, charlie, leon);
         } 
         
         if(level2){ //Aca va lo del nivel 2
@@ -143,6 +154,10 @@ public class CircusCharlie extends JGame {
                 if(charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false){
                     charlie.right();
                 }
+            }
+            if (keyboard.isKeyPressed(KeyEvent.VK_Z)){
+                charlie.setPosition(5000+174,charlie.getY() );
+                leon.setPosition(5000+143,leon.getY() );
             }
             // check the list of key events for a pressed escape key
             LinkedList < KeyEvent > keyEvents = keyboard.getEvents();
@@ -162,7 +177,7 @@ public class CircusCharlie extends JGame {
                 }
                 
             }
-            evento2.actualizar(delta, charlie);
+            nivel2.actualizar(delta, charlie);
             charlie.update(delta);
             cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         } 
@@ -196,7 +211,7 @@ public class CircusCharlie extends JGame {
                     stop();
                 }
             }
-            evento3.actualizar(delta, charlie);
+            nivel3.actualizar(delta, charlie);
             charlie.update(delta);
             cam.seguirPersonaje(charlie); ///la camara sigue al Personaje
         }
@@ -216,13 +231,13 @@ public class CircusCharlie extends JGame {
         fondo.display(g);
         m.display(g);
 
-        evento1.dibujar(g, charlie, leon);
-        // evento2.dibujar(g, charlie);
+        nivel1.dibujar(g, charlie, leon);
+        // nivel2.dibujar(g, charlie);
 
-        // evento3.dibujar(g, charlie);
+        // nivel3.dibujar(g, charlie);
 
         g.translate(-cam.getX(),-cam.getY());
-        evento1.dibujarScore(g);
+        nivel1.dibujarScore(g);
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }

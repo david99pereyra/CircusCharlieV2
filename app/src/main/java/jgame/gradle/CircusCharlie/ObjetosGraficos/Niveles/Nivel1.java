@@ -2,33 +2,48 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 
 import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Charlie;
+import jgame.gradle.CircusCharlie.CircusCharlie;
 import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.Score;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Aro;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.CalderoDeFuego;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 
-public class Nivel1 {
+public class Nivel1 extends Nivel{
     private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
-    private static boolean llegoAMeta = false;
+    private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false;
     private static boolean bandera;
     private Score puntosJuego;
+    private Timer temporizador;
     
     public Nivel1(Charlie charlie, Charlie leon, Fondo fondo) {
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO1.loop(); 
-            
+            charlie.setPISO(412);
+            charlie.setPosition(174,charlie.getPISO());
+            leon.setPISO(477);
+            leon.setPosition(143, leon.getPISO());
+            charlie.quieto();
+            leon.quietoLeon();
+
             //Crear los aros
             this.crearAros();
             //Crear los calderos
             this.crearCalderos();
+
+            temporizador = new Timer();
+            accionEjecutar = false;
+            colisiono = false;
+
             puntosJuego = new Score();
             puntosJuego.nivelActual(1);
             bandera = false;
@@ -42,6 +57,10 @@ public class Nivel1 {
         return llegoAMeta;
     }
 
+    public boolean colisiono(){
+        return colisiono;
+    }
+
     public void actualizar(double delta, Charlie charlie, Charlie leon){
         double posx = leon.getX()+(leon.getWidth()/2);
         double posy = leon.getY()+leon.getHeight();
@@ -52,6 +71,18 @@ public class Nivel1 {
 
             if(leon.getY() >= leon.getPISO()){
                 llegoAMeta = true;
+                temporizador.schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        if(!accionEjecutar){
+                            System.out.println("esperando...");
+                            accionEjecutar = true;
+                        }
+                        llegoAMeta = false;
+                    }
+                    
+                }, 4000);
             }
             if(posx<8124 && posy >= leon.getPISO()){
                 leon.setX(leon.getX()+1);
@@ -71,13 +102,15 @@ public class Nivel1 {
         }
 
         //Movimiento de los aros
-        for (Aro aro : listaDeArosIzquierdo) {
-            aro.update(delta);
-            aro.setPosition(aro.getAroPosX() - 0.6, 217);
-        }
-        for (Aro aro : listaDeArosDerecho) {
-            aro.update(delta);
-            aro.setPosition(aro.getAroPosX() - 0.6, 217);
+        if(!colisiono){
+            for (Aro aro : listaDeArosIzquierdo) {
+                aro.update(delta);
+                aro.setPosition(aro.getAroPosX() - 0.6, 217);
+            }
+            for (Aro aro : listaDeArosDerecho) {
+                aro.update(delta);
+                aro.setPosition(aro.getAroPosX() - 0.6, 217);
+            }
         }
         //Swap de imagenes calderos
         for (CalderoDeFuego calderito : listaDeCalderos){
@@ -88,9 +121,9 @@ public class Nivel1 {
         //Seccion de colisiones
         for (Aro aro : listaDeArosIzquierdo) {
             if (DetectorColiciones.detectarAro(aro, charlie)){
-                System.out.println("COLISIONASTE CON UN ARO, TENE CUIDADO");
-                System.out.println("123");
-                reiniciarJuegoXColisiones(charlie.getX(),charlie, leon);
+                colisiono = true;
+                accion = false;
+                choqueDelPersonaje(charlie, leon);
             }
         }
         for (Aro aro : listaDeArosIzquierdo) {
@@ -104,15 +137,42 @@ public class Nivel1 {
         }
         for(CalderoDeFuego calderito : listaDeCalderos){
             if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
-                System.out.println("COLISIONASTE CON UN CALDERO, TENE CUIDADO");
-                System.out.println("123");
-                reiniciarJuegoXColisiones(charlie.getX(),charlie, leon);
+                colisiono = true;
+                accion = false;
+                choqueDelPersonaje(charlie, leon);
             }
         }
         puntosJuego.update();
     }
 
+    public void choqueDelPersonaje(Charlie charlie, Charlie leon){
+        FXPlayer.EVENTO1.stop();
+        FXPlayer.DERROTA.playOnce();
+        charlie.setPISO(charlie.getY());
+        leon.setPISO(leon.getY());
+        charlie.setPosition(charlie.getX(),charlie.getPISO());
+        leon.setPosition(leon.getX(), leon.getPISO());  
+        leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leonDerrota.png");
+        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
+        Timer tempo = new Timer();
+        
+        tempo.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!accion){
+                    reiniciarJuegoXColisiones(charlie.getX(),charlie, leon);
+                    accion = true;    
+                }
+            }
+            
+        }, 4000);
+    }
+
     public void dibujar(Graphics2D g, Charlie charlie, Charlie leon){
+        //Dibujar los calderos
+        for (CalderoDeFuego calderito: listaDeCalderos) {
+            calderito.display(g);
+        }
         //Dibujar los aros
         for (Aro aro : listaDeArosIzquierdo) {
             aro.display(g);
@@ -122,11 +182,18 @@ public class Nivel1 {
         for (Aro aro1 : listaDeArosDerecho) {
             aro1.display1(g);
         }
-        //Dibujar los calderos
-        for (CalderoDeFuego calderito: listaDeCalderos) {
-            calderito.display(g);
-        }
     }
+    
+    @Override
+    public void actualizar(CircusCharlie circusCharlie) {
+        //circusCharlie.setNivel(new Nivel2(null, null));
+    } 
+
+    @Override
+    public void dibujar(CircusCharlie circusCharlie) {
+        
+    }
+
 
     public void dibujarScore(Graphics2D g){
         puntosJuego.display(g);
@@ -214,6 +281,11 @@ public class Nivel1 {
             leon.setPISO(477);
             leon.setPosition(x, leon.getPISO());
             llegoAMeta = false;
+            colisiono = false;
+            FXPlayer.DERROTA.stop();
+            //FXPlayer.EVENTO1.loop();
+            charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+            leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
         }
 
     //Funcion para crear calderos
@@ -226,5 +298,7 @@ public class Nivel1 {
             caldero.setPosition(posX, posY);
             listaDeCalderos.add(caldero);
         }
-    } 
+    }
+
+    
 }

@@ -15,7 +15,7 @@ public class CalderoDeFuego extends ObjetoGrafico {
     private int posY;
     private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
-
+    
     public CalderoDeFuego(String filename) {
         super(filename);
         try {
@@ -58,7 +58,7 @@ public class CalderoDeFuego extends ObjetoGrafico {
     public void SwapImage(){
         while (true) {
             try{
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 throw new RuntimeException("Error al cargar la imagen del Mono Marron", ex);
             }
@@ -67,7 +67,7 @@ public class CalderoDeFuego extends ObjetoGrafico {
     }
 
     public void update(double delta){
-        idx += 0.04;
+        idx += 0.165;
         indiceImagenActual = ((int)idx) % imagenes.size();
     }
 }

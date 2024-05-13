@@ -21,6 +21,7 @@ public enum FXPlayer {
   EVENTO1("CircusCharlie/CircusCharlieAudio1.wav"),
   EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
   EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
+  DERROTA("CircusCharlie/CircusCharlie(derrota).wav"),
   DRAGONBALL("CircusCharlie/DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
   DBRAP("CircusCharlie/DBRap.wav"),
   DBSUPER("CircusCharlie/DragonBallSuper.wav"),
@@ -76,6 +77,25 @@ public enum FXPlayer {
        if (volume != Volume.MUTE) {
          if (!clip.isRunning()){
             clip.loop(Clip.LOOP_CONTINUOUSLY);
+         }
+      }
+   }
+
+   public void playOnce() {
+      if (volume != Volume.MUTE) {
+         if (!clip.isRunning()){
+            clip.setFramePosition(0);
+            clip.start();
+            clip.addLineListener(new LineListener() {
+                @Override
+                public void update(LineEvent event) {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        clip.stop();
+                        clip.setFramePosition(0);
+                        clip.removeLineListener(this);
+                    }
+                }
+            });
          }
       }
    }

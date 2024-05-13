@@ -8,20 +8,23 @@ import javax.imageio.*;
 import java.io.*;
 import java.net.*; //nuevo para sonido
 import java.util.Objects;
+import java.util.ArrayList;
 
 //import processing.core.*;
 ///   http://jsfiddle.net/LyM87/
 /// https://stackoverflow.com/questions/37758061/rotate-a-buffered-image-in-java/37758533
 public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
-	private BufferedImage charlie,charlie2,leon,leon1,leon2;
-	private boolean ESTA_SALTANTO = false;
+	private BufferedImage charlie,charlie2,leon,leon1,leon2,charlieSoga1, charlieSoga2, charlieSoga3;
+	BufferedImage imagen1,imagen2;
+	private ArrayList<BufferedImage> imagenes = new ArrayList<>();
+	private int indiceImagenActual = 0, idx;
 	private int andando = 0, andandoLeon = 0;
-	private boolean band = true;
-	private boolean l1=true, l2=false, l3=false;
+	private boolean band = true, band0 = true;
+	private boolean l1=true, l2=true;
 	private boolean band1 = true;
 
-	private boolean onGround = false;
+	private boolean enElSuelo = false;
 	private boolean saltando=false;
 
 	final int DIRECCION_DERECHA = 0;
@@ -35,28 +38,48 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	int direccionActual;
 	int estadoActual;
 
-
-	protected double velocityX = 4.0;
+	protected double velocityX = 5.0;
 	protected double velocityY = 0.0;
 	protected double gravity = 0.43;
 	protected double angulo=0.0;
 
 	protected int direccionAngulo= 1;
-	public int PISO;
+	public double PISO;
 
 	public Charlie(String filename){
 		super(filename);
+		charlie = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+
+		charlie2 = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie2.png");
+
+		leon = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
+
+		leon1 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo1.png");
+
+		leon2 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo2.png");
+
+		charlieSoga1 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
+
+		charlieSoga2 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga2.png");
+
+		charlieSoga3 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga3.png");
+	}
+
+	public void cargarImagener(){
 		try {
-			charlie = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-
-			charlie2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlie2.png")));
-
-			leon = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png")));
-
-			leon1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo1.png")));
-
-			leon2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo2.png")));
-		} catch (Exception e) {
+			imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria1.png")));
+			imagenes.add(imagen1);
+			imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria2.png")));
+			imagenes.add(imagen2);
+	
+		} catch (IOException e) {
+			throw new RuntimeException("Error al cargar la imagen del caldero", e);
+		}
+	}
+	private BufferedImage cargarImagen(String path){
+		try {
+			return ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -65,6 +88,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		try {
 			this.imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(img)));
 		} catch (Exception e) {
+			System.out.println("ERROR...");
 			e.printStackTrace();
 		}
 	}
@@ -73,87 +97,43 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		this.imagen = img;
 	}
 	
-	public void setPISO(int piso){
-		this.PISO = piso;
+	public void setPISO(double d){
+		this.PISO = d;
 	}
 
-	public int getPISO(){
+	public double getPISO(){
 		return PISO;
 	}
 
 	public void jump() {
-		if (onGround) {
+		if (enElSuelo) {
 			velocityY = -12.0;
-			onGround = false;
+			enElSuelo = false;
+			saltando = true;
 		}
 	}
 	
 	public void quieto() {
+		//setImagen(charlieSoga1);
 		estadoActual = ESTADO_QUIETO;
 		//acceleration.mult(0);
 	}
 	
 	public void left() {
-		velocityX = -5.0;
-		positionX += velocityX;
-		direccionActual = DIRECCION_IZQUIERDA;
-		estadoActual = ESTADO_CAMINANDO;
+		positionX -= velocityX;
 		direccionAngulo=-1;
-		if(!ESTA_SALTANTO){
+		if(!saltando){
 			this.cambioImagen();
 		}
 	}
 
 	public void right() {
-		velocityX = 5.0;
 		positionX += velocityX;
-		direccionActual = DIRECCION_DERECHA;
-		estadoActual = ESTADO_CAMINANDO;
 		direccionAngulo= 1;
-		if(!ESTA_SALTANTO){
+		if(!saltando){
 			this.cambioImagen();
 		}
 	} 
-	
-	
-	// LEON
-	
-	
-	public void jumpLeon(){
-		//if(this.getY()+this.getHeight()<this.getPISO()){
-			if (onGround) {
-				this.setImagen(leon1);
-				velocityY = -12.0;
-				onGround = false;
-				estadoActual = ESTADO_SALTANDO;
-			}
-		
-	}
-	
-	public void quietoLeon(){
-		this.setImagen(leon);
-		if(ESTA_SALTANTO){
-			estadoActual = ESTADO_QUIETO;
-		}
-	}
-	
-	public void leftLeon() {
-		velocityX = -5.0;
-		positionX += velocityX;
-		direccionActual = DIRECCION_IZQUIERDA;
-		estadoActual = ESTADO_CAMINANDO;
-		direccionAngulo=-1;
-		this.cambioImagenLeonLeft();
-	}
-
-	public void rightLeon() {
-		velocityX = 5.0;
-		positionX += velocityX;
-		direccionActual = DIRECCION_DERECHA;
-		estadoActual = ESTADO_CAMINANDO;
-		direccionAngulo= 1;
-		this.cambioImagenLeon();
-	}
 
 	public void cambioImagen(){
 		andando++;
@@ -169,18 +149,69 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		}
 	}
 
+	public void cambioImagen1(){
+		andando++;
+		if(andando >= 15){
+			if(band && band0){
+				this.setImagen(charlieSoga2);
+				band = false; band0 = false;
+			}else if(!band && !band){
+				this.setImagen(charlieSoga3);
+				band = true;
+			}else if(band && !band0){
+				this.setImagen(charlieSoga1);
+				band0 = true;
+
+			}
+			andando = 0;
+		}
+	}
+	
+	
+	// LEON
+	
+	public void jumpLeon(){
+		//if(this.getY()+this.getHeight()<this.getPISO()){
+			if (enElSuelo) {
+				this.setImagen(leon1);
+				velocityY = -12.0;
+				enElSuelo = false;
+				estadoActual = ESTADO_SALTANDO;
+			}
+		
+	}
+	
+	public void quietoLeon(){
+		this.setImagen(leon);
+		if(saltando){
+			estadoActual = ESTADO_QUIETO;
+		}
+	}
+	
+	public void leftLeon() {
+		positionX -= velocityX;
+		direccionAngulo=-1;
+		this.cambioImagenLeonLeft();
+	}
+
+	public void rightLeon() {
+		positionX += velocityX;
+		direccionAngulo= 1;
+		this.cambioImagenLeon();
+	}
+
 	public void cambioImagenLeon(){
 		andandoLeon++;
 		if(andandoLeon >=10){
-			if(l1){
+			if(l1&&l2){
 				this.setImagen(leon1);
-				l1=false;l2=true;l3=false;
-			}else if(l2){
+				l1=false;l2=false;
+			}else if(!l2&&!l1){
 				this.setImagen(leon2);
-				l1=false;l2=false;l3=true;
-			}else if(l3){
+				l1=true;
+			}else if(l1&&!l2){
 				this.setImagen(leon);
-				l1=true;l2=false;l3=false;
+				l2=true;
 			}
 			andandoLeon = 0;
 		}
@@ -205,8 +236,6 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		velocityY += gravity;
     	positionY += velocityY;
 
-		//angulo=(angulo % 360);
-
 		Mundo m = Mundo.getInstance();
 
 		/* Rebota contra los margenes X del mundo */
@@ -221,24 +250,26 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	    if(positionY > PISO){
 	        positionY = PISO;
 	        velocityY = 0.0;
-	        onGround = true;
+	        enElSuelo = true;
 	        angulo=0;
 	        /*ya toco el piso*/
 	    }
 	    if ( velocityY != 0.0){
-			ESTA_SALTANTO = true;
+			saltando = true;
 			//mientras este saltando
 	    	//this.rotarImagenGrados(10 * direccionAngulo);
 	    }
 		if(velocityY == 0.0){
-			ESTA_SALTANTO = false;
+			saltando = false;
 		}
+
+		
      
 	}
 
 	public void display(Graphics2D g2) {
 	 	/*Redefinicion de Display para poder hacer la rotacion cuando salta*/
-
+        
 	 	AffineTransform transform = new AffineTransform();
 		transform.rotate(Math.toRadians(angulo), this.getX() + getWidth()/2, this.getY() + getHeight()/2);
 
@@ -250,5 +281,8 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		g2.setTransform(old);
   	}
 
+	  
+
+	
 
 }
