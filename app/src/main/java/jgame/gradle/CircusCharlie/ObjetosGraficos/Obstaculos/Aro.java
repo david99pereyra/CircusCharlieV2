@@ -1,6 +1,7 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class Aro extends ObjetoGrafico{
     public void SwapImage(){
         while (true) {
             try{
-                Thread.sleep(500);
+                Thread.sleep(300);
             } catch (InterruptedException ex) {
                 throw new RuntimeException("Error al cargar la imagen del caldero", ex);
             }
@@ -94,7 +95,7 @@ public class Aro extends ObjetoGrafico{
     }
 
     public void update(double delta){
-        idx += 0.04;
+        idx += 0.10;
         if(this.verificarTamaño == true){
             indiceImagenActualAroGrande = ((int)idx) % imageAroGrande.size();
         }

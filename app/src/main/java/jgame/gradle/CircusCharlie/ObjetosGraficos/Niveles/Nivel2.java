@@ -1,5 +1,6 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.Charlie;
+import jgame.gradle.CircusCharlie.CircusCharlie;
 import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoMarron;
@@ -9,7 +10,7 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoAzul;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
 
-public class Nivel2 {
+public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
     private static boolean llegoAMeta = false;
@@ -124,5 +125,17 @@ public class Nivel2 {
             monitoAzul.display(g);
         }
         charlie.display(g);
+    }
+
+    @Override
+    public void dibujar(CircusCharlie charlie) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dibujar'");
+    }
+
+    @Override
+    public void actualizar(CircusCharlie charlie) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
     }
 }

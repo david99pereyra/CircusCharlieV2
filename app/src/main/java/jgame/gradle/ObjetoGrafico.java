@@ -11,7 +11,7 @@ public class ObjetoGrafico {
 	protected BufferedImage imagen = null;
 
 	double positionX = 0;
-	double positionY = 0;
+	protected double positionY = 0;
 	
     public ObjetoGrafico(String filename) {
     		try {
