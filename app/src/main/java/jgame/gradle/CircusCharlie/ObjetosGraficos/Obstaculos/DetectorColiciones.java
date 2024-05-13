@@ -63,6 +63,21 @@ public class DetectorColiciones extends Rectangle {
         return recCaldero.intersects(rectCharlie);
     }
 
+        public static boolean detectarArribaCalderoDeFuego(CalderoDeFuego calderito, Charlie charlie) {
+        // Obtener las coordenadas y dimensiones del rectángulo que rodea al caldero
+        // Definir un área en la parte superior del caldero
+                int areaArriba = 100; // Altura del área superior (ajústala según tus necesidades)
+                Rectangle areaSuperior = new Rectangle((int) calderito.getPosX(), (int) calderito.getPosY() - areaArriba,
+                calderito.getWidth(), areaArriba);
+        // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
+                charlie.getHeight());
+
+        // Verificar si los rectángulos se superponen
+                return areaSuperior.intersects(rectCharlie);
+
+        }
+
     // Colisiones 2Do nivel
     public static boolean detectarMonoNormal(MonoMarron monito, Charlie charlie) {
         Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),

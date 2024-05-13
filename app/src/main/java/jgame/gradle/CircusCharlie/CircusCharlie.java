@@ -237,7 +237,7 @@ public class CircusCharlie extends JGame {
         // nivel3.dibujar(g, charlie);
 
         g.translate(-cam.getX(),-cam.getY());
-        nivel1.dibujarScore(g);
+        charlie.displayScore(g);
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ",490,20);
     }
