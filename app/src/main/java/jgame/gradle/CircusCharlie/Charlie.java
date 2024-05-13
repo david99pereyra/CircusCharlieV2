@@ -46,6 +46,8 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	protected int direccionAngulo= 1;
 	public double PISO;
 
+	private Score puntosJugador = new Score();
+
 	public Charlie(String filename){
 		super(filename);
 		charlie = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
@@ -263,7 +265,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 			saltando = false;
 		}
 
-		
+		puntosJugador.update();
      
 	}
 
@@ -281,7 +283,21 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		g2.setTransform(old);
   	}
 
-	  
+	public void displayScore(Graphics2D g){
+		puntosJugador.display(g);
+	}
+
+	public void nivel(int nivel){
+		puntosJugador.nivelActual(nivel);
+	}
+
+	public void detenerBonus(){
+		puntosJugador.detenerDescuentoBonus();
+	}
+
+	public void sumarPuntaje(int valor){
+		puntosJugador.sumarScore(valor);
+	}
 
 	
 

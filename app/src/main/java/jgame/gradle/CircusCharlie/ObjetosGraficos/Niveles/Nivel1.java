@@ -9,7 +9,6 @@ import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.CircusCharlie;
 import jgame.gradle.CircusCharlie.Fondo;
-import jgame.gradle.CircusCharlie.Score;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Aro;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.CalderoDeFuego;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
@@ -19,8 +18,8 @@ public class Nivel1 extends Nivel{
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false;
-    private static boolean bandera;
-    private Score puntosJuego;
+    private static boolean banderaScoreAro, banderaScoreCaldero;
+
     private Timer temporizador;
     
     public Nivel1(Charlie charlie, Charlie leon, Fondo fondo) {
@@ -44,9 +43,9 @@ public class Nivel1 extends Nivel{
             accionEjecutar = false;
             colisiono = false;
 
-            puntosJuego = new Score();
-            puntosJuego.nivelActual(1);
-            bandera = false;
+            charlie.nivel(1);
+            banderaScoreAro = false;
+            banderaScoreCaldero = false;
         } catch (Exception e) {
             System.out.println("ERROR");
             e.printStackTrace();
@@ -67,7 +66,7 @@ public class Nivel1 extends Nivel{
         if(posx>8060 && leon.getY()<417){
             leon.setPISO(407);
             charlie.setPISO(343);
-            puntosJuego.detenerDescuentoBonus();
+            
 
             if(leon.getY() >= leon.getPISO()){
                 llegoAMeta = true;
@@ -84,6 +83,9 @@ public class Nivel1 extends Nivel{
                     
                 }, 4000);
             }
+            if(posx>8060 && leon.getY()<417){
+                charlie.detenerBonus();
+            }
             if(posx<8124 && posy >= leon.getPISO()){
                 leon.setX(leon.getX()+1);
                 charlie.setX(charlie.getX()+1);
@@ -98,7 +100,8 @@ public class Nivel1 extends Nivel{
         }
         
         if(leon.getY()+leon.getHeight() > leon.getPISO()){
-            bandera = false;
+            banderaScoreCaldero = false;
+            banderaScoreAro = false;
         }
 
         //Movimiento de los aros
@@ -124,25 +127,29 @@ public class Nivel1 extends Nivel{
                 colisiono = true;
                 accion = false;
                 choqueDelPersonaje(charlie, leon);
-            }
-        }
-        for (Aro aro : listaDeArosIzquierdo) {
-            if(DetectorColiciones.detectarMedioAro(aro, charlie)){
+            }else if(DetectorColiciones.detectarMedioAro(aro, charlie)){
                 System.out.println("PASASTE POR EL MEDIO DEL ARO");
-                if(!bandera){
-                    puntosJuego.sumarScore(100);
-                    bandera = true;
+                if(!banderaScoreAro){
+                    charlie.sumarPuntaje(100);
+                    banderaScoreAro = true;
                 }
             }
         }
+
         for(CalderoDeFuego calderito : listaDeCalderos){
             if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)){
                 colisiono = true;
                 accion = false;
                 choqueDelPersonaje(charlie, leon);
+            } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)){
+                System.out.println("PASASTE POR EL ARRIBA DEL CALDERO");
+                if(!banderaScoreCaldero){
+                    charlie.sumarPuntaje(100);
+                    banderaScoreCaldero = true;
+                }
             }
         }
-        puntosJuego.update();
+
     }
 
     public void choqueDelPersonaje(Charlie charlie, Charlie leon){
@@ -194,10 +201,6 @@ public class Nivel1 extends Nivel{
         
     }
 
-
-    public void dibujarScore(Graphics2D g){
-        puntosJuego.display(g);
-    }
 
     //Funcion para crear aros
     public void crearAros(){

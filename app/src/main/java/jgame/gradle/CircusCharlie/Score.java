@@ -105,4 +105,9 @@ public class Score extends ObjetoGrafico {
         this.score += valor;
     }
 
+    public void scorePred(){
+        this.score = 5000;
+    }
+
+
 }
