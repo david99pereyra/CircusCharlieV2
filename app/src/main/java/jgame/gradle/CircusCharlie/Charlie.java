@@ -291,12 +291,24 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		puntosJugador.display(g);
 	}
 
+	public void imagenNivel(){
+       puntosJugador.imagenNivel();
+    }
+
 	public void nivel(int nivel){
 		puntosJugador.nivelActual(nivel);
 	}
 
-	public void detenerBonus(){
+	public void sumarBonusScore(){
 		puntosJugador.detenerDescuentoBonus();
+	}
+
+	public void detenerBonus(){
+		puntosJugador.detenerDescuento();
+	} 
+
+	public void reiniciarDescuento(){
+		puntosJugador.reiniciarDescuento();
 	}
 
 	public void sumarPuntaje(int valor){

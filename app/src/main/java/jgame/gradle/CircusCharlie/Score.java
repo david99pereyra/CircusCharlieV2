@@ -29,7 +29,7 @@ public class Score extends ObjetoGrafico {
         Graphics g = img.createGraphics();
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Pixel Emulator", Font.BOLD, 20));
+        g.setFont(new Font("Pixel Emulator", Font.PLAIN, 20));
 
         String scoreText = String.format("%06d", score);
         g.drawString(scoreText, 200, 55);
@@ -53,10 +53,7 @@ public class Score extends ObjetoGrafico {
 
     }
 
-    public void detenerDescuentoBonus() {
-        descuentoBonusActivo = false;
-        sumarRestoBonusAScore();
-    }
+
 
     private synchronized void sumarRestoBonusAScore() {
         Timer timer = new Timer();
@@ -84,7 +81,7 @@ public class Score extends ObjetoGrafico {
                     disminuirBonus();
                 }
             }
-        }, 1000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
+        }, 14000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
     }
 
     private synchronized void disminuirBonus() {
@@ -95,6 +92,27 @@ public class Score extends ObjetoGrafico {
             }
             update();
         }
+    }
+
+    public void imagenNivel(){
+        FontManager.getInstance();
+        BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics g = image.createGraphics();
+
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 800, 600);
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Pixel Emulator", Font.BOLD,30));
+
+        String stateText = "STATE - " + this.state;
+        int stateWidth = g.getFontMetrics().stringWidth(stateText);
+        int stateX = (800 - stateWidth)/2;
+        //int stateY = (400 - stateWidth)/2;
+        g.drawString(stateText, stateX, 300);
+
+        this.setImagen(image);
     }
 
     public void nivelActual(int nivel) {
@@ -109,5 +127,23 @@ public class Score extends ObjetoGrafico {
         this.score = 5000;
     }
 
+    public int getNivel(){
+        return this.state;
+    }
+
+    public void detenerDescuentoBonus() {
+        descuentoBonusActivo = false;
+        sumarRestoBonusAScore();
+    }
+
+    public void detenerDescuento(){
+        descuentoBonusActivo = false;
+    }
+
+    public void reiniciarDescuento(){
+        bonus = 5000;
+        descuentoBonusActivo = true;
+
+    }
 
 }
