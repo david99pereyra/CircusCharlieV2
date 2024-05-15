@@ -36,7 +36,7 @@ public class Nivel3 {
         int numeroAleatorioPosX, cantMonosNormalesContinuos;
         int posXPixel = 174;
         Pelota primerPelota = new Pelota(imagenPelota);
-        primerPelota.setPosition(145, 430);
+        primerPelota.setPosition(185, 430);
         listaDePelotas.add(primerPelota);
     }
 
@@ -63,7 +63,7 @@ public class Nivel3 {
             }
         }
         else if(charlie.getX() < 6464 || charlie.getX()> 6586){
-            charlie.setPISO(430);
+            // charlie.setPISO(430);
         }
         
         for(Pelota pelotita : listaDePelotas){

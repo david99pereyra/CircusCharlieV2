@@ -9,11 +9,13 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Pelota extends ObjetoGrafico{
-    public double posX = 174, idx = 0;
-    public final int posY = 430;
+    public double posX = 234, idx = 0;
+    public final int posY = 471;
     BufferedImage imagen1;
     private ArrayList<BufferedImage> imagePelota = new ArrayList<>();
     private int indiceImagenActualPelota = 0;
+    private double velocityX = 5.0;
+	private double velocityY = 0.0;
     
     public Pelota(String filename) {
         super(filename);
@@ -24,6 +26,14 @@ public class Pelota extends ObjetoGrafico{
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }
     }
+
+    // public void left() {
+	// 	positionX -= velocityX;
+	// }
+
+	// public void right() {
+	// 	positionX += velocityX;
+	// }
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {
