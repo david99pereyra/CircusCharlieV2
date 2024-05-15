@@ -93,7 +93,7 @@ public class DetectorColiciones extends Rectangle {
         Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
                 charlie.getHeight());
         return rectMonito.intersects(rectCharlie);
-    }
+        }
 
     public static boolean detectarEntreMonos(MonoMarron monitoMarron, MonoAzul monitoazul) {
         Rectangle rectMonitoMarron = new Rectangle((int) monitoMarron.getX(), (int) monitoMarron.getY(),
@@ -102,6 +102,7 @@ public class DetectorColiciones extends Rectangle {
                 monitoazul.getWidth(), monitoazul.getHeight());
         return rectMonitoMarron.intersects(rectMonitoAzul);
     }
+
 
     // Colisiones 3Er nivel
     public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){

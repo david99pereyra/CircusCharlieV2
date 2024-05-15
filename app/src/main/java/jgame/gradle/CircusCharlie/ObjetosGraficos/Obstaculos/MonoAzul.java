@@ -9,11 +9,9 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class MonoAzul extends ObjetoGrafico{
-    public double posX = 800, idx = 0;
-    public final int posY = 220;
-    protected double velocityY = 0.0;
-    private boolean onGround = false;
-    
+    public double posX = 800, idx = 0, velocityX = 4.0, posY = 220;
+    // public int posY = 220;
+    private double velocityY = 0, gravity = 0.5;;
     private int indiceImagenActualMonoAzul = 0;
     BufferedImage imagen1;
     private ArrayList<BufferedImage> imageMonoAzul = new ArrayList<>();
@@ -33,17 +31,10 @@ public class MonoAzul extends ObjetoGrafico{
         if (!imageMonoAzul.isEmpty()){
             BufferedImage imagenActualMonoAzul = imageMonoAzul.get(indiceImagenActualMonoAzul);
             if (imagenActualMonoAzul != null){
-                g.drawImage(imagenActualMonoAzul, (int) Math.round(posX), posY, null);
+                g.drawImage(imagenActualMonoAzul, (int) Math.round(posX), (int)posY, null);
             }
         }
     }
-
-    public void jump() {
-		if (onGround) {
-			velocityY = -12.0;
-			onGround = false;
-		}
-	}
 
     public void SwapImage(){
         while (true) {
@@ -61,7 +52,31 @@ public class MonoAzul extends ObjetoGrafico{
         indiceImagenActualMonoAzul = ((int)idx) % imageMonoAzul.size();
     }
 
+    public void saltoMonoAZul(MonoMarron mM) {
+        velocityY = -12.0;
+        while (velocityY < -6.0) {
+            velocityY += gravity;
+            posY += velocityY;
+            velocityY = - 2.0;
+            if(velocityY == -20.0){
+                System.out.println("hola");
+                while (velocityY != 0) {
+                    velocityY -= gravity;
+                    posY -= velocityY;
+                    velocityY =+ 10.0;
+                }
+            }
+        }
+    }
+
     public void setPosition(double x){
         this.posX = x;
+    }
+    public double getX(){
+        return this.posX;
+    }
+
+    public double getPosY(){
+        return this.posY;
     }
 }
