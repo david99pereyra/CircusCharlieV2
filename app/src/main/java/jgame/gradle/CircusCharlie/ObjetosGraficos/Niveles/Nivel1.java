@@ -1,9 +1,7 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.TimerTask;
-import java.util.Timer;
+import java.util.*;
 
 import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Charlie;
@@ -19,6 +17,9 @@ public class Nivel1 extends Nivel{
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false;
     private static boolean banderaScoreAro, banderaScoreCaldero;
+    Date dInit = new Date();
+    Date dReloj;
+    Date dAhora;
 
     private Timer temporizador;
     
@@ -149,7 +150,18 @@ public class Nivel1 extends Nivel{
                 }
             }
         }
-
+        //Si charlie llega a la meta
+        if(llegoAMeta()){
+            if (dReloj == null){
+                dReloj = new Date();
+            }
+            dAhora= new Date( );
+            long diffSeconds = 0;
+            long dateDiff = dAhora.getTime() - dReloj.getTime();
+            diffSeconds = dateDiff / 1000 % 60;
+            charlie.updateLlegadaMeta(delta);
+            System.out.println("segundos" + diffSeconds);   
+        }
     }
 
     public void choqueDelPersonaje(Charlie charlie, Charlie leon){
@@ -259,7 +271,6 @@ public class Nivel1 extends Nivel{
                     listaDeArosDerecho.remove(i); // Eliminar el aro de la lista original
                 }
                 
-
             }
         }
     
@@ -267,7 +278,7 @@ public class Nivel1 extends Nivel{
         public void reiniciarJuegoXColisiones(double x1, Charlie charlie, Charlie leon){
             // Busca el checkpoint más cercano a la posición x
             int[] checkpointsEjeX = {201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433};
-            int pos = 0, i, posAEnviar;
+            int pos = 0, i;
             for (i = 1; i < checkpointsEjeX.length; i++) {
                 if (checkpointsEjeX[i] < x1) {
                     pos = i - 1;
@@ -302,6 +313,4 @@ public class Nivel1 extends Nivel{
             listaDeCalderos.add(caldero);
         }
     }
-
-    
 }

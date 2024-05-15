@@ -2,13 +2,10 @@ package jgame.gradle.CircusCharlie;
 
 import java.awt.*;
 import java.awt.geom.*;
-
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
-import java.net.*; //nuevo para sonido
-import java.util.Objects;
-import java.util.ArrayList;
+import java.util.*;
 
 //import processing.core.*;
 ///   http://jsfiddle.net/LyM87/
@@ -18,7 +15,9 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	private BufferedImage charlie,charlie2,leon,leon1,leon2,charlieSoga1, charlieSoga2, charlieSoga3;
 	BufferedImage imagen1,imagen2;
 	private ArrayList<BufferedImage> imagenes = new ArrayList<>();
-	private int indiceImagenActual = 0, idx;
+	private ArrayList<BufferedImage> imagenesMeta = new ArrayList<>();
+	private double idx;
+    private int indiceImagenActualCharlieEnMeta = 0;
 	private int andando = 0, andandoLeon = 0;
 	private boolean band = true, band0 = true;
 	private boolean l1=true, l2=true;
@@ -65,19 +64,20 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		charlieSoga2 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga2.png");
 
 		charlieSoga3 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga3.png");
+
+		cargarImagenMeta("imagenes/JuegoCircusCharlie/Generales/charlieVictoria1.png", imagenesMeta);
+		cargarImagenMeta("imagenes/JuegoCircusCharlie/Generales/charlieVictoria2.png", imagenesMeta);
 	}
 
-	public void cargarImagener(){
+	public void cargarImagenMeta(String path, ArrayList<BufferedImage> guardar){
 		try {
-			imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria1.png")));
-			imagenes.add(imagen1);
-			imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria2.png")));
-			imagenes.add(imagen2);
-	
+			imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
+			guardar.add(imagen1);
 		} catch (IOException e) {
-			throw new RuntimeException("Error al cargar la imagen del caldero", e);
+			throw new RuntimeException(e);
 		}
 	}
+
 	private BufferedImage cargarImagen(String path){
 		try {
 			return ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
@@ -168,10 +168,14 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 			andando = 0;
 		}
 	}
-	
+	//Animacion de cuando charlie llega a la meta
+	public void updateLlegadaMeta(double delta){
+		idx += 0.1;
+        indiceImagenActualCharlieEnMeta = ((int)idx) % imagenesMeta.size();
+		setImagen(imagenesMeta.get(indiceImagenActualCharlieEnMeta));
+    }
 	
 	// LEON
-	
 	public void jumpLeon(){
 		//if(this.getY()+this.getHeight()<this.getPISO()){
 			if (enElSuelo) {
@@ -298,7 +302,4 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	public void sumarPuntaje(int valor){
 		puntosJugador.sumarScore(valor);
 	}
-
-	
-
 }

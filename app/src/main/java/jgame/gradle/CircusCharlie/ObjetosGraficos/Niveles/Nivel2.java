@@ -13,7 +13,7 @@ import java.awt.Graphics2D;
 public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
-    private static boolean llegoAMeta = false;
+    private static boolean llegoAMeta = false, colisiono = false;
 
 
     public Nivel2(Charlie charlie, Fondo fondo){
@@ -32,34 +32,6 @@ public class Nivel2 extends Nivel{
 
     public static boolean llegoAMeta(){
         return llegoAMeta;
-    }
-
-    public void crearMonos(Charlie charlie){
-        String imagenMonoMarron = "imagenes/JuegoCircusCharlie/ImagenNivel2/Mono1.png";
-        String imagenMonoAzul = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
-        int numeroAleatorioPosX, cantMonosNormalesContinuos;
-        int posXPixel = 850;
-
-        MonoMarron primerMonito = new MonoMarron(imagenMonoMarron);
-        primerMonito.setPosition(posXPixel, 220);
-        listaDeMonosMarron.add(primerMonito);
-        for (int i = 0; i < 14; i++){
-            // Generar un número aleatorio entre 2 y 5
-            cantMonosNormalesContinuos = 2 + (int)(Math.random() * ((5 - 2) + 1)); 
-            for (int j = 0; j < cantMonosNormalesContinuos; j ++){
-                // Generar un número aleatorio entre 350 y 600 para los pixeles
-                numeroAleatorioPosX = 350 + (int)(Math.random() * ((600 - 350) + 1));
-                posXPixel += numeroAleatorioPosX;
-                MonoMarron monitoMarron = new MonoMarron(imagenMonoMarron);
-                monitoMarron.setPosition(posXPixel, 220);
-                listaDeMonosMarron.add(monitoMarron);
-            }
-            numeroAleatorioPosX = 250 + (int)(Math.random() * ((400 - 250) + 1));
-            posXPixel += numeroAleatorioPosX;
-            MonoAzul monitoAzul = new MonoAzul(imagenMonoAzul);
-            monitoAzul.setPosition(posXPixel, 220);
-            listaDeMonosAzul.add(monitoAzul);
-        }        
     }
 
     public void actualizar(double delta, Charlie charlie){
@@ -81,7 +53,19 @@ public class Nivel2 extends Nivel{
         else if(charlie.getX()<5550 || charlie.getX()>5743){
             charlie.setPISO(220);
         }
-        // Colisiones de los entre charlie y monos
+        // Movimiento de los pinches monos
+        if(!colisiono){
+            for (MonoAzul mA : listaDeMonosAzul){
+                mA.update(delta);
+                mA.setPosition(mA.getX() - 1.2);
+            }
+            for (MonoMarron mM : listaDeMonosMarron){
+                mM.update(delta);
+                mM.setPosition(mM.getX() - 0.6);
+            }
+        }
+
+        // Detectar colisiones de los entre charlie y monos
         for(MonoMarron mM : listaDeMonosMarron){
             if(DetectorColiciones.detectarMonoNormal(mM, charlie)){
                 System.out.println("COLISIONASTE CON UN MONO MARRON, TENE CUIDADO");
@@ -94,27 +78,15 @@ public class Nivel2 extends Nivel{
                 System.out.println("123");
             }
         }
+        // Detectar colision entre monos
         for(MonoMarron mM : listaDeMonosMarron){
             for(MonoAzul mA: listaDeMonosAzul){
                 if(DetectorColiciones.detectarEntreMonos(mM, mA)){
-                    saltoMonoAZul(mM, mA);
+                    mA.saltoMonoAZul(mM);
+                    System.out.println("Chocaron entre los monos");
                 }
             }
         }
-
-        // Movimiento de los monos
-        for (MonoMarron Mm : listaDeMonosMarron) {
-            Mm.update(delta);
-            Mm.setPosition(Mm.getX() - 0.8);
-        }
-        for (MonoAzul Ma : listaDeMonosAzul) {
-            Ma.update(delta);
-            Ma.setPosition(Ma.getX() - 1.6);
-        }
-    }
-
-    public void saltoMonoAZul(MonoMarron monitoMarron, MonoAzul monitoAzul){
-        monitoAzul.jump();
     }
 
     public void dibujar(Graphics2D g, Charlie charlie){
@@ -125,6 +97,38 @@ public class Nivel2 extends Nivel{
             monitoAzul.display(g);
         }
         charlie.display(g);
+    }
+
+public void crearMonos(Charlie charlie){
+        String imagenMonoMarron = "imagenes/JuegoCircusCharlie/ImagenNivel2/Mono1.png";
+        String imagenMonoAzul = "imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta1.png";
+        int numeroAleatorioPosX, cantMonosNormalesContinuos;
+        int posXPixel = 850;
+
+        MonoMarron primerMonito = new MonoMarron(imagenMonoMarron);
+        primerMonito.setPosition(posXPixel, 220);
+        listaDeMonosMarron.add(primerMonito);
+
+        // MonoAzul segundoMonito = new MonoAzul(imagenMonoAzul);
+        // segundoMonito.setPosition(1000);
+        // listaDeMonosAzul.add(segundoMonito);
+        for (int i = 0; i < 14; i++){
+            // Generar un número aleatorio entre 2 y 5
+            cantMonosNormalesContinuos = 2 + (int)(Math.random() * ((5 - 2) + 1)); 
+            for (int j = 0; j < cantMonosNormalesContinuos; j ++){
+                // Generar un número aleatorio entre 350 y 600 para los pixeles
+                numeroAleatorioPosX = 350 + (int)(Math.random() * ((600 - 350) + 1));
+                posXPixel += numeroAleatorioPosX;
+                MonoMarron monitoMarron = new MonoMarron(imagenMonoMarron);
+                monitoMarron.setPosition(posXPixel);
+                listaDeMonosMarron.add(monitoMarron);
+            }
+            numeroAleatorioPosX = 250 + (int)(Math.random() * ((400 - 250) + 1));
+            posXPixel += numeroAleatorioPosX;
+            MonoAzul monitoAzul = new MonoAzul(imagenMonoAzul);
+            monitoAzul.setPosition(posXPixel);
+            listaDeMonosAzul.add(monitoAzul);
+        }        
     }
 
     @Override
