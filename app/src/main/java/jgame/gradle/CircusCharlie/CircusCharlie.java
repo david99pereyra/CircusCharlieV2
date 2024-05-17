@@ -97,134 +97,7 @@ public class CircusCharlie extends JGame {
     // }
 
     public void gameUpdate(double delta) {
-        if (level1) { // Aca va lo del nivel 1
-            Keyboard keyboard = getKeyboard();
-            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel1.colisiono()) {
-                if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
-                    charlie.left();
-                    leon.leftLeon();
-                }
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel1.colisiono()) {
-                if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
-                    charlie.right();
-                    leon.rightLeon();
-                }
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-                charlie.setPosition(7400 + 174, charlie.getY());
-                leon.setPosition(7400 + 143, leon.getY());
-            }
-            // check the list of key events for a pressed escape key
-            LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-            for (KeyEvent event : keyEvents) {
-                if ((event.getID() == KeyEvent.KEY_RELEASED)) {
-                    charlie.quieto();
-                    leon.quietoLeon();
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) &&
-                        (event.getKeyCode() == KeyEvent.VK_SPACE) && !nivel1.colisiono()) {
-                    if (Nivel1.llegoAMeta() == false) {
-                        charlie.jump();
-                        leon.jumpLeon();
-                        FXPlayer.FX00.play();
-                    }
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) &&
-                        (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-                    FXPlayer.EVENTO1.stop();
-                    stop();
-                }
-            }
-            leon.update(delta);
-            charlie.update(delta);
-            cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
-            cam.seguirPersonaje(leon);
-            nivel1.actualizar(delta, charlie, leon);
-        }
 
-        if (level2) { // Aca va lo del nivel 2
-            Keyboard keyboard = getKeyboard();
-            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-                if (charlie.getX() > 10 && Nivel2.llegoAMeta() == false) {
-                    charlie.left();
-                }
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
-                if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false) {
-                    charlie.right();
-                }
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-                charlie.setPosition(5000 + 174, charlie.getY());
-                leon.setPosition(5000 + 143, leon.getY());
-            }
-            // check the list of key events for a pressed escape key
-            LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-            for (KeyEvent event : keyEvents) {
-                if ((event.getID() == KeyEvent.KEY_RELEASED)) {
-                    charlie.quieto();
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
-                    if (Nivel2.llegoAMeta() == false) {
-                        charlie.jump();
-                        FXPlayer.FX00.play();
-                    }
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-                    FXPlayer.EVENTO1.stop();
-                    stop();
-                }
-
-            }
-            nivel2.actualizar(delta, charlie);
-            charlie.update(delta);
-            cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
-        }
-
-        if (level3) { // Aca va lo del nivel 3
-            Keyboard keyboard = getKeyboard();
-            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-                if (charlie.getX() > 10 && Nivel3.llegoAMeta() == false) {
-                    charlie.left();
-                }
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
-                if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel3.llegoAMeta() == false) {
-                    charlie.right();
-                }
-            }
-            // check the list of key events for a pressed escape key
-            LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-            for (KeyEvent event : keyEvents) {
-                if ((event.getID() == KeyEvent.KEY_RELEASED)) {
-                    charlie.quieto();
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
-                    if (Nivel3.llegoAMeta() == false) {
-                        charlie.jump();
-                        FXPlayer.FX00.play();
-                    }
-                }
-                if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-                    FXPlayer.EVENTO1.stop();
-                    stop();
-                }
-            }
-            nivel3.actualizar(delta, charlie);
-            charlie.update(delta);
-            cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
-        }
-        // charlie.applyForce(gravedad);
-    }
-
-    public void gameDraw(Graphics2D g) {
-        if (level1) {
-        } // Aca va lo del nivel 1
-        if (level2) {
-        } // Aca va lo del nivel 2
-        if (level3) {
-        } // Aca va lo del nivel 3
         if (!inicioNivel) {
             charlie.nivel(1);
             charlie.imagenNivel();
@@ -238,27 +111,155 @@ public class CircusCharlie extends JGame {
             }, 3000);
 
         } else {
+            if (level1) { // Aca va lo del nivel 1
+                Keyboard keyboard = getKeyboard();
+                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel1.colisiono()) {
+                    if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
+                        charlie.left();
+                        leon.leftLeon();
+                    }
+                }
+                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel1.colisiono()) {
+                    if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
+                        charlie.right();
+                        leon.rightLeon();
+                    }
+                }
+                if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+                    charlie.setPosition(7400 + 174, charlie.getY());
+                    leon.setPosition(7400 + 143, leon.getY());
+                }
+                // check the list of key events for a pressed escape key
+                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                for (KeyEvent event : keyEvents) {
+                    if ((event.getID() == KeyEvent.KEY_RELEASED)) {
+                        charlie.quieto();
+                        leon.quietoLeon();
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) &&
+                            (event.getKeyCode() == KeyEvent.VK_SPACE) && !nivel1.colisiono()) {
+                        if (Nivel1.llegoAMeta() == false) {
+                            charlie.jump();
+                            leon.jumpLeon();
+                            FXPlayer.FX00.play();
+                        }
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) &&
+                            (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                        FXPlayer.EVENTO1.stop();
+                        stop();
+                    }
+                }
+                leon.update(delta);
+                charlie.update(delta);
+                cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
+                cam.seguirPersonaje(leon);
+                nivel1.actualizar(delta, charlie, leon);
+            }
 
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            if (level2) { // Aca va lo del nivel 2
+                Keyboard keyboard = getKeyboard();
+                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+                    if (charlie.getX() > 10 && Nivel2.llegoAMeta() == false) {
+                        charlie.left();
+                    }
+                }
+                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                    if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false) {
+                        charlie.right();
+                    }
+                }
+                if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+                    charlie.setPosition(5000 + 174, charlie.getY());
+                    leon.setPosition(5000 + 143, leon.getY());
+                }
+                // check the list of key events for a pressed escape key
+                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                for (KeyEvent event : keyEvents) {
+                    if ((event.getID() == KeyEvent.KEY_RELEASED)) {
+                        charlie.quieto();
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                        if (Nivel2.llegoAMeta() == false) {
+                            charlie.jump();
+                            FXPlayer.FX00.play();
+                        }
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                        FXPlayer.EVENTO1.stop();
+                        stop();
+                    }
 
-            Mundo m = Mundo.getInstance();
+                }
+                nivel2.actualizar(delta, charlie);
+                charlie.update(delta);
+                cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
+            }
 
-            g.translate(cam.getX(), cam.getY());
-
-            fondo.display(g);
-            m.display(g);
-
-            nivel1.dibujar(g, charlie, leon);
-            // nivel2.dibujar(g, charlie);
-
-            // nivel3.dibujar(g, charlie);
-
-            g.translate(-cam.getX(), -cam.getY());
-            charlie.displayScore(g);
-            g.setColor(Color.red);
-            g.drawString("Tecla ESC = Fin del Juego ", 490, 20);
-
+            if (level3) { // Aca va lo del nivel 3
+                Keyboard keyboard = getKeyboard();
+                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+                    if (charlie.getX() > 10 && Nivel3.llegoAMeta() == false) {
+                        charlie.left();
+                    }
+                }
+                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                    if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel3.llegoAMeta() == false) {
+                        charlie.right();
+                    }
+                }
+                // check the list of key events for a pressed escape key
+                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                for (KeyEvent event : keyEvents) {
+                    if ((event.getID() == KeyEvent.KEY_RELEASED)) {
+                        charlie.quieto();
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                        if (Nivel3.llegoAMeta() == false) {
+                            charlie.jump();
+                            FXPlayer.FX00.play();
+                        }
+                    }
+                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                        FXPlayer.EVENTO1.stop();
+                        stop();
+                    }
+                }
+                nivel3.actualizar(delta, charlie);
+                charlie.update(delta);
+                cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
+            }
+            // charlie.applyForce(gravedad);
         }
+    }
+
+    public void gameDraw(Graphics2D g) {
+        if (level1) {
+        } // Aca va lo del nivel 1
+        if (level2) {
+        } // Aca va lo del nivel 2
+        if (level3) {
+        } // Aca va lo del nivel 3
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        Mundo m = Mundo.getInstance();
+
+        g.translate(cam.getX(), cam.getY());
+
+        fondo.display(g);
+        m.display(g);
+
+        nivel1.dibujar(g, charlie, leon);
+        // nivel2.dibujar(g, charlie);
+
+        // nivel3.dibujar(g, charlie);
+
+        g.translate(-cam.getX(), -cam.getY());
+        charlie.displayScore(g);
+        g.setColor(Color.red);
+        g.drawString("Tecla ESC = Fin del Juego ", 490, 20);
+
     }
 
     public void gameShutdown() {

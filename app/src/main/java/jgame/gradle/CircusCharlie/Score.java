@@ -116,7 +116,7 @@ public class Score extends ObjetoGrafico {
     }
 
     public void nivelActual(int nivel) {
-        this.state += nivel;
+        this.state = nivel;
     }
 
     public void sumarScore(int valor) {
@@ -127,7 +127,7 @@ public class Score extends ObjetoGrafico {
         this.score = 5000;
     }
 
-    public int getNivel(){
+    public int getState(){
         return this.state;
     }
 
