@@ -1,10 +1,6 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
-
-import jgame.gradle.Fondo;
 import jgame.gradle.CircusCharlie.Charlie;
-
 import java.awt.Rectangle;
-
 public class DetectorColiciones extends Rectangle {
     // Colisiones 1Er nivel
     // Detectar si colisiona con un aro
@@ -41,8 +37,7 @@ public class DetectorColiciones extends Rectangle {
         int aroMedioHeight = aro.getHeight() / 2;
         int aroMedioX = (int) (aro.getAroPosX() + aro.getWidth() / 4); // El "medio" del aro comienza desde un cuarto
                                                                        // del ancho del aro
-        int aroMedioY = (int) (aro.getAroPosY() + aro.getHeight() / 4); // El "medio" del aro comienza desde un cuarto
-                                                                        // de la altura del aro
+        int aroMedioY = (int) (aro.getAroPosY() + aro.getHeight() / 4); // El "medio" del aro comienza desde un cuarto de la altura del aro
 
         // Crear el rectángulo imaginario que representa el "medio" del aro
         rectMedioAro.setBounds(aroMedioX, aroMedioY, aroMedioWidth, aroMedioHeight);
@@ -72,50 +67,46 @@ public class DetectorColiciones extends Rectangle {
         // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
                 Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
                 charlie.getHeight());
-
         // Verificar si los rectángulos se superponen
                 return areaSuperior.intersects(rectCharlie);
-
         }
 
-    // Colisiones 2Do nivel
-    public static boolean detectarMonoNormal(MonoMarron monito, Charlie charlie) {
-        Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),
-                monito.getHeight());
-        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
-                charlie.getHeight());
-        return rectMonito.intersects(rectCharlie);
-    }
-
-    public static boolean detectarMonoAzul(MonoAzul monito, Charlie charlie) {
-        Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),
-                monito.getHeight());
-        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
-                charlie.getHeight());
-        return rectMonito.intersects(rectCharlie);
+        // Colisiones 2Do nivel
+        public static boolean detectarMonoNormal(MonoMarron monito, Charlie charlie) {
+                Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),
+                        monito.getHeight());
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
+                        charlie.getHeight());
+                return rectMonito.intersects(rectCharlie);
         }
-
-    public static boolean detectarEntreMonos(MonoMarron monitoMarron, MonoAzul monitoazul) {
-        Rectangle rectMonitoMarron = new Rectangle((int) monitoMarron.getX(), (int) monitoMarron.getY(),
-                monitoMarron.getWidth(), monitoMarron.getHeight());
-        Rectangle rectMonitoAzul = new Rectangle((int) monitoazul.getX(), (int) monitoazul.getY(),
-                monitoazul.getWidth(), monitoazul.getHeight());
-        return rectMonitoMarron.intersects(rectMonitoAzul);
-    }
-
-
-    // Colisiones 3Er nivel
-    public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){
-        Rectangle rectPelota1 = new Rectangle((int) p1.getX(), (int) p1.getY(), p1.getWidth(), p1.getHeight());
-        Rectangle rectPelota2 = new Rectangle((int) p2.getX(), (int) p2.getY(), p2.getWidth(), p2.getHeight());
-        return rectPelota1.intersects(rectPelota2); 
-    }
-
-    public static boolean detectarCharlieParteSuperiorPelota(Pelota p, Charlie charlie){
-        int pelotaQuarterHeight;
-        pelotaQuarterHeight = p.getHeight() / 4;
-        Rectangle rectPelota1 = new Rectangle((int) p.getX(), (int) (p.getY() + pelotaQuarterHeight), p.getWidth(), pelotaQuarterHeight);
-        Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
-        return rectPelota1.intersects(rectCharlie);
-    }
+        public static boolean detectarMonoAzul(MonoAzul monito, Charlie charlie) {
+                Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),
+                        monito.getHeight());
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
+                        charlie.getHeight());
+                return rectMonito.intersects(rectCharlie);
+        }
+        public static boolean detectarEntreMonos(MonoMarron monitoMarron, MonoAzul monitoazul) {
+                Rectangle rectMonitoMarron = new Rectangle((int) monitoMarron.getX(), (int) monitoMarron.getY(),
+                        monitoMarron.getWidth(), monitoMarron.getHeight());
+                Rectangle rectMonitoAzul = new Rectangle((int) monitoazul.getX(), (int) monitoazul.getY(),
+                        monitoazul.getWidth(), monitoazul.getHeight());
+                return rectMonitoMarron.intersects(rectMonitoAzul);
+        }
+        // Colisiones 3Er nivel
+        public static boolean detectarCharlieParadoSobrePelota(Pelota p, Charlie charlie) {
+                // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+                // Definir un área en la parte superior del rectángulo de la pelota
+                int areaArriba = 5; // Aumentar el área superior para mejorar la detección de colisiones
+                Rectangle areaSuperior = new Rectangle((int) p.getPosX(), (int) p.getPosY() - areaArriba, p.getWidth(), areaArriba);
+                // Verificar si el rectángulo de Charlie intersecta con el área superior de la pelota
+                boolean intersection = areaSuperior.intersects(rectCharlie);
+                return intersection;
+        }
+        public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){
+                Rectangle rectPelota1 = new Rectangle((int) p1.getPosX(), (int) p1.getPosY(), p1.getWidth(), p1.getHeight());
+                Rectangle rectPelota2 = new Rectangle((int) p2.getPosX(), (int) p2.getPosY(), p2.getWidth(), p2.getHeight());
+                return rectPelota1.intersects(rectPelota2); 
+        }
 }

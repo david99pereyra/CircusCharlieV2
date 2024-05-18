@@ -7,14 +7,16 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoMarron;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoAzul;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.awt.Graphics2D;
 
 public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
     private static boolean llegoAMeta = false, colisiono = false;
-
+    Date dInit = new Date();
+    Date dReloj;
+    Date dAhora;
 
     public Nivel2(Charlie charlie, Fondo fondo){
         try {
@@ -23,7 +25,7 @@ public class Nivel2 extends Nivel{
             //FXPlayer.EVENTO1.loop(); 
             
             //Crear los Monos
-            this.crearMonos(charlie);
+            this.crearMonos();
         } catch (Exception e) {
             System.out.println("ERROR");
             e.printStackTrace();
@@ -40,7 +42,6 @@ public class Nivel2 extends Nivel{
         double posy = charlie.getY() + charlie.getHeight();
         if(posx > 5550 && charlie.getY() < 174){
             charlie.setPISO(150);
-            
             if(charlie.getY() >= charlie.getPISO()){
                 llegoAMeta = true;
             }
@@ -53,39 +54,45 @@ public class Nivel2 extends Nivel{
         else if(charlie.getX()<5550 || charlie.getX()>5743){
             charlie.setPISO(220);
         }
-        // Movimiento de los pinches monos
-        if(!colisiono){
+        // Movimiento de los pinches monos y detectar colisiones de los entre charlie y monos
+        if(!colisiono){          
             for (MonoAzul mA : listaDeMonosAzul){
                 mA.update(delta);
-                mA.setPosition(mA.getX() - 1.2);
+                mA.setPosition(mA.getX() - 2.5);
+                if(DetectorColiciones.detectarMonoAzul(mA, charlie)){
+                    reiniciarJuegoXColisiones(charlie.getX(),charlie);
+                }
             }
             for (MonoMarron mM : listaDeMonosMarron){
-                mM.update(delta);
-                mM.setPosition(mM.getX() - 0.6);
+                if(!mM.getIsStopped()){
+                    mM.update(delta);
+                    mM.setPosition(mM.getX() - 1);
+                }
+                if(DetectorColiciones.detectarMonoNormal(mM, charlie)){
+                    reiniciarJuegoXColisiones(charlie.getX(),charlie);
+                }
             }
         }
 
-        // Detectar colisiones de los entre charlie y monos
-        for(MonoMarron mM : listaDeMonosMarron){
-            if(DetectorColiciones.detectarMonoNormal(mM, charlie)){
-                System.out.println("COLISIONASTE CON UN MONO MARRON, TENE CUIDADO");
-                System.out.println("123");
-            }
-        }
-        for(MonoAzul mA : listaDeMonosAzul){
-            if(DetectorColiciones.detectarMonoAzul(mA, charlie)){
-                System.out.println("COLISIONASTE CON UN MONO AZUL, TENE CUIDADO");
-                System.out.println("123");
-            }
-        }
         // Detectar colision entre monos
         for(MonoMarron mM : listaDeMonosMarron){
             for(MonoAzul mA: listaDeMonosAzul){
                 if(DetectorColiciones.detectarEntreMonos(mM, mA)){
-                    mA.saltoMonoAZul(mM);
-                    System.out.println("Chocaron entre los monos");
+                    mA.saltoMonoAZul();
+                    mM.detenerMono();
                 }
             }
+        }
+        // dance para cuando Charlie llego a la meta
+        if(llegoAMeta()){
+            if (dReloj == null){
+                dReloj = new Date();
+            }
+            dAhora= new Date();
+            long diffSeconds = 0;
+            long dateDiff = dAhora.getTime() - dReloj.getTime();
+            diffSeconds = dateDiff / 1000 % 60;
+            charlie.updateLlegadaMeta(delta);
         }
     }
 
@@ -99,7 +106,7 @@ public class Nivel2 extends Nivel{
         charlie.display(g);
     }
 
-public void crearMonos(Charlie charlie){
+public void crearMonos(){
         String imagenMonoMarron = "imagenes/JuegoCircusCharlie/ImagenNivel2/Mono1.png";
         String imagenMonoAzul = "imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta1.png";
         int numeroAleatorioPosX, cantMonosNormalesContinuos;
@@ -108,10 +115,6 @@ public void crearMonos(Charlie charlie){
         MonoMarron primerMonito = new MonoMarron(imagenMonoMarron);
         primerMonito.setPosition(posXPixel, 220);
         listaDeMonosMarron.add(primerMonito);
-
-        // MonoAzul segundoMonito = new MonoAzul(imagenMonoAzul);
-        // segundoMonito.setPosition(1000);
-        // listaDeMonosAzul.add(segundoMonito);
         for (int i = 0; i < 14; i++){
             // Generar un número aleatorio entre 2 y 5
             cantMonosNormalesContinuos = 2 + (int)(Math.random() * ((5 - 2) + 1)); 
@@ -129,6 +132,30 @@ public void crearMonos(Charlie charlie){
             monitoAzul.setPosition(posXPixel);
             listaDeMonosAzul.add(monitoAzul);
         }        
+    }
+
+    public void reiniciarJuegoXColisiones(double x1, Charlie charlie){
+        // Busca el checkpoint más cercano a la posición x
+        int[] checkpointsEjeX = {201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433};
+        int pos = 0, i;
+        for (i = 1; i < checkpointsEjeX.length; i++) {
+            if (checkpointsEjeX[i] < x1) {
+                pos = i - 1;
+            }
+        }
+        // Reinicia el juego en el checkpoint más cercano
+        int newX = checkpointsEjeX[pos]; 
+        reiniciarJuego(newX, charlie);
+    }
+
+    private void reiniciarJuego(double x, Charlie charlie) {
+        charlie.setPISO(412);
+        charlie.setPosition(x + 31,charlie.getPISO());
+        llegoAMeta = false;
+        colisiono = false;
+        FXPlayer.DERROTA.stop();
+        //FXPlayer.EVENTO1.loop();
+        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
     }
 
     @Override

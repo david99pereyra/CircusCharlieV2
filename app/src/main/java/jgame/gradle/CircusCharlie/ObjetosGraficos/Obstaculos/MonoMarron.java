@@ -6,14 +6,21 @@ import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.imageio.ImageIO;
 
 public class MonoMarron extends ObjetoGrafico {
     public double posX = 800, idx = 0;
-    public final int posY = 220;
+    public final int posY = 240;
+    private double velocityX;
+    private boolean isStopped;
+    private final long stopDuration = 200; // Duración en milisegundos que el mono se detiene
     BufferedImage imagen1, imagen2, imagen3;
     private ArrayList<BufferedImage> imageMonoMarron = new ArrayList<>();
     private int indiceImagenActualMonoMarron = 0;
+
     public MonoMarron(String filename) {
         super(filename);
         try{
@@ -37,6 +44,9 @@ public class MonoMarron extends ObjetoGrafico {
             }
         }
     }
+    public boolean getIsStopped(){
+        return isStopped;
+    }
 
     public void SwapImage(){
         while (true) {
@@ -49,9 +59,29 @@ public class MonoMarron extends ObjetoGrafico {
         }
     }
 
-    public void update(double delta){
-        idx += 0.04;
-        indiceImagenActualMonoMarron = ((int)idx) % imageMonoMarron.size();
+        public void update(double delta) {
+        // Solo actualizar la posición si no está detenido
+        if (!isStopped) {
+            posX += velocityX * delta;
+            idx += 0.04;
+            indiceImagenActualMonoMarron = ((int) idx) % imageMonoMarron.size();
+        }
+    }
+
+    public void detenerMono() {
+        if (!isStopped) {
+            isStopped = true;
+            velocityX = 0; // Detén el movimiento en X al detenerse
+
+            // Programa la reanudación del movimiento después de stopDuration milisegundos
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isStopped = false;
+                    velocityX = -2; // Restablece la velocidad en X después de detenerse
+                }
+            }, stopDuration);
+        }
     }
 
     public void setPosition(double x){
@@ -59,5 +89,8 @@ public class MonoMarron extends ObjetoGrafico {
     }
     public double getX(){
         return this.posX;
+    }
+    public double getY(){
+        return this.posY;
     }
 }
