@@ -17,13 +17,16 @@ public class Nivel1 extends Nivel {
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false, mostrarNivel = false, restar=false;
     private static boolean banderaScoreAro, banderaScoreCaldero;
+    private boolean mostrarAros = true;
+    public static Charlie charlie, leon;
     Date dInit = new Date();
     Date dReloj;
     Date dAhora;
 
     private Timer temporizador;
 
-    public Nivel1(Charlie charlie, Charlie leon, Fondo fondo) {
+    public Nivel1(CircusCharlie circusCharlie) {
+        super(circusCharlie);
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
@@ -34,7 +37,6 @@ public class Nivel1 extends Nivel {
             leon.setPosition(143, leon.getPISO());
             charlie.quieto();
             leon.quietoLeon();
-
             // Crear los aros
             this.crearAros();
             // Crear los calderos
@@ -53,6 +55,9 @@ public class Nivel1 extends Nivel {
         }
     }
 
+    public static void setCharlie(Charlie charlie){Nivel1.charlie = charlie;}
+    public static void setLeon(Charlie leon){Nivel1.leon = leon;}
+
     public static boolean llegoAMeta() {
         return llegoAMeta;
     }
@@ -61,12 +66,13 @@ public class Nivel1 extends Nivel {
         return colisiono;
     }
 
-    public void actualizar(double delta, Charlie charlie, Charlie leon) {
+    public void gameUpdate(double delta) {
         double posx = leon.getX() + (leon.getWidth() / 2);
         double posy = leon.getY() + leon.getHeight();
         if (posx > 8060 && leon.getY() < 417) {
             leon.setPISO(407);
             charlie.setPISO(343);
+            mostrarAros = false;
 
             if (leon.getY() >= leon.getPISO()) {
                 llegoAMeta = true;
@@ -96,6 +102,7 @@ public class Nivel1 extends Nivel {
         } else if (leon.getX() < 8060 || leon.getX() > 8188) {
             charlie.setPISO(413);
             leon.setPISO(477);
+            mostrarAros = true;
         }
 
         if (leon.getY() + leon.getHeight() > leon.getPISO()) {
@@ -104,7 +111,7 @@ public class Nivel1 extends Nivel {
         }
 
         // Movimiento de los aros
-        if (!colisiono) {
+        if (!colisiono && mostrarAros) {
             for (Aro aro : listaDeArosIzquierdo) {
                 aro.update(delta);
                 aro.setPosition(aro.getAroPosX() - 0.6, 217);
@@ -133,6 +140,7 @@ public class Nivel1 extends Nivel {
                 if (!banderaScoreAro) {
                     charlie.sumarPuntaje(100);
                     banderaScoreAro = true;
+                    circusCharlie.setTempScore(100, 180, 250);
                 }
             }
         }
@@ -149,6 +157,7 @@ public class Nivel1 extends Nivel {
                 if (!banderaScoreCaldero) {
                     charlie.sumarPuntaje(100);
                     banderaScoreCaldero = true;
+                    circusCharlie.setTempScore(200, 180, 250);
                 }
             }
         }
@@ -194,7 +203,7 @@ public class Nivel1 extends Nivel {
         }, 4000);
     }
 
-    public void dibujar(Graphics2D g, Charlie charlie, Charlie leon) {
+    public void gameDraw(Graphics2D g) {
 
         // Dibujar los calderos
         if (!mostrarNivel) {
@@ -202,13 +211,17 @@ public class Nivel1 extends Nivel {
                 calderito.display(g);
             }
             // Dibujar los aros
-            for (Aro aro : listaDeArosIzquierdo) {
-                aro.display(g);
+            if(mostrarAros){
+                for (Aro aro : listaDeArosIzquierdo) {
+                    aro.display(g);
+                }
             }
             leon.display(g);
             charlie.display(g);
-            for (Aro aro1 : listaDeArosDerecho) {
-                aro1.display1(g);
+            if(mostrarAros){
+                for (Aro aro1 : listaDeArosDerecho) {
+                    aro1.display1(g);
+                }
             }
         }else{
             charlie.imagenNivel();
@@ -221,16 +234,6 @@ public class Nivel1 extends Nivel {
                  }
             }, 3000);
         }
-    }
-
-    @Override
-    public void actualizar(CircusCharlie circusCharlie) {
-        // circusCharlie.setNivel(new Nivel2(null, null));
-    }
-
-    @Override
-    public void dibujar(CircusCharlie circusCharlie) {
-
     }
 
     // Funcion para crear aros

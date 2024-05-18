@@ -12,10 +12,10 @@ public class Camara {
     	this.y=y;
     }
 
-	public void seguirPersonaje(Charlie obj){
+	public void seguirPersonaje(Charlie obj, int index){
 		Mundo m=Mundo.getInstance();
 		//this.x = -b.getX()+(m.getWidth()/8);
-		this.x = -obj.getX()+143;
+		this.x = -obj.getX()+index;
 		if (this.x>0){
 			this.x=0;
 		}

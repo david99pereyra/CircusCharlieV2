@@ -1,5 +1,6 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.Charlie;
+import jgame.gradle.CircusCharlie.CircusCharlie;
 import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
@@ -8,20 +9,23 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 import java.util.*;
 import java.awt.Graphics2D;
 
-public class Nivel3 {
+public class Nivel3 extends Nivel{
     private ArrayList<Pelota> listaDePelotas = new ArrayList<>();
     private static boolean llegoAMeta = false;
     private boolean colisiono = false;
+    public static Charlie charlie;
     Date dInit = new Date();
     Date dReloj;
     Date dAhora;
 
-    public Nivel3(Charlie charlie, Fondo fondo){
+    public Nivel3(CircusCharlie circusCharlie){
+        super(circusCharlie);
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO1.loop(); 
-            
+            charlie.setPISO(430);
+            charlie.setPosition(174, charlie.getPISO());
             //Crear las pelotas
             this.crearPelota();
         } catch (Exception e) {
@@ -32,6 +36,10 @@ public class Nivel3 {
 
     public static boolean llegoAMeta(){
         return llegoAMeta;
+    }
+
+    public static void setCharlie(Charlie charlie){
+        Nivel3.charlie = charlie;
     }
 
     private void crearPelota(){
@@ -61,14 +69,14 @@ public class Nivel3 {
         } 
     }
 
-    public void dibujar(Graphics2D g, Charlie charlie){
+    public void gameDraw(Graphics2D g){
         for (Pelota pelotita : listaDePelotas){
             pelotita.display(g);
         }
         charlie.display(g);
     }
     
-    public void actualizar(double delta, Charlie charlie){
+    public void gameUpdate(double delta){
         double posx = charlie.getX()+(charlie.getWidth()/2);
         double posy = charlie.getY()+charlie.getHeight();
         if(posx > 6464 && charlie.getY() < 420){

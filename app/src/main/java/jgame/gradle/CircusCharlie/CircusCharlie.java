@@ -5,6 +5,7 @@ package jgame.gradle.CircusCharlie;
 
 import com.entropyinteractive.*; //jgame
 
+import jgame.gradle.FontManager;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel1;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel2;
@@ -19,12 +20,13 @@ import java.text.*;
 public class CircusCharlie extends JGame {
     private boolean level1 = true, level2 = false, level3 = false, inicioNivel = false;
     // private static boolean level1 = false, level2 = true, level3 =false;
+    // private static boolean level1 = false, level2 = false, level3 =true;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
     Camara cam;
     Fondo fondo;
     Charlie charlie;
-    Nivel nivelactual;
+    private Nivel nivelActual;
     // Variables del level 1
     Nivel1 nivel1;
     Charlie leon;
@@ -32,6 +34,12 @@ public class CircusCharlie extends JGame {
     Nivel2 nivel2;
     // Variables del level 3
     Nivel3 nivel3;
+
+    private int tempScore = 0;
+    private double tempScoreX = 0;
+    private double tempScoreY = 0;
+    private long tempScoreStartTime = 0;
+    private final long SCORE_DISPLAY_TIME = 1000; // tiempo en milisegundos que el puntaje se muestra en pantalla
 
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
@@ -50,28 +58,28 @@ public class CircusCharlie extends JGame {
         Mundo m = Mundo.getInstance();
         charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
         try {
-            if (level1) {
+            if (level1) { // Aca va lo del nivel 1
                 leon = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
-                nivel1 = new Nivel1(charlie, leon, fondo);
+                Nivel1.setCharlie(charlie);
+                Nivel1.setLeon(leon);
+                nivel1 = new Nivel1(this);
                 cam = new Camara(0, 0);
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
-            } // Aca va lo del nivel 1
+            } 
 
             if (level2) { // Aca va lo del nivel 2
                 charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-                nivel2 = new Nivel2(charlie, fondo);
-                charlie.setPISO(220);
-                charlie.setPosition(174, charlie.getPISO());
-                charlie.cambioImagen1();
+                Nivel1.setCharlie(charlie);
+                nivel2 = new Nivel2(this);
                 cam = new Camara(0, -26);
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png");
                 charlie.quieto();
             }
 
-            if (level3) {// Aca va lo del nivel 3
-                nivel3 = new Nivel3(charlie, fondo);
-                charlie.setPISO(430);
-                charlie.setPosition(174, charlie.getPISO());
+            if (level3) { // Aca va lo del nivel 3
+                charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
+                Nivel1.setCharlie(charlie);
+                nivel3 = new Nivel3(this);
                 cam = new Camara(0, 0);
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
                 charlie.quieto();
@@ -88,20 +96,12 @@ public class CircusCharlie extends JGame {
     // nivelactual = state;
     // }
 
-    // public void dibujar(){
-    // nivelactual.dibujar(this);
-    // }
-
-    // public void actualizar(){
-    // nivelactual.actualizar(this);
-    // }
-
     public void gameUpdate(double delta) {
-
+        
         if (!inicioNivel) {
             charlie.nivel(1);
             charlie.imagenNivel();
-
+            
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -109,140 +109,140 @@ public class CircusCharlie extends JGame {
                     inicioNivel = true;
                 }
             }, 3000);
-
+            
         } else {
-            if (level1) { // Aca va lo del nivel 1
-                Keyboard keyboard = getKeyboard();
-                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel1.colisiono()) {
-                    if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
-                        charlie.left();
-                        leon.leftLeon();
-                    }
-                }
-                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel1.colisiono()) {
-                    if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
-                        charlie.right();
-                        leon.rightLeon();
-                    }
-                }
-                if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-                    charlie.setPosition(7400 + 174, charlie.getY());
-                    leon.setPosition(7400 + 143, leon.getY());
-                }
-                // check the list of key events for a pressed escape key
-                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-                for (KeyEvent event : keyEvents) {
-                    if ((event.getID() == KeyEvent.KEY_RELEASED)) {
-                        charlie.quieto();
-                        leon.quietoLeon();
-                    }
-                    if ((event.getID() == KeyEvent.KEY_PRESSED) &&
-                            (event.getKeyCode() == KeyEvent.VK_SPACE) && !nivel1.colisiono()) {
-                        if (Nivel1.llegoAMeta() == false) {
-                            charlie.jump();
-                            leon.jumpLeon();
-                            FXPlayer.FX00.play();
+            if(!nivel1.colisiono()){
+                if (level1) { // Aca va lo del nivel 1
+                    Keyboard keyboard = getKeyboard();
+                    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+                        if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
+                            charlie.left();
+                            leon.leftLeon();
                         }
                     }
-                    if ((event.getID() == KeyEvent.KEY_PRESSED) &&
-                            (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-                        FXPlayer.EVENTO1.stop();
-                        stop();
-                    }
-                }
-                leon.update(delta);
-                charlie.update(delta);
-                cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
-                cam.seguirPersonaje(leon);
-                nivel1.actualizar(delta, charlie, leon);
-            }
-            if (level2) { // Aca va lo del nivel 2
-                Keyboard keyboard = getKeyboard();
-                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-                    if (charlie.getX() > 10 && Nivel2.llegoAMeta() == false) {
-                        charlie.left();
-                    }
-                }
-                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
-                    if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false) {
-                        charlie.right();
-                    }
-                }
-                if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-                    charlie.setPosition(5000 + 174, charlie.getY());
-                    leon.setPosition(5000 + 143, leon.getY());
-                }
-                // check the list of key events for a pressed escape key
-                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-                for (KeyEvent event : keyEvents) {
-                    if ((event.getID() == KeyEvent.KEY_RELEASED)) {
-                        charlie.quieto();
-                    }
-                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
-                        if (Nivel2.llegoAMeta() == false) {
-                            charlie.jump();
-                            FXPlayer.FX00.play();
+                    if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                        if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
+                            charlie.right();
+                            leon.rightLeon();
                         }
                     }
-                    if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
-                        FXPlayer.EVENTO1.stop();
-                        stop();
+                    if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+                        charlie.setPosition(7400 + 174, charlie.getY());
+                        leon.setPosition(7400 + 143, leon.getY());
                     }
-
-                }
-                nivel2.actualizar(delta, charlie);
-                charlie.update(delta);
-                cam.seguirPersonaje(charlie); /// la camara sigue al Personaje
-            }
-
-            if (level3) { // Aca va lo del nivel 3
-                Keyboard keyboard = getKeyboard();
-                Pelota pelotaActual = nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
-            
-                // Movimiento de Charlie hacia la izquierda y la derecha
-                if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel3.llegoAMeta()) {
-                    if (charlie.getX() > 10) {
-                        charlie.left();
-                        if (charlie.getEnLaPelota() && pelotaActual != null) {
-                            pelotaActual.left();
+                    // check the list of key events for a pressed escape key
+                    LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                    for (KeyEvent event : keyEvents) {
+                        if ((event.getID() == KeyEvent.KEY_RELEASED)) {
+                            charlie.quieto();
+                            leon.quietoLeon();
                         }
-                    }
-                }
-                if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel3.llegoAMeta()) {
-                    if (charlie.getX() + charlie.getWidth() < fondo.getWidth()) {
-                        charlie.right();
-                        if (charlie.getEnLaPelota() && pelotaActual != null) {
-                            pelotaActual.right();
-                        }
-                    }
-                }
-            
-                LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
-                for (KeyEvent event : keyEvents) {
-                    if (event.getID() == KeyEvent.KEY_RELEASED) {
-                        charlie.quieto();
-                    }
-                    if (event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_SPACE) {
-                        if (!Nivel3.llegoAMeta()) {
-                            charlie.jump();
-                            if (pelotaActual != null) {
-                                pelotaActual.setFueMontada(true);
-                                pelotaActual.setEstaMontado(false);
+                        if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                            if (Nivel1.llegoAMeta() == false) {
+                                charlie.jump();
+                                leon.jumpLeon();
+                                FXPlayer.FX00.play();
                             }
-                            charlie.setEnLaPelota(false);
-                            FXPlayer.FX00.play();
+                        }
+                        if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                            FXPlayer.EVENTO1.stop();
+                            stop();
                         }
                     }
-                    if (event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                        FXPlayer.EVENTO1.stop();
-                        stop();
-                    }
+                    leon.update(delta);
+                    charlie.update(delta);
+                    cam.seguirPersonaje(charlie,143); /// la camara sigue al Personaje
+                    cam.seguirPersonaje(leon,143);
+                    nivel1.gameUpdate(delta);
                 }
-                nivel3.actualizar(delta, charlie);
-                charlie.update(delta);
-                cam.seguirPersonaje(charlie); // la camara sigue al Personaje
+                if (level2) { // Aca va lo del nivel 2
+                    Keyboard keyboard = getKeyboard();
+                    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+                        if (charlie.getX() > 10 && Nivel2.llegoAMeta() == false) {
+                            charlie.left();
+                        }
+                    }
+                    if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                        if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false) {
+                            charlie.right();
+                        }
+                    }
+                    if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+                        charlie.setPosition(5000 + 174, charlie.getY());
+                        leon.setPosition(5000 + 143, leon.getY());
+                    }
+                    // check the list of key events for a pressed escape key
+                    LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                    for (KeyEvent event : keyEvents) {
+                        if ((event.getID() == KeyEvent.KEY_RELEASED)) {
+                            charlie.quieto();
+                        }
+                        if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+                            if (Nivel2.llegoAMeta() == false) {
+                                charlie.jump();
+                                FXPlayer.FX00.play();
+                            }
+                        }
+                        if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                            FXPlayer.EVENTO1.stop();
+                            stop();
+                        }
+                        
+                    }
+                    nivel2.gameUpdate(delta);
+                    charlie.update(delta);
+                    cam.seguirPersonaje(charlie,143); /// la camara sigue al Personaje
+                }
+                
+                if (level3) { // Aca va lo del nivel 3
+                    Keyboard keyboard = getKeyboard();
+                    Pelota pelotaActual = nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
+                    
+                    // Movimiento de Charlie hacia la izquierda y la derecha
+                    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel3.llegoAMeta()) {
+                        if (charlie.getX() > 10) {
+                            charlie.left();
+                            if (charlie.getEnLaPelota() && pelotaActual != null) {
+                                pelotaActual.left();
+                            }
+                        }
+                    }
+                    if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel3.llegoAMeta()) {
+                        if (charlie.getX() + charlie.getWidth() < fondo.getWidth()) {
+                            charlie.right();
+                            if (charlie.getEnLaPelota() && pelotaActual != null) {
+                                pelotaActual.right();
+                            }
+                        }
+                    }
+                
+                    LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
+                    for (KeyEvent event : keyEvents) {
+                        if (event.getID() == KeyEvent.KEY_RELEASED) {
+                            charlie.quieto();
+                        }
+                        if (event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_SPACE) {
+                            if (!Nivel3.llegoAMeta()) {
+                                charlie.jump();
+                                if (pelotaActual != null) {
+                                    pelotaActual.setFueMontada(true);
+                                    pelotaActual.setEstaMontado(false);
+                                }
+                                charlie.setEnLaPelota(false);
+                                FXPlayer.FX00.play();
+                            }
+                        }
+                        if (event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            FXPlayer.EVENTO1.stop();
+                            stop();
+                        }
+                    }
+                    nivel3.gameUpdate(delta);
+                    charlie.update(delta);
+                    cam.seguirPersonaje(charlie,244); // la camara sigue al Personaje
+                }
+                // charlie.applyForce(gravedad);
             }
-            // charlie.applyForce(gravedad);
         }
     }
 
@@ -263,19 +263,49 @@ public class CircusCharlie extends JGame {
         fondo.display(g);
         m.display(g);
 
-        nivel1.dibujar(g, charlie, leon);
-        // nivel2.dibujar(g, charlie);
+        nivel1.gameDraw(g);
+        // nivel2.gameDraw(g);
 
-        //nivel3.dibujar(g, charlie);
+        //nivel3.gameDraw(g);
 
         g.translate(-cam.getX(), -cam.getY());
         charlie.displayScore(g);
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ", 490, 20);
 
+        displayTempScore(g);
     }
 
     public void gameShutdown() {
         // Log.info(getClass().getSimpleName(), "Shutting down game");
+    }
+
+    public void changeState(Nivel state){
+        this.nivelActual = state;
+    }
+
+    public Nivel getNivel (){
+        return nivelActual;
+    }
+
+    public void displayTempScore(Graphics2D g){
+        FontManager.getInstance();
+        if(tempScoreStartTime > 0){
+            long currentTime = System.currentTimeMillis();
+            if(currentTime - tempScoreStartTime < SCORE_DISPLAY_TIME){ 
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Pixel Emulator", Font.BOLD,20));
+                g.drawString("+" + tempScore, (int) tempScoreX, (int) tempScoreY);
+            }else{
+                tempScoreStartTime = 0;
+            }
+        }
+    }
+
+    public void setTempScore(int score, double x, double y){
+        this.tempScore = score;
+        this.tempScoreX = x;
+        this.tempScoreY = y;
+        this.tempScoreStartTime = System.currentTimeMillis();
     }
 }
