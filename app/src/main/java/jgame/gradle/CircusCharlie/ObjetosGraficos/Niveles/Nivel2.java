@@ -14,16 +14,19 @@ public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
     private static boolean llegoAMeta = false, colisiono = false;
+    public static Charlie charlie;
     Date dInit = new Date();
     Date dReloj;
     Date dAhora;
 
-    public Nivel2(Charlie charlie, Fondo fondo){
+    public Nivel2(CircusCharlie circusCharlie){
+        super(circusCharlie);
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO1.loop(); 
-            
+            charlie.setPISO(220);
+            charlie.setPosition(174, charlie.getPISO());
             //Crear los Monos
             this.crearMonos();
         } catch (Exception e) {
@@ -36,7 +39,11 @@ public class Nivel2 extends Nivel{
         return llegoAMeta;
     }
 
-    public void actualizar(double delta, Charlie charlie){
+    public static void setCharlie(Charlie charlie){
+        Nivel2.charlie = charlie;
+    }
+
+    public void gameUpdate(double delta){
         // Posicionamiento en el podio
         double posx = charlie.getX() + (charlie.getWidth()/2);
         double posy = charlie.getY() + charlie.getHeight();
@@ -96,7 +103,7 @@ public class Nivel2 extends Nivel{
         }
     }
 
-    public void dibujar(Graphics2D g, Charlie charlie){
+    public void gameDraw(Graphics2D g){
         for (MonoMarron monitoMarron: listaDeMonosMarron){
             monitoMarron.display(g);
         }
@@ -106,7 +113,7 @@ public class Nivel2 extends Nivel{
         charlie.display(g);
     }
 
-public void crearMonos(){
+    public void crearMonos(){
         String imagenMonoMarron = "imagenes/JuegoCircusCharlie/ImagenNivel2/Mono1.png";
         String imagenMonoAzul = "imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta1.png";
         int numeroAleatorioPosX, cantMonosNormalesContinuos;
@@ -156,17 +163,5 @@ public void crearMonos(){
         FXPlayer.DERROTA.stop();
         //FXPlayer.EVENTO1.loop();
         charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-    }
-
-    @Override
-    public void dibujar(CircusCharlie charlie) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dibujar'");
-    }
-
-    @Override
-    public void actualizar(CircusCharlie charlie) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
     }
 }

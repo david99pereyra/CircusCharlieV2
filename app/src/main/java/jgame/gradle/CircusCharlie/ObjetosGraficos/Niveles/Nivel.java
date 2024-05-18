@@ -1,9 +1,15 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+
 import jgame.gradle.CircusCharlie.CircusCharlie;
 
 public abstract class Nivel{
-    public abstract void dibujar(CircusCharlie charlie);
-    public abstract void actualizar(CircusCharlie charlie);
-    //public abstract void reiniciarJuegoXColisiones();
+    protected CircusCharlie circusCharlie;
+    public Nivel(CircusCharlie cc){
+        this.circusCharlie = cc;
+    }
+    public abstract void gameDraw(Graphics2D g);
+    public abstract void gameUpdate(double delta);
 }
