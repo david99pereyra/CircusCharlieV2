@@ -15,7 +15,7 @@ public class Nivel1 extends Nivel {
     private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
-    private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false, mostrarNivel = false;
+    private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false, mostrarNivel = false, restar=false;
     private static boolean banderaScoreAro, banderaScoreCaldero;
     Date dInit = new Date();
     Date dReloj;
@@ -125,6 +125,7 @@ public class Nivel1 extends Nivel {
             if (DetectorColiciones.detectarAro(aro, charlie)) {
                 colisiono = true;
                 accion = false;
+                restar=false;
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
@@ -140,6 +141,7 @@ public class Nivel1 extends Nivel {
             if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)) {
                 colisiono = true;
                 accion = false;
+                restar=false;
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
@@ -179,6 +181,11 @@ public class Nivel1 extends Nivel {
             @Override
             public void run() {
                 if (!accion) {
+                    if(!restar){
+                        System.out.println(charlie.getVida());
+                        charlie.restarVida(1);
+                        restar = true;
+                    }
                     reiniciarJuegoXColisiones(charlie.getX(), charlie, leon);
                     accion = true;
                 }

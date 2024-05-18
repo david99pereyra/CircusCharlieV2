@@ -17,7 +17,7 @@ import java.util.*;
 import java.text.*;
 
 public class CircusCharlie extends JGame {
-    private boolean level1 = false, level2 = false, level3 = true, inicioNivel = false;
+    private boolean level1 = true, level2 = false, level3 = false, inicioNivel = false;
     // private static boolean level1 = false, level2 = true, level3 =false;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
@@ -263,10 +263,10 @@ public class CircusCharlie extends JGame {
         fondo.display(g);
         m.display(g);
 
-        // nivel1.dibujar(g, charlie, leon);
+        nivel1.dibujar(g, charlie, leon);
         // nivel2.dibujar(g, charlie);
 
-        nivel3.dibujar(g, charlie);
+        //nivel3.dibujar(g, charlie);
 
         g.translate(-cam.getX(), -cam.getY());
         charlie.displayScore(g);
