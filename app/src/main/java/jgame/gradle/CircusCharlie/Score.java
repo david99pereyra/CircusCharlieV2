@@ -1,9 +1,11 @@
 package jgame.gradle.CircusCharlie;
 
 import java.awt.image.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import javax.imageio.ImageIO;
 import jgame.gradle.FontManager;
 
 import java.awt.*;
@@ -14,12 +16,25 @@ public class Score extends ObjetoGrafico {
     private int score = 0;
     private int hiScore = 0;
     private int state = 0;
+    private int vidas = 3;
+    private BufferedImage vidaImagen;
 
     private boolean descuentoBonusActivo = true;
 
     public Score() {
         this.setPosition(10, 10);
         iniciarTemporizador();
+        cargarImagenVida();
+    }
+
+    private void cargarImagenVida() {
+        try {
+            // Cargar la imagen de la vida desde recursos
+            InputStream is = getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/logoDeVida.png");
+            vidaImagen = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update() {
@@ -41,6 +56,17 @@ public class Score extends ObjetoGrafico {
 
         String StateText = "State-" + state;
         g.drawString(StateText, 500, 55);
+
+                
+                if (vidaImagen != null) {
+                    int vidasX = 580;
+                    int vidasY = 65; // Coordenada Y debajo de "State-"
+                    int espaciado = 5; // Espacio entre las imágenes
+        
+                    for (int i = 0; i < vidas; i++) {
+                        g.drawImage(vidaImagen, vidasX - (i * (vidaImagen.getWidth() + espaciado)), vidasY, null);
+                    }
+                }
 
         String bonusText = "BONUS-" + (int) Math.max(bonus, 0);
         int bonusTextWidth = g.getFontMetrics().stringWidth(bonusText);
@@ -113,6 +139,16 @@ public class Score extends ObjetoGrafico {
         g.drawString(stateText, stateX, 300);
 
         this.setImagen(image);
+    }
+
+    public int getVida(){
+        return this.vidas;
+    }
+
+    public void restarBida(int bida){
+        if (this.vidas > 0) {
+            this.vidas -= bida;
+        }
     }
 
     public void nivelActual(int nivel) {

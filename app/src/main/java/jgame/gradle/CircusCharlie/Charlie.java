@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import javax.imageio.*;
+
+import jgame.gradle.FontManager;
+
 import java.io.*;
 import java.util.*;
 
@@ -316,6 +319,35 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public void displayScore(Graphics2D g){
 		puntosJugador.display(g);
+	}
+
+	public void gameOver(){
+		FontManager.getInstance();
+        BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics g = image.createGraphics();
+
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 800, 600);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Pixel Emulator", Font.BOLD, 30));
+
+        String stateText = "GAME OVER";
+        int stateWidth = g.getFontMetrics().stringWidth(stateText);
+        int stateX = (800 - stateWidth) / 2;
+        g.drawString(stateText, stateX, 300);
+
+        this.setImagen(image);
+	}
+
+	public void restarVida(int vida){
+		puntosJugador.restarBida(vida);
+	}
+	
+	public int getVida(){
+		System.out.println(puntosJugador.getVida());
+		return puntosJugador.getVida();
 	}
 
 	public void imagenNivel(){
