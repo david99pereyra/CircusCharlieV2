@@ -19,12 +19,15 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	private double idx;
     private int indiceImagenActualCharlieEnMeta = 0;
 	private int andando = 0, andandoLeon = 0;
+	private double velocidadCaida = 0;
+	private double gravedad = 9.8;
 	private boolean band = true, band0 = true;
 	private boolean l1=true, l2=true;
 	private boolean band1 = true;
 
 	private boolean enElSuelo = false;
 	private boolean saltando=false;
+	private boolean enLaPelota = true;
 
 	final int DIRECCION_DERECHA = 0;
 	final int DIRECCION_IZQUIERDA = 1;
@@ -105,6 +108,30 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public double getPISO(){
 		return PISO;
+	}
+
+	public void setVelocidadCaida(double nuevaVelocidad){
+		this.velocidadCaida = nuevaVelocidad;
+	}
+
+	public double getVelocidadCaida(){
+		return this.velocidadCaida;
+	}
+
+	public void setGravedad(double nuevaGravedad){
+		this.gravedad = nuevaGravedad;
+	}
+
+	public double getGravedad(){
+		return this.gravedad;
+	}
+
+	public void setEnLaPelota(boolean montado){
+		this.enLaPelota = montado;
+	}
+
+	public boolean getEnLaPelota(){
+		return this.enLaPelota;
 	}
 
 	public void jump() {
