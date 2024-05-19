@@ -15,8 +15,10 @@ public class Money extends ObjetoGrafico{
         super(filename);
         this.aspiroLaBolsita = aspiro;
         try{
-            imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png")));
-            imageBolsita.add(imagen);
+            if(imageBolsita.isEmpty()){
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageBolsita.add(imagen);
+            }
         }catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }

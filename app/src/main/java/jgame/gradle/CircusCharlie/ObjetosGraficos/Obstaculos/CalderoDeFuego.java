@@ -2,26 +2,24 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.io.IOException;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import java.util.ArrayList;
-
-
+import javax.imageio.*;
+import java.util.*;
 public class CalderoDeFuego extends ObjetoGrafico {
     private double idx;
+    BufferedImage imagen1, imagen2;
     private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
-    
     public CalderoDeFuego(String filename) {
         super(filename);
         try {
-            BufferedImage imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png")));
-            imagenes.add(imagen1);
-            BufferedImage imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
-            imagenes.add(imagen2);
+            if(imagenes.isEmpty()){
+                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imagenes.add(imagen1);
+                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
+                imagenes.add(imagen2);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }
