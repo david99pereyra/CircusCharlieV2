@@ -16,7 +16,6 @@ import java.awt.*;
 import java.awt.event.*; //eventos
 import java.util.*;
 import java.text.*;
-
 public class CircusCharlie extends JGame {
     // private boolean level1 = true, level2 = false, level3 = false, inicioNivel = false;
     // private static boolean level1 = false, level2 = true, level3 = false, inicioNivel = false;
@@ -158,12 +157,12 @@ public class CircusCharlie extends JGame {
                 if (level2) { // Aca va lo del nivel 2
                     Keyboard keyboard = getKeyboard();
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-                        if (charlie.getX() > 10){// && Nivel2.llegoAMeta() == false) {
+                        if (charlie.getX() > 10){
                             charlie.left();
                         }
                     }
                     if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
-                        if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && Nivel2.llegoAMeta() == false) {
+                        if (charlie.getX() + charlie.getWidth() < fondo.getWidth() && !Nivel2.llegoAMeta()) {
                             charlie.right();
                         }
                     }
@@ -195,7 +194,6 @@ public class CircusCharlie extends JGame {
                 if (level3) { // Aca va lo del nivel 3
                     Keyboard keyboard = getKeyboard();
                     Pelota pelotaActual = nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
-                    
                     // Movimiento de Charlie hacia la izquierda y la derecha
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !Nivel3.llegoAMeta()) {
                         if (charlie.getX() > 10) {

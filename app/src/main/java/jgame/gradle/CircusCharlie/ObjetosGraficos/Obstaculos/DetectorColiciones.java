@@ -11,10 +11,10 @@ public class DetectorColiciones extends Rectangle {
                 charlie.getHeight());
                 Rectangle rectAroQuarter = new Rectangle();
                 int aroQuarterHeight;
-                if (aro.verificarTamaño == true) { // Detecto el aro grande
+                if (aro.getVerificarTamaño()) { // Detecto el aro grande
                         aroQuarterHeight = aro.getHeight() / 4;
                         rectAroQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + aroQuarterHeight * 3), aro.getWidth(), aroQuarterHeight);
-                } else if (aro.verificarTamaño == false) { // Detecto el aro chico
+                } else if (aro.getVerificarTamaño()) { // Detecto el aro chico
                         aroQuarterHeight = aro.getHeight() / 6;
                         rectAroQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + aroQuarterHeight * 5), aro.getWidth(), aroQuarterHeight);
                 }
