@@ -10,16 +10,15 @@ import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 
 public class Aro extends ObjetoGrafico{
-
     BufferedImage imagen1, imagen2, imagen3, imagen4, imagen5, imagen6,imagen7, imagen8;
-    public double idx = 0;
+    private double idx = 0;
+    private int indiceImagenActualAroGrande = 0;
+    private int indiceImagenActualAroChico = 0;
+    private boolean verificarTamaño; //True es para saber si es el AroGrande y false si es Aro Chico
     private ArrayList<BufferedImage> imageAroGrandeIzquierdo = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroGrandeDerecho = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroChicoIzquierdo = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroChicoDerecho = new ArrayList<>();
-    private int indiceImagenActualAroGrande = 0, indiceImagenActualAroChico = 0;
-    public boolean verificarTamaño; //True es para saber si es el AroGrande y false si es Aro Chico
-    int cont= 0;
     
     public Aro(String filename, boolean verificarTam){
         super(filename);
@@ -96,5 +95,9 @@ public class Aro extends ObjetoGrafico{
         if(this.verificarTamaño == false){
             indiceImagenActualAroChico = ((int)idx) % imageAroChicoIzquierdo.size();
         }
+    }
+
+    public boolean getVerificarTamaño(){
+        return this.verificarTamaño;
     }
 }

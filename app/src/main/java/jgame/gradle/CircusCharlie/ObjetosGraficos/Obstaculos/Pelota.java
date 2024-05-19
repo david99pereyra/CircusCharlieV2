@@ -11,8 +11,6 @@ import javax.imageio.ImageIO;
 
 public class Pelota extends ObjetoGrafico{
     private double idx = 0;
-    // private double posX = 185;
-    // private final int posY = 471;
     private double velocityX = 5.0;
     private int indiceImagenActualPelota = 0;
     protected int direccionAngulo= 1;
@@ -42,7 +40,6 @@ public class Pelota extends ObjetoGrafico{
     public boolean isCharlieOnTop(Charlie charlie) {
         double charliePosX = charlie.getX();
         double charliePosY = charlie.getY() + charlie.getHeight(); // Asumiendo que `getY()` devuelve la parte superior de Charlie
-
         // Ajusta los valores según el tamaño de la pelota y de Charlie
         return (charliePosX > this.getX() && charliePosX < (this.getX() + getWidth()) && charliePosY >= this.getY() && charliePosY <= (this.getY() + getHeight()));
     }
