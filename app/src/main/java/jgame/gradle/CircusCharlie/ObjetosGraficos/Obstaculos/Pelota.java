@@ -10,8 +10,9 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Pelota extends ObjetoGrafico{
-    private double posX = 185, idx = 0;
-    private final int posY = 471;
+    private double idx = 0;
+    // private double posX = 185;
+    // private final int posY = 471;
     private double velocityX = 5.0;
     private int indiceImagenActualPelota = 0;
     protected int direccionAngulo= 1;
@@ -43,25 +44,27 @@ public class Pelota extends ObjetoGrafico{
         double charliePosY = charlie.getY() + charlie.getHeight(); // Asumiendo que `getY()` devuelve la parte superior de Charlie
 
         // Ajusta los valores según el tamaño de la pelota y de Charlie
-        return (charliePosX > posX && charliePosX < (posX + getWidth()) && charliePosY >= posY && charliePosY <= (posY + getHeight()));
+        return (charliePosX > this.getX() && charliePosX < (this.getX() + getWidth()) && charliePosY >= this.getY() && charliePosY <= (this.getY() + getHeight()));
     }
 
     public void leftMax(double valor){
-        posX -= valor;
+        this.setX(getX() - valor);
     }
 
     public void left() {
-		posX -= velocityX;
+        this.setX(getX() - velocityX);
 		direccionAngulo =- 1;
 	}
 
 	public void right() {
-		posX += velocityX;
+        this.setX(getX() + velocityX);
 		direccionAngulo = 1;
 	} 
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {
+        double posX = getX();
+        int posY = (int) getY();
         if (!imagePelota.isEmpty()){
             BufferedImage imagenActualMonoPelota = imagePelota.get(indiceImagenActualPelota);
             if (imagenActualMonoPelota != null){
@@ -84,19 +87,6 @@ public class Pelota extends ObjetoGrafico{
     public void update(double delta){
         idx += 0.04;
         indiceImagenActualPelota = ((int)idx) % imagePelota.size();
-    }
-
-
-    public void setPosition(double x){
-        this.posX = x;
-    }
-
-    public double getPosX(){
-		return posX;
-	}
-
-    public double getPosY(){
-        return posY;
     }
 
     public void setEstaMontado (boolean montadoActualmente){

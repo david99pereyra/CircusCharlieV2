@@ -1,8 +1,6 @@
 package jgame.gradle.CircusCharlie;
 
 import java.awt.*;
-import java.awt.geom.*;
-
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
@@ -39,7 +37,7 @@ public class ObjetoGrafico {
 		this.positionX = d;
 		this.positionY = e;
 	}
-
+	//No utilizamos este ya que necesitamos para el swap
 	public void display(Graphics2D g2) {
 		g2.drawImage(imagen,(int) this.positionX,(int) this.positionY,null);
 	}

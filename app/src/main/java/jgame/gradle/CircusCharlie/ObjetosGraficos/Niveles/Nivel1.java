@@ -6,15 +6,16 @@ import java.util.*;
 import jgame.gradle.CircusCharlie.FXPlayer;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.CircusCharlie;
-import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Aro;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.CalderoDeFuego;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Money;
 
 public class Nivel1 extends Nivel {
     private ArrayList<Aro> listaDeArosIzquierdo = new ArrayList<>();
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
+    private ArrayList<Money> listaDeBolsaDeMoneda = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false, mostrarNivel = false, restar=false;
     private static boolean banderaScoreAro, banderaScoreCaldero;
     private boolean mostrarAros = true;
@@ -73,11 +74,9 @@ public class Nivel1 extends Nivel {
             leon.setPISO(407);
             charlie.setPISO(343);
             mostrarAros = false;
-
             if (leon.getY() >= leon.getPISO()) {
                 llegoAMeta = true;
                 temporizador.schedule(new TimerTask() {
-
                     @Override
                     public void run() {
                         if (!accionEjecutar) {
@@ -86,7 +85,6 @@ public class Nivel1 extends Nivel {
                         }
                         llegoAMeta = false;
                     }
-
                 }, 4000);
             }
             if (posx > 8060 && leon.getY() < 417) {
@@ -109,18 +107,26 @@ public class Nivel1 extends Nivel {
             banderaScoreCaldero = false;
             banderaScoreAro = false;
         }
-
+        for(Money bolsita : listaDeBolsaDeMoneda){
+            // bolsita.update(delta);
+            bolsita.setPosition(bolsita.getX() - 0.6, 260);
+            if(DetectorColiciones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
+                charlie.sumarPuntaje(500);
+                bolsita.setAspiroLaBolsita(true);
+            }
+        }
         // Movimiento de los aros
         if (!colisiono && mostrarAros) {
             for (Aro aro : listaDeArosIzquierdo) {
                 aro.update(delta);
-                aro.setPosition(aro.getAroPosX() - 0.6, 217);
+                aro.setPosition(aro.getX() - 0.6, aro.getY());
             }
             for (Aro aro : listaDeArosDerecho) {
                 aro.update(delta);
-                aro.setPosition(aro.getAroPosX() - 0.6, 217);
+                aro.setPosition(aro.getX() - 0.6, aro.getY());
             }
         }
+
         // Swap de imagenes calderos
         for (CalderoDeFuego calderito : listaDeCalderos) {
             calderito.update(delta);
@@ -136,7 +142,6 @@ public class Nivel1 extends Nivel {
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
-                System.out.println("PASASTE POR EL MEDIO DEL ARO");
                 if (!banderaScoreAro) {
                     charlie.sumarPuntaje(100);
                     banderaScoreAro = true;
@@ -153,7 +158,6 @@ public class Nivel1 extends Nivel {
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
-                System.out.println("PASASTE POR EL ARRIBA DEL CALDERO");
                 if (!banderaScoreCaldero) {
                     charlie.sumarPuntaje(100);
                     banderaScoreCaldero = true;
@@ -171,7 +175,6 @@ public class Nivel1 extends Nivel {
             long dateDiff = dAhora.getTime() - dReloj.getTime();
             diffSeconds = dateDiff / 1000 % 60;
             charlie.updateLlegadaMeta(delta);
-            System.out.println("segundos" + diffSeconds);
         }
     }
 
@@ -223,15 +226,19 @@ public class Nivel1 extends Nivel {
                     aro1.display1(g);
                 }
             }
+            for(Money bolsita : listaDeBolsaDeMoneda){
+                bolsita.display(g);
+            }
+
         }else{
             charlie.imagenNivel();
 
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
-                 @Override
-                 public void run() {
-                     mostrarNivel=false;
-                 }
+                @Override
+                public void run() {
+                    mostrarNivel=false;
+                }
             }, 3000);
         }
     }
@@ -242,6 +249,7 @@ public class Nivel1 extends Nivel {
         String imagenAroGrandeDerecha = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
         String imagenAroChicoIzquierdo = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Izquierdo.png";
         String imagenAroChicoDerecho = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png";
+        String imagenBolsitaDeMoneda = "imagenes/JuegoCircusCharlie/ImagenNivel1/money.png";
         int posXPixel = 850;
 
         Aro primerAroIzquierda = new Aro(imagenAroGrandeIzquierda, true);
@@ -278,22 +286,29 @@ public class Nivel1 extends Nivel {
             Aro aroChicoDerecho = new Aro(imagenAroChicoDerecho, false);
             aroChicoDerecho.setPosition(posXPixel, 217);
             listaDeArosDerecho.add(aroChicoDerecho);
+
+            Money bolsita = new Money(imagenBolsitaDeMoneda, false);
+            bolsita.setPosition(posXPixel + 7, 260);
+            listaDeBolsaDeMoneda.add(bolsita);
         }
     }
 
     // Funcion que detecta los aros y calderos que ya pasaron y los va eliminando
     public void eliminarArosDesplazados(Charlie leon) {
-        double posx = leon.getX() + (leon.getWidth() / 2);
-        double posy = leon.getY() + leon.getHeight();
         // Iterar sobre la lista original en sentido inverso para evitar problemas al
         // eliminar elementos
         for (int i = listaDeArosIzquierdo.size() - 1; i >= 0; i--) {
             Aro aro = listaDeArosIzquierdo.get(i);
-            if (aro.getAroPosX() <= leon.getX() - 145 /* || (posx>7712 && posx<8200 && posy >= leon.getPISO()) */) {
+            if (aro.getX() <= leon.getX() - 145) {
                 listaDeArosIzquierdo.remove(i); // Eliminar el aro de la lista original
                 listaDeArosDerecho.remove(i); // Eliminar el aro de la lista original
             }
-
+        }
+        for(int i = listaDeBolsaDeMoneda.size() - 1; i >= 0; i--){
+            Money bolsita = listaDeBolsaDeMoneda.get(i);
+            if (bolsita.getX() <= leon.getX() - 136 || bolsita.getAspiroLaBolsita()){
+                listaDeBolsaDeMoneda.remove(i); // Eliminar la bolsa de moneda de la lista original
+            }
         }
     }
 
@@ -331,7 +346,7 @@ public class Nivel1 extends Nivel {
     // Funcion para crear calderos
     public void crearCalderos() {
         String imagen = "imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png";
-        int[] posicionesX = { 1550, 2390, 3180, 3990, 4795, 5600, 6400, 7160, 7970 };
+        int[] posicionesX = {1550, 2390, 3180, 3990, 4795, 5600, 6400, 7160, 7970 };
         int posY = 435;
         for (int posX : posicionesX) {
             CalderoDeFuego caldero = new CalderoDeFuego(imagen);

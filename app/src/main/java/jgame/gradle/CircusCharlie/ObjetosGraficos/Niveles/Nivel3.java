@@ -2,7 +2,6 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.CircusCharlie;
 import jgame.gradle.CircusCharlie.FXPlayer;
-import jgame.gradle.CircusCharlie.Fondo;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 
@@ -48,7 +47,7 @@ public class Nivel3 extends Nivel{
         int posXPixel = 185;
 
         Pelota primerPelota = new Pelota(imagenPelota, true);
-        primerPelota.setPosition(posXPixel);
+        primerPelota.setPosition(posXPixel, 471);
         listaDePelotas.add(primerPelota);
         for (int i = 0; i < 14; i++){
             // Generar un número aleatorio entre 2 y 5
@@ -58,13 +57,13 @@ public class Nivel3 extends Nivel{
                 numeroAleatorioPosX = 350 + (int)(Math.random() * ((600 - 350) + 1));
                 posXPixel += numeroAleatorioPosX;
                 Pelota pelotita = new Pelota(imagenPelota, false);
-                pelotita.setPosition(posXPixel);
+                pelotita.setPosition(posXPixel, 471);
                 listaDePelotas.add(pelotita);
             }
             numeroAleatorioPosX = 250 + (int)(Math.random() * ((400 - 250) + 1));
             posXPixel += numeroAleatorioPosX;
             Pelota pelotita = new Pelota(imagenPelota, false);
-            pelotita.setPosition(posXPixel);
+            pelotita.setPosition(posXPixel, 471);
             listaDePelotas.add(pelotita);
         } 
     }
@@ -96,10 +95,10 @@ public class Nivel3 extends Nivel{
         }
         for (Pelota pelotita : listaDePelotas) {
             if (pelotita.getEstaMontado()) {
-                pelotita.setPosition(pelotita.getPosX());
+                pelotita.setPosition(pelotita.getX(), pelotita.getY());
             } else {
                 pelotita.update(delta);
-                pelotita.setPosition(pelotita.getPosX() - 0.9);
+                pelotita.setPosition(pelotita.getX() - 0.9, pelotita.getY());
             }
         }
         
@@ -130,6 +129,7 @@ public class Nivel3 extends Nivel{
             pelotita1.update(delta);
             for (int j = i + 1; j < listaDePelotas.size(); j++) {
                 Pelota pelotita2 = listaDePelotas.get(j);
+                pelotita2.update(delta);
                 if (DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)) {
                     // Pelotas colisionaron, ajustar la velocidad
                     pelotita1.leftMax(14);
