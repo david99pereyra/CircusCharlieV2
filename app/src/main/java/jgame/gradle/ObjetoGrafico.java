@@ -1,8 +1,6 @@
 package jgame.gradle;
 
 import java.awt.*;
-import java.awt.geom.*;
-
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
@@ -14,12 +12,12 @@ public class ObjetoGrafico {
 	protected double positionY = 0;
 	
     public ObjetoGrafico(String filename) {
-    		try {
-				imagen= ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
+		try {
+			imagen= ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
 
-			} catch (IOException e) {
-				System.out.println("ZAS! en ObjectoGrafico "+e);
-			}
+		} catch (IOException e) {
+			System.out.println("ZAS! en ObjectoGrafico "+e);
+		}
     }
 
 	public int getWidth(){
@@ -35,9 +33,14 @@ public class ObjetoGrafico {
 		this.positionY = y;
 	}
 
-   	public void display(Graphics2D g2) {
+	public void setPosition(double x,double y){
+		this.positionX = x;
+		this.positionY = y;
+	}
+
+	public void display(Graphics2D g2) {
 		g2.drawImage(imagen,(int) this.positionX,(int) this.positionY,null);
-  	}
+	}
 
 	public double getX(){
 		return positionX;

@@ -12,11 +12,10 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 
 public class MonoMarron extends ObjetoGrafico {
-    public double posX = 800, idx = 0;
-    public final int posY = 240;
+    public double idx = 0;
     private double velocityX;
     private boolean isStopped;
-    private final long stopDuration = 200; // Duración en milisegundos que el mono se detiene
+    private final int stopDuration = 1000; // Duración en milisegundos que el mono se detiene
     BufferedImage imagen1, imagen2, imagen3;
     private ArrayList<BufferedImage> imageMonoMarron = new ArrayList<>();
     private int indiceImagenActualMonoMarron = 0;
@@ -37,6 +36,8 @@ public class MonoMarron extends ObjetoGrafico {
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {
+        double posX = this.getX();
+        int posY = (int) this.getY();
         if (!imageMonoMarron.isEmpty()){
             BufferedImage imagenActualMonoMarron = imageMonoMarron.get(indiceImagenActualMonoMarron);
             if (imagenActualMonoMarron != null){
@@ -59,7 +60,8 @@ public class MonoMarron extends ObjetoGrafico {
         }
     }
 
-        public void update(double delta) {
+    public void update(double delta) {
+        double posX = this.getX();
         // Solo actualizar la posición si no está detenido
         if (!isStopped) {
             posX += velocityX * delta;
@@ -72,7 +74,6 @@ public class MonoMarron extends ObjetoGrafico {
         if (!isStopped) {
             isStopped = true;
             velocityX = 0; // Detén el movimiento en X al detenerse
-
             // Programa la reanudación del movimiento después de stopDuration milisegundos
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -82,15 +83,5 @@ public class MonoMarron extends ObjetoGrafico {
                 }
             }, stopDuration);
         }
-    }
-
-    public void setPosition(double x){
-        this.posX = x;
-    }
-    public double getX(){
-        return this.posX;
-    }
-    public double getY(){
-        return this.posY;
     }
 }

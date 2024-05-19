@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 
 public class CalderoDeFuego extends ObjetoGrafico {
-    private double posX, idx;
-    private int posY;
+    private double idx;
     private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
     
@@ -28,41 +27,15 @@ public class CalderoDeFuego extends ObjetoGrafico {
         }
     }
 
-    public void setPosition(double x, int y) {
-        this.posX = x;
-        this.posY = y;
-    }
-    
-    public double getPosX() {
-        return this.posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-    
-    public int getPosY() {
-        return this.posY;
-    }
-
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {
+        double posX = getX();
+        int posY = (int) getY();
         if (!imagenes.isEmpty()){
             BufferedImage imagenActualMonoMarron = imagenes.get(indiceImagenActual);
             if (imagenActualMonoMarron != null){
                 g.drawImage(imagenActualMonoMarron, (int) Math.round(posX), posY, null);
             }
-        }
-    }
-
-    public void SwapImage(){
-        while (true) {
-            try{
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del Mono Marron", ex);
-            }
-            indiceImagenActual = (indiceImagenActual + 1) % imagenes.size();
         }
     }
 

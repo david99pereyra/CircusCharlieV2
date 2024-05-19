@@ -1,7 +1,6 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,11 +12,10 @@ import jgame.gradle.CircusCharlie.ObjetoGrafico;
 public class Aro extends ObjetoGrafico{
 
     BufferedImage imagen1, imagen2, imagen3, imagen4, imagen5, imagen6,imagen7, imagen8;
-    public double posX = 800, idx = 0;
-    public final int posY = 217;
-    private ArrayList<BufferedImage> imageAroGrande = new ArrayList<>();
+    public double idx = 0;
+    private ArrayList<BufferedImage> imageAroGrandeIzquierdo = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroGrandeDerecho = new ArrayList<>();
-    private ArrayList<BufferedImage> imageAroChico = new ArrayList<>();
+    private ArrayList<BufferedImage> imageAroChicoIzquierdo = new ArrayList<>();
     private ArrayList<BufferedImage> imageAroChicoDerecho = new ArrayList<>();
     private int indiceImagenActualAroGrande = 0, indiceImagenActualAroChico = 0;
     public boolean verificarTamaño; //True es para saber si es el AroGrande y false si es Aro Chico
@@ -29,9 +27,9 @@ public class Aro extends ObjetoGrafico{
         try{
             if (imagen1 == null && imagen2 == null){
                 imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png")));
-                imageAroGrande.add(imagen1);
+                imageAroGrandeIzquierdo.add(imagen1);
                 imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego2Izquierda.png")));
-                imageAroGrande.add(imagen2);
+                imageAroGrandeIzquierdo.add(imagen2);
             }
             if (imagen3 == null && imagen4 == null){
                 imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png")));
@@ -41,9 +39,9 @@ public class Aro extends ObjetoGrafico{
             }
             if (imagen5 == null && imagen6 == null){
                 imagen5 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Izquierdo.png")));
-                imageAroChico.add(imagen5);
+                imageAroChicoIzquierdo.add(imagen5);
                 imagen6 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico2Izquierdo.png")));
-                imageAroChico.add(imagen6);
+                imageAroChicoIzquierdo.add(imagen6);
             }
             if (imagen7 == null && imagen8  == null){
                 imagen7 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png")));
@@ -58,27 +56,31 @@ public class Aro extends ObjetoGrafico{
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {
-        if (!imageAroGrande.isEmpty() && verificarTamaño == true){
-            BufferedImage imagenActualAroGrande = imageAroGrande.get(indiceImagenActualAroGrande);
+        double posX = getX();
+        int posY = (int) getY();
+        if (!imageAroGrandeIzquierdo.isEmpty() && this.verificarTamaño == true){
+            BufferedImage imagenActualAroGrande = imageAroGrandeIzquierdo.get(indiceImagenActualAroGrande);
             if (imagenActualAroGrande != null){
                 g.drawImage(imagenActualAroGrande, (int) Math.round(posX), posY, null);
             }
         }
-        if (!imageAroChico.isEmpty() && verificarTamaño == false){
-            BufferedImage imagenActualAroChico = imageAroChico.get(indiceImagenActualAroChico);
+        if (!imageAroChicoIzquierdo.isEmpty() && this.verificarTamaño == false){
+            BufferedImage imagenActualAroChico = imageAroChicoIzquierdo.get(indiceImagenActualAroChico);
             if (imagenActualAroChico != null){
                 g.drawImage(imagenActualAroChico, (int) Math.round(posX), posY, null);
             }
         }
     }
     public void display1(Graphics2D g) {
-        if (!imageAroGrandeDerecho.isEmpty() && verificarTamaño == true){
+        double posX = getX();
+        int posY = (int) getY();
+        if (!imageAroGrandeDerecho.isEmpty() && this.verificarTamaño == true){
             BufferedImage imagenActualAroGrandeDerecho = imageAroGrandeDerecho.get(indiceImagenActualAroGrande);
             if (imagenActualAroGrandeDerecho != null){
                 g.drawImage(imagenActualAroGrandeDerecho, (int) Math.round(posX+40), posY, null);
             }
         }
-        if (!imageAroChicoDerecho.isEmpty() && verificarTamaño == false){
+        if (!imageAroChicoDerecho.isEmpty() && this.verificarTamaño == false){
             BufferedImage imagenActualAroChicoDerecho = imageAroChicoDerecho.get(indiceImagenActualAroChico);
             if (imagenActualAroChicoDerecho != null){
                 g.drawImage(imagenActualAroChicoDerecho, (int) Math.round(posX+40), posY, null);
@@ -86,41 +88,13 @@ public class Aro extends ObjetoGrafico{
         }
     }
 
-    public void SwapImage(){
-        while (true) {
-            try{
-                Thread.sleep(300);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del caldero", ex);
-            }
-            indiceImagenActualAroGrande = (indiceImagenActualAroGrande + 1) % imageAroGrande.size();
-            indiceImagenActualAroChico = (indiceImagenActualAroChico + 1) % imageAroChico.size();
-        }
-    }
-
     public void update(double delta){
         idx += 0.10;
         if(this.verificarTamaño == true){
-            indiceImagenActualAroGrande = ((int)idx) % imageAroGrande.size();
+            indiceImagenActualAroGrande = ((int)idx) % imageAroGrandeIzquierdo.size();
         }
         if(this.verificarTamaño == false){
-            indiceImagenActualAroChico = ((int)idx) % imageAroChico.size();
+            indiceImagenActualAroChico = ((int)idx) % imageAroChicoIzquierdo.size();
         }
-    }
-
-    public void setPosition(double x, int y){
-        this.posX = x;
-    }
-
-    public double getAroPosX (){
-        return posX;
-    }
-
-    public int getAroPosY(){
-        return posY;
-    }
-
-    public void setAroGrandePosX(double posX){
-        this.posX = posX;
     }
 }

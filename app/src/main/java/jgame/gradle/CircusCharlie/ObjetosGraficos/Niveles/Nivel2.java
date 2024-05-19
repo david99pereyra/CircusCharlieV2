@@ -65,7 +65,7 @@ public class Nivel2 extends Nivel{
         if(!colisiono){          
             for (MonoAzul mA : listaDeMonosAzul){
                 mA.update(delta);
-                mA.setPosition(mA.getX() - 2.5);
+                mA.setPosition(mA.getX() - 2.5, mA.getY());
                 if(DetectorColiciones.detectarMonoAzul(mA, charlie)){
                     reiniciarJuegoXColisiones(charlie.getX(),charlie);
                 }
@@ -73,7 +73,7 @@ public class Nivel2 extends Nivel{
             for (MonoMarron mM : listaDeMonosMarron){
                 if(!mM.getIsStopped()){
                     mM.update(delta);
-                    mM.setPosition(mM.getX() - 1);
+                    mM.setPosition(mM.getX() - 1.5, mM.getY());
                 }
                 if(DetectorColiciones.detectarMonoNormal(mM, charlie)){
                     reiniciarJuegoXColisiones(charlie.getX(),charlie);
@@ -120,7 +120,7 @@ public class Nivel2 extends Nivel{
         int posXPixel = 850;
 
         MonoMarron primerMonito = new MonoMarron(imagenMonoMarron);
-        primerMonito.setPosition(posXPixel, 220);
+        primerMonito.setPosition(posXPixel, 240);
         listaDeMonosMarron.add(primerMonito);
         for (int i = 0; i < 14; i++){
             // Generar un número aleatorio entre 2 y 5
@@ -130,13 +130,13 @@ public class Nivel2 extends Nivel{
                 numeroAleatorioPosX = 350 + (int)(Math.random() * ((600 - 350) + 1));
                 posXPixel += numeroAleatorioPosX;
                 MonoMarron monitoMarron = new MonoMarron(imagenMonoMarron);
-                monitoMarron.setPosition(posXPixel);
+                monitoMarron.setPosition(posXPixel, 240);
                 listaDeMonosMarron.add(monitoMarron);
             }
             numeroAleatorioPosX = 250 + (int)(Math.random() * ((400 - 250) + 1));
             posXPixel += numeroAleatorioPosX;
             MonoAzul monitoAzul = new MonoAzul(imagenMonoAzul);
-            monitoAzul.setPosition(posXPixel);
+            monitoAzul.setPosition(posXPixel, 240);
             listaDeMonosAzul.add(monitoAzul);
         }        
     }

@@ -18,9 +18,9 @@ import java.util.*;
 import java.text.*;
 
 public class CircusCharlie extends JGame {
-    private boolean level1 = true, level2 = false, level3 = false, inicioNivel = false;
-    // private static boolean level1 = false, level2 = true, level3 =false;
-    // private static boolean level1 = false, level2 = false, level3 =true;
+    // private boolean level1 = true, level2 = false, level3 = false, inicioNivel = false;
+    // private static boolean level1 = false, level2 = true, level3 = false, inicioNivel = false;
+    private static boolean level1 = false, level2 = false, level3 = true, inicioNivel = false;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
     Camara cam;
@@ -69,7 +69,7 @@ public class CircusCharlie extends JGame {
 
             if (level2) { // Aca va lo del nivel 2
                 charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-                Nivel1.setCharlie(charlie);
+                Nivel2.setCharlie(charlie);
                 nivel2 = new Nivel2(this);
                 cam = new Camara(0, -26);
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png");
@@ -78,7 +78,7 @@ public class CircusCharlie extends JGame {
 
             if (level3) { // Aca va lo del nivel 3
                 charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-                Nivel1.setCharlie(charlie);
+                Nivel3.setCharlie(charlie);
                 nivel3 = new Nivel3(this);
                 cam = new Camara(0, 0);
                 fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
@@ -111,7 +111,7 @@ public class CircusCharlie extends JGame {
             }, 3000);
             
         } else {
-            if(!nivel1.colisiono()){
+            // if(nivel1 != null && !nivel1.colisiono() && inicioNivel){
                 if (level1) { // Aca va lo del nivel 1
                     Keyboard keyboard = getKeyboard();
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
@@ -158,7 +158,7 @@ public class CircusCharlie extends JGame {
                 if (level2) { // Aca va lo del nivel 2
                     Keyboard keyboard = getKeyboard();
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-                        if (charlie.getX() > 10 && Nivel2.llegoAMeta() == false) {
+                        if (charlie.getX() > 10){// && Nivel2.llegoAMeta() == false) {
                             charlie.left();
                         }
                     }
@@ -169,7 +169,6 @@ public class CircusCharlie extends JGame {
                     }
                     if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
                         charlie.setPosition(5000 + 174, charlie.getY());
-                        leon.setPosition(5000 + 143, leon.getY());
                     }
                     // check the list of key events for a pressed escape key
                     LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
@@ -193,13 +192,12 @@ public class CircusCharlie extends JGame {
                     charlie.update(delta);
                     cam.seguirPersonaje(charlie,143); /// la camara sigue al Personaje
                 }
-                
                 if (level3) { // Aca va lo del nivel 3
                     Keyboard keyboard = getKeyboard();
                     Pelota pelotaActual = nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
                     
                     // Movimiento de Charlie hacia la izquierda y la derecha
-                    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !nivel3.llegoAMeta()) {
+                    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !Nivel3.llegoAMeta()) {
                         if (charlie.getX() > 10) {
                             charlie.left();
                             if (charlie.getEnLaPelota() && pelotaActual != null) {
@@ -207,7 +205,7 @@ public class CircusCharlie extends JGame {
                             }
                         }
                     }
-                    if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !nivel3.llegoAMeta()) {
+                    if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && !Nivel3.llegoAMeta()) {
                         if (charlie.getX() + charlie.getWidth() < fondo.getWidth()) {
                             charlie.right();
                             if (charlie.getEnLaPelota() && pelotaActual != null) {
@@ -244,7 +242,7 @@ public class CircusCharlie extends JGame {
                 // charlie.applyForce(gravedad);
             }
         }
-    }
+    // }
 
     public void gameDraw(Graphics2D g) {
         if (level1) {
@@ -263,10 +261,9 @@ public class CircusCharlie extends JGame {
         fondo.display(g);
         m.display(g);
 
-        nivel1.gameDraw(g);
+        // nivel1.gameDraw(g);
         // nivel2.gameDraw(g);
-
-        //nivel3.gameDraw(g);
+        nivel3.gameDraw(g);
 
         g.translate(-cam.getX(), -cam.getY());
         charlie.displayScore(g);
