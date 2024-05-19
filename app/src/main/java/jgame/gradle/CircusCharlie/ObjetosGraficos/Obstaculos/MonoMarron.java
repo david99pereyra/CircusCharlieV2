@@ -23,12 +23,14 @@ public class MonoMarron extends ObjetoGrafico {
     public MonoMarron(String filename) {
         super(filename);
         try{
-            imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-            imageMonoMarron.add(imagen1);
-            imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono2.png")));
-            imageMonoMarron.add(imagen2);
-            imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono3.png")));
-            imageMonoMarron.add(imagen3);
+            if(imageMonoMarron.isEmpty()){
+                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageMonoMarron.add(imagen1);
+                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono2.png")));
+                imageMonoMarron.add(imagen2);
+                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono3.png")));
+                imageMonoMarron.add(imagen3);
+            }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }

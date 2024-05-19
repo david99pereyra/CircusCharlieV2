@@ -24,14 +24,16 @@ public class Pelota extends ObjetoGrafico{
         this.fueMontada = montado;
         this.estaMontado = montado;
         try{
-            imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-            imagePelota.add(imagen1);
-            imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota2.png")));
-            imagePelota.add(imagen2);
-            imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota3.png")));
-            imagePelota.add(imagen3);
-            imagen4 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota4.png")));
-            imagePelota.add(imagen4);
+            if(imagePelota.isEmpty()){
+                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imagePelota.add(imagen1);
+                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota2.png")));
+                imagePelota.add(imagen2);
+                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota3.png")));
+                imagePelota.add(imagen3);
+                imagen4 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota4.png")));
+                imagePelota.add(imagen4);
+            }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }

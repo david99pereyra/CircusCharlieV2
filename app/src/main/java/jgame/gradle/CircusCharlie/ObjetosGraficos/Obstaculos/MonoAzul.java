@@ -20,12 +20,14 @@ public class MonoAzul extends ObjetoGrafico{
     public MonoAzul(String filename) {
         super(filename);
         try{
-            imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-            imageMonoAzul.add(imagen1);
-            imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta2.png")));
-            imageMonoAzul.add(imagen2);
-            imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta3.png")));
-            imageMonoAzul.add(imagen3);
+            if(imageMonoAzul.isEmpty()){
+                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageMonoAzul.add(imagen1);
+                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta2.png")));
+                imageMonoAzul.add(imagen2);
+                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta3.png")));
+                imageMonoAzul.add(imagen3);
+            }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
         }
