@@ -3,10 +3,12 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 
-import jgame.gradle.CircusCharlie.CircusCharlie;
+import jgame.gradle.CircusCharlie.*;
 
 public abstract class Nivel{
     protected CircusCharlie circusCharlie;
+    Camara cam;
+    Fondo fondo;
     public Nivel(CircusCharlie cc){
         this.circusCharlie = cc;
     }

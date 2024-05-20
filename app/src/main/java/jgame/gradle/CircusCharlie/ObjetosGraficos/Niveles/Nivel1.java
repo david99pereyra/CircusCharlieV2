@@ -18,7 +18,7 @@ public class Nivel1 extends Nivel {
     private ArrayList<Money> listaDeBolsaDeMoneda = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar, colisiono = false, accion = false, mostrarNivel = false, restar=false;
     private static boolean banderaScoreAro, banderaScoreCaldero;
-    private boolean mostrarAros = true;
+    private boolean mostrarAros = true, pasoXAro = false, pasoXCaldero = false;
     public static Charlie charlie, leon;
     Date dInit = new Date();
     Date dReloj;
@@ -109,10 +109,15 @@ public class Nivel1 extends Nivel {
         }
         for(Money bolsita : listaDeBolsaDeMoneda){
             // bolsita.update(delta);
-            bolsita.setPosition(bolsita.getX() - 0.6, 260);
+            bolsita.setPosition(bolsita.getX() - 1.2, 260);
             if(DetectorColiciones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
-                charlie.sumarPuntaje(500);
+                if(pasoXCaldero){
+                    charlie.sumarPuntaje(1000);
+                }else {
+                    charlie.sumarPuntaje(500);
+                }
                 bolsita.setAspiroLaBolsita(true);
+                circusCharlie.setTempScore(500, 180, 250);
             }
         }
         // Movimiento de los aros
@@ -142,8 +147,8 @@ public class Nivel1 extends Nivel {
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
+                pasoXAro = true;
                 if (!banderaScoreAro) {
-                    charlie.sumarPuntaje(100);
                     banderaScoreAro = true;
                     circusCharlie.setTempScore(100, 180, 250);
                 }
@@ -158,11 +163,28 @@ public class Nivel1 extends Nivel {
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
             } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
+                pasoXCaldero = true;
                 if (!banderaScoreCaldero) {
-                    charlie.sumarPuntaje(100);
                     banderaScoreCaldero = true;
                     circusCharlie.setTempScore(200, 180, 250);
                 }
+            }
+        }
+        if(pasoXAro && !pasoXCaldero){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(100);
+                pasoXAro = false;
+            }
+        }else if(pasoXCaldero && !pasoXAro){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(200);
+                pasoXCaldero = false;
+            }
+        }else if(pasoXAro && pasoXCaldero){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(400);
+                pasoXCaldero = false;
+                pasoXAro = false;
             }
         }
         // Si charlie llega a la meta
@@ -177,6 +199,7 @@ public class Nivel1 extends Nivel {
             charlie.updateLlegadaMeta(delta);
         }
     }
+    
 
     public void choqueDelPersonaje(Charlie charlie, Charlie leon) {
         FXPlayer.EVENTO1.stop();
@@ -221,13 +244,13 @@ public class Nivel1 extends Nivel {
             }
             leon.display(g);
             charlie.display(g);
+            for(Money bolsita : listaDeBolsaDeMoneda){
+                bolsita.display(g);
+            }
             if(mostrarAros){
                 for (Aro aro1 : listaDeArosDerecho) {
                     aro1.display1(g);
                 }
-            }
-            for(Money bolsita : listaDeBolsaDeMoneda){
-                bolsita.display(g);
             }
 
         }else{
@@ -325,6 +348,7 @@ public class Nivel1 extends Nivel {
         // Reinicia el juego en el checkpoint más cercano
         int newX = checkpointsEjeX[pos];
         mostrarNivel = true;
+        CircusCharlie.inicioNivel(false);
         reiniciarJuego(newX, charlie, leon);
     }
 
