@@ -207,6 +207,7 @@ public class CircusCharlie extends JGame {
                             charlie.cambioImagen2();
                             if (charlie.getEnLaPelota() && pelotaActual != null) {
                                 pelotaActual.left();
+                                pelotaActual.update(delta);
                             }
                         }
                     }
@@ -216,6 +217,7 @@ public class CircusCharlie extends JGame {
                             charlie.cambioImagen1();
                             if (charlie.getEnLaPelota() && pelotaActual != null) {
                                 pelotaActual.right();
+                                pelotaActual.update(delta);
                             }
                         }
                     }
@@ -229,7 +231,6 @@ public class CircusCharlie extends JGame {
                             if (!Nivel3.llegoAMeta()) {
                                 charlie.jump();
                                 if (pelotaActual != null) {
-                                    pelotaActual.setFueMontada(true);
                                     pelotaActual.setEstaMontado(false);
                                 }
                                 charlie.setEnLaPelota(false);
