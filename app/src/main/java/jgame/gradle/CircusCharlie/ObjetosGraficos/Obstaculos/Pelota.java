@@ -91,7 +91,7 @@ public class Pelota extends ObjetoGrafico{
     }
 
     public void update(double delta){
-        idx += 0.14;
+        idx += 0.12;
         indiceImagenActualPelota = ((int)idx) % imagePelota.size();
     }
 
