@@ -80,7 +80,6 @@ public class Nivel3 extends Nivel{
         double posy = charlie.getY()+charlie.getHeight();
         if(posx > 6464 && charlie.getY() < 420){
             charlie.setPISO(407);
-            
             if(charlie.getY() >= charlie.getPISO()){
                 llegoAMeta = true;
             }
@@ -94,46 +93,56 @@ public class Nivel3 extends Nivel{
             charlie.setPISO(430);
         }
         for (Pelota pelotita : listaDePelotas) {
-            if (pelotita.getEstaMontado()) {
-                pelotita.setPosition(pelotita.getX(), pelotita.getY());
-            } else {
+            if (!pelotita.getEstaMontado() && pelotita.getChocarContraotros()) {
                 pelotita.update(delta);
                 pelotita.setPosition(pelotita.getX() - 0.9, pelotita.getY());
             }
+            
         }
-        
-        // Detectar si Charlie está en la pelota
+        // Detectar si Charlie está en la pelota y actualizar estado
+        boolean charlieEnPelota = false;
         for (Pelota pelotita : listaDePelotas) {
             if (DetectorColiciones.detectarCharlieParadoSobrePelota(pelotita, charlie)) {
                 charlie.setEnLaPelota(true);
                 pelotita.setEstaMontado(true);
-                System.out.println("Charlie está montado en una pelota");
                 charlie.setPISO(407);
+                charlieEnPelota = true;
+            } else {
+                pelotita.setEstaMontado(false);
             }
         }
-        if(!charlie.getEnLaPelota()){
-            charlie.setVelocidadCaida(charlie.getGravedad() * delta);
-            charlie.setPosition(charlie.getX(), charlie.getY() + charlie.getVelocidadCaida() * delta);
-            if (charlie.getY() >= charlie.getPISO()) {
-                charlie.setPosition(charlie.getX(), charlie.getPISO());
-                charlie.setVelocidadCaida(0);
-                reiniciarJuegoXColisiones(charlie.getX(), charlie);            
-            }
-        }else{
-            charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
-        } 
+        charlie.setEnLaPelota(charlieEnPelota);
     
-        // Ejemplo de detectar colisiones entre pelotas (si es necesario)
+        if (!charlie.getEnLaPelota()) {
+            charlie.setVelocidadCaida(charlie.getGravedad() * delta);
+            if (charlie.getY() >= 550) {
+                reiniciarJuegoXColisiones(charlie.getX(), charlie);
+                charlie.setVelocidadCaida(0);
+                Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
+                nuevaPelota.setPosition(charlie.getX(), 471);
+                listaDePelotas.add(nuevaPelota);
+            }
+        } else {
+            charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
+        }
+        for (int i = 0; i < listaDePelotas.size(); i++){
+            Pelota pelotita1 = listaDePelotas.get(i);
+            for (int j = i + 1; j < listaDePelotas.size(); j++){
+                Pelota pelotita2 = listaDePelotas.get(j);
+                if(DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)){
+                        pelotita1.leftMax(10);  // Pelotita1 a la izquierda
+                        pelotita2.leftMax(16); // Pelotita2 a la derecha
+                }
+            }
+        }
+        // Detectar colisiones entre pelotas
         for (int i = 0; i < listaDePelotas.size(); i++) {
             Pelota pelotita1 = listaDePelotas.get(i);
-            pelotita1.update(delta);
             for (int j = i + 1; j < listaDePelotas.size(); j++) {
                 Pelota pelotita2 = listaDePelotas.get(j);
-                pelotita2.update(delta);
                 if (DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)) {
-                    // Pelotas colisionaron, ajustar la velocidad
-                    pelotita1.leftMax(14);
-                    pelotita2.leftMax(12);
+                    pelotita1.setChocarContraotros(true);
+                    pelotita2.setChocarContraotros(true);
                 }
             }
         }

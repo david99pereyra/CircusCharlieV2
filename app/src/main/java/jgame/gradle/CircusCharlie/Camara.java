@@ -19,11 +19,23 @@ public class Camara {
 		if (this.x>0){
 			this.x=0;
 		}
-
 		if(this.x < -(m.getWidth()-resX)){
 			this.x = -(m.getWidth()-resX);
 		}
 	}
+
+	public void seguirPersonaje(Leon obj, int index){
+		Mundo m=Mundo.getInstance();
+		//this.x = -b.getX()+(m.getWidth()/8);
+		this.x = -obj.getX()+index;
+		if (this.x>0){
+			this.x=0;
+		}
+		if(this.x < -(m.getWidth()-resX)){
+			this.x = -(m.getWidth()-resX);
+		}
+	}
+	
 	public void setViewPort(double x,double y){
 		setRegionVisible(x,y);
 	}

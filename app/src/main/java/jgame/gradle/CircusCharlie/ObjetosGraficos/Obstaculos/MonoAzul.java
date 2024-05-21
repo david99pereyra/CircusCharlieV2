@@ -45,21 +45,10 @@ public class MonoAzul extends ObjetoGrafico{
         }
     }
 
-    public void SwapImage(){
-        while (true) {
-            try{
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del Mono Marron", ex);
-            }
-            indiceImagenActualMonoAzul = (indiceImagenActualMonoAzul + 1) % imageMonoAzul.size();
-        }
-    }
-
     // Parte que nose si anda de blackbox
     public void startJump() {
         if (onGround) {
-            velocityY = -28;
+            velocityY = -10;
             onGround = false;
             isJumping = true;
         }
