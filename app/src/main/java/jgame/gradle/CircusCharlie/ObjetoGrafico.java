@@ -8,8 +8,10 @@ import java.io.*;
 public class ObjetoGrafico {
 	protected BufferedImage imagen = null;
 
-	double positionX = 0;
-	double positionY = 0;
+	public double positionX = 0;
+	public double positionY = 0;
+	private int height;
+	private int width;
 	
     public ObjetoGrafico(String filename) {
 		try {
@@ -31,6 +33,13 @@ public class ObjetoGrafico {
 	
 	public int getHeight(){
 		return imagen.getHeight();
+	}
+
+	public void setHeight(int height){
+		this.height = height;
+	} 
+	public void setWidth(int width){
+		this.width = width;
 	}
 
 	public void setPosition(double d,double e){

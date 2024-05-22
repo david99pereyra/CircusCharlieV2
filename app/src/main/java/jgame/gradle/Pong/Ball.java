@@ -1,69 +1,46 @@
 package jgame.gradle.Pong;
+import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.*;
 
-public class Ball extends Rectangle {
 
-    private Random random;
-    private int yVelocity;
-    private int xVelocity;
+public class Ball extends ObjetoGrafico {
+    private final int RADIO = 10;
+    private int dx = 5;
+    private int dy = 5;
     private int initialSpeed = 2;
+    private Random random = new Random();
 
-    public int getYVelocity() {
-        return this.yVelocity;
-    }
-
-    public void setYVelocity(int yVelocity) {
-        this.yVelocity = yVelocity;
-    }
-
-    public int getXVelocity() {
-        return this.xVelocity;
+    public Ball(int x, int y){
+        this.positionX = x;
+        this.positionY = y;
+        this.setWidth(RADIO);
     }
 
-    public void setXVelocity(int xVelocity) {
-        this.xVelocity = xVelocity;
+    public void mover() {
+        this.positionX += dx;
+        this.positionY += dy;
     }
 
-    public int getInitialSpeed() {
-        return this.initialSpeed;
+    public void rebotarHorizontal() {
+        dx = -dx;
     }
 
-    public void setInitialSpeed(int initialSpeed) {
-        this.initialSpeed = initialSpeed;
-    }
-    
-    public Ball(int x, int y, int width, int height){
-        super(x, y, width, height);
-        random = new Random();
-        int randomXDirection = random.nextInt(2);
-        if(randomXDirection == 0){
-            randomXDirection--;
-        }
-        setXDirection(randomXDirection * initialSpeed);
-
-        int randomYDirection = random.nextInt(2);
-        if(randomYDirection == 0){
-            randomYDirection--;
-        }
-        setYDirection(randomYDirection * initialSpeed);
-    }
-    
-    public void setXDirection(int ramdomXDirection){
-        xVelocity = ramdomXDirection;
+    public void rebotarVertical() {
+        dy = -dy;
     }
 
-    public void setYDirection(int ramdomYDirection){
-        yVelocity = ramdomYDirection;
+    public void rebotar(){
+        dx = -dx;
     }
 
-    public void move(){
-        x += xVelocity;
-        y += yVelocity;
+    public int getRadio(){
+        return RADIO;
     }
-    public void draw(Graphics g){
-        g.setColor(Color.white);
-        g.fillOval(x, y, width, height);
+
+    public Shape getGrafico(){
+        return new Ellipse2D.Double(positionX, positionY, RADIO * 2, RADIO * 2);
     }
 }
