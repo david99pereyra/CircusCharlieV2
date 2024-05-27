@@ -22,6 +22,7 @@ public enum FXPlayer {
   EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
   EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
   DERROTA("CircusCharlie/CircusCharlie(derrota).wav"),
+  VICTORIA("CircusCharlie/CircusCharlieSonidoVictoria.wav"),
   DRAGONBALL("CircusCharlie/DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
   DBRAP("CircusCharlie/DBRap.wav"),
   DBSUPER("CircusCharlie/DragonBallSuper.wav"),

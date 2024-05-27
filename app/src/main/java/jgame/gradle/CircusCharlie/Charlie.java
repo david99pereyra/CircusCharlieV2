@@ -43,7 +43,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	int direccionActual;
 	int estadoActual;
 
-	protected double velocityX = 5.0;
+	protected double velocityX = 4.0;
 	protected double velocityY = 0.0;
 	protected double gravity = 0.43;
 	protected double angulo=0.0;

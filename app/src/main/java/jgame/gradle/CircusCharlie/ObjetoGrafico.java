@@ -25,6 +25,14 @@ public class ObjetoGrafico {
 		this.imagen = imagen;
 	}
 
+	public void setImagen(String imagen){
+		try {
+			this.imagen = ImageIO.read(getClass().getClassLoader().getResourceAsStream(imagen));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public int getWidth(){
 		return imagen.getWidth();
 	}

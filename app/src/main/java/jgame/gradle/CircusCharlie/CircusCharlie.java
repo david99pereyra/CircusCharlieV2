@@ -14,19 +14,19 @@ import java.awt.event.*; //eventos
 import java.util.*;
 import java.text.*;
 public class CircusCharlie extends JGame {
-    // private boolean level1 = true, level2 = false, level3 = false;
-    // private static boolean level1 = false, level2 = true, level3 = false;
-    private static boolean level1 = false, level2 = false, level3 = true;
+    public final static int HEIGHT = 600;
+    public final static int WIDTH = 800;
     public static boolean inicioNivel = false;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
-    Camara cam;
-    Fondo fondo;
-    Charlie charlie;
+    public static Camara cam;
+    public static Fondo fondo;
+    public static Charlie charlie;
     private static Nivel nivelActual;
+    public static int nivel = 1;
     // Variables del level 1
     Nivel1 nivel1;
-    Charlie leon;
+    public static Charlie leon;
     // Variables del level 2
     Nivel2 nivel2;
     // Variables del level 3
@@ -46,40 +46,15 @@ public class CircusCharlie extends JGame {
 
     public CircusCharlie() {
         // call game constructor
-        super("AppCamaracharlie ", 800, 600);
-        // nivelactual = new Nivel1(charlie, leon, fondo);
+        super("AppCamaracharlie ", WIDTH, HEIGHT);
     }
 
     public void gameStartup() {
         Log.info(getClass().getSimpleName(), "Starting up game");
         Mundo m = Mundo.getInstance();
-        charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
         try {
-            if (level1) { // Aca va lo del nivel 1
-                leon = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
-                Nivel1.setCharlie(charlie);
-                Nivel1.setLeon(leon);
-                nivel1 = new Nivel1(this);
-                cam = new Camara(0, 0);
-                fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
-            } 
-
-            if (level2) { // Aca va lo del nivel 2
-                charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-                Nivel2.setCharlie(charlie);
-                nivel2 = new Nivel2(this);
-                cam = new Camara(0, -26);
-                fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png");
-                charlie.quieto();
-            }
-
-            if (level3) { // Aca va lo del nivel 3
-                charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-                Nivel3.setCharlie(charlie);
-                nivel3 = new Nivel3(this);
-                cam = new Camara(0, 0);
-                fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
-                charlie.quieto();
+            if(nivelActual == null){
+                nivelActual = new Nivel2(this);
             }
             cam.setRegionVisible(getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
@@ -88,15 +63,24 @@ public class CircusCharlie extends JGame {
             ex.printStackTrace();
         }
     }
-
-    // public void setNivel(Nivel state){
-    // nivelactual = state;
-    // }
+    public static void setFondo(Fondo fondo){
+        CircusCharlie.fondo = fondo;
+    }
+    public static void setCamara(Camara camara){
+        CircusCharlie.cam = camara;
+    }
+    public static void setCharlie(Charlie charlie){
+        CircusCharlie.charlie = charlie;
+    }
+    public static void setLeon(Charlie leon){
+        CircusCharlie.leon = leon;
+    }
 
     public void gameUpdate(double delta) {
         
         if (!inicioNivel) {
-            charlie.nivel(1);
+            // FXPlayer.VICTORIA.stop();
+            charlie.nivel(nivel);
             charlie.imagenNivel();
             
             Timer timer = new Timer();
@@ -108,8 +92,9 @@ public class CircusCharlie extends JGame {
             }, 3000);
             
         } else {
-            // if(nivel1 != null && !nivel1.colisiono() && inicioNivel){
-                if (level1) { // Aca va lo del nivel 1
+            if(!nivelActual.colisiono() && inicioNivel){
+                nivelActual.gameUpdate(delta);
+                if (nivelActual instanceof Nivel1) { // Aca va lo del nivel 1
                     Keyboard keyboard = getKeyboard();
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
                         if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
@@ -156,9 +141,8 @@ public class CircusCharlie extends JGame {
                     charlie.update(delta);
                     cam.seguirPersonaje(charlie,143); /// la camara sigue al Personaje
                     cam.seguirPersonaje(leon,143);
-                    nivel1.gameUpdate(delta);
                 }
-                if (level2) { // Aca va lo del nivel 2
+                if (nivelActual instanceof Nivel2) { // Aca va lo del nivel 2
                     Keyboard keyboard = getKeyboard();
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
                         if (charlie.getX() > 10){
@@ -193,13 +177,12 @@ public class CircusCharlie extends JGame {
                         }
                         
                     }
-                    nivel2.gameUpdate(delta);
                     charlie.update(delta);
-                    cam.seguirPersonaje(charlie,143); /// la camara sigue al Personaje
+                    cam.seguirPersonaje(charlie,180); /// la camara sigue al Personaje
                 }
-                if (level3) { // Aca va lo del nivel 3
+                if (nivelActual instanceof Nivel3) { // Aca va lo del nivel 3
                     Keyboard keyboard = getKeyboard();
-                    Pelota pelotaActual = nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
+                    Pelota pelotaActual = Nivel3.getPelotaEnLaQueEstaParadoCharlie(charlie); // Obtén la pelota actual en la que está Charlie
                     // Movimiento de Charlie hacia la izquierda y la derecha
                     if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && !Nivel3.llegoAMeta()) {
                         if (charlie.getX() > 10) {
@@ -242,23 +225,15 @@ public class CircusCharlie extends JGame {
                             stop();
                         }
                     }
-                    nivel3.gameUpdate(delta);
                     charlie.update(delta);
                     cam.seguirPersonaje(charlie,244); // la camara sigue al Personaje
                 }
                 // charlie.applyForce(gravedad);
             }
         }
-    // }
+    }
 
     public void gameDraw(Graphics2D g) {
-        if (level1) {
-        } // Aca va lo del nivel 1
-        if (level2) {
-        } // Aca va lo del nivel 2
-        if (level3) {
-        } // Aca va lo del nivel 3
-
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Mundo m = Mundo.getInstance();
@@ -267,10 +242,7 @@ public class CircusCharlie extends JGame {
 
         fondo.display(g);
         m.display(g);
-
-        // nivel1.gameDraw(g);
-        // nivel2.gameDraw(g);
-        nivel3.gameDraw(g);
+        nivelActual.gameDraw(g);
 
         g.translate(-cam.getX(), -cam.getY());
         charlie.displayScore(g);
@@ -286,10 +258,6 @@ public class CircusCharlie extends JGame {
 
     public static void changeState(Nivel state){
         CircusCharlie.nivelActual = state;
-    }
-
-    public Nivel getNivel (){
-        return nivelActual;
     }
 
     public void displayTempScore(Graphics2D g){
@@ -315,5 +283,12 @@ public class CircusCharlie extends JGame {
 
     public static void inicioNivel(boolean b){
         CircusCharlie.inicioNivel = b;
+    }
+
+    public static void setNivel(int nivelSiguiente){
+        CircusCharlie.nivel = nivelSiguiente;
+    }
+    public static int getNivel(){
+        return nivel;
     }
 }

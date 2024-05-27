@@ -22,7 +22,7 @@ public class Score extends ObjetoGrafico {
     private boolean descuentoBonusActivo = true;
 
     public Score() {
-        this.setPosition(10, 10);
+        this.setPosition(5, 10);
         iniciarTemporizador();
         cargarImagenVida();
     }
@@ -122,19 +122,19 @@ public class Score extends ObjetoGrafico {
 
     public void imagenNivel(){
         FontManager.getInstance();
-        BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(CircusCharlie.WIDTH+10, CircusCharlie.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         Graphics g = image.createGraphics();
 
         g.setColor(Color.black);
-        g.fillRect(0, 0, 800, 600);
+        g.fillRect(0, 0, CircusCharlie.WIDTH+10, CircusCharlie.HEIGHT);
         
         g.setColor(Color.WHITE);
         g.setFont(new Font("Pixel Emulator", Font.BOLD,30));
 
         String stateText = "STATE - " + this.state;
         int stateWidth = g.getFontMetrics().stringWidth(stateText);
-        int stateX = (800 - stateWidth)/2;
+        int stateX = (CircusCharlie.WIDTH - stateWidth)/2;
         //int stateY = (400 - stateWidth)/2;
         g.drawString(stateText, stateX, 300);
 

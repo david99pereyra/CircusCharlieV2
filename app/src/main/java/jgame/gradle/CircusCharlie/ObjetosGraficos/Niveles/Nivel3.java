@@ -1,7 +1,5 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
-import jgame.gradle.CircusCharlie.Charlie;
-import jgame.gradle.CircusCharlie.CircusCharlie;
-import jgame.gradle.CircusCharlie.FXPlayer;
+import jgame.gradle.CircusCharlie.*;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 
@@ -9,26 +7,38 @@ import java.util.*;
 import java.awt.Graphics2D;
 
 public class Nivel3 extends Nivel{
-    private ArrayList<Pelota> listaDePelotas = new ArrayList<>();
-    private static boolean llegoAMeta = false;
-    private boolean colisiono = false;
+    private static ArrayList<Pelota> listaDePelotas = new ArrayList<>();
     public static Charlie charlie;
+    private boolean accionEjecutar = false;
+    private static boolean llegoAMeta = false;
     Date dInit = new Date();
     Date dReloj;
     Date dAhora;
 
+    private Timer temporizador = new Timer();
+
     public Nivel3(CircusCharlie circusCharlie){
         super(circusCharlie);
+        Mundo m = Mundo.getInstance();
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO1.loop(); 
+            charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(430);
             charlie.setPosition(174, charlie.getPISO());
+            charlie.quieto();
+            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
+            cam = new Camara(0, 0);
+            cam.setRegionVisible(circusCharlie.getWidth(), 480);
+            m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
+            CircusCharlie.setCharlie(charlie);
+            CircusCharlie.setCamara(cam);
+            CircusCharlie.setFondo(fondo);
             //Crear las pelotas
             this.crearPelota();
         } catch (Exception e) {
-            System.out.println("ERROR");
+            System.out.println("ERROR 2");
             e.printStackTrace();
         }
     }
@@ -82,6 +92,20 @@ public class Nivel3 extends Nivel{
             charlie.setPISO(407);
             if(charlie.getY() >= charlie.getPISO()){
                 llegoAMeta = true;
+                charlie.sumarBonusScore();
+                temporizador.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!accionEjecutar) {
+                            System.out.println("esperando 2...");
+                            CircusCharlie.setNivel(CircusCharlie.getNivel()+1);
+                            Nivel1.setCharlie(charlie);
+                            CircusCharlie.inicioNivel(false);
+                            CircusCharlie.changeState(new Nivel1(circusCharlie));
+                            accionEjecutar = true;
+                        }
+                    }
+                }, 4000);
             }
             if(posx < 6525 && posy >= charlie.getPISO()){
                 charlie.setX(charlie.getX()+1);
@@ -182,12 +206,16 @@ public class Nivel3 extends Nivel{
         charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
     }
 
-    public Pelota getPelotaEnLaQueEstaParadoCharlie(Charlie charlie) {
+    public static Pelota getPelotaEnLaQueEstaParadoCharlie(Charlie charlie) {
         for (Pelota pelotita : listaDePelotas) {
             if (pelotita.isCharlieOnTop(charlie)) {
                 return pelotita;
             }
         }
         return null; // Si no está parado en ninguna pelota
+    }
+
+    public boolean colisiono() {
+        return colisiono;
     }
 }
