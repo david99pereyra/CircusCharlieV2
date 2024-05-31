@@ -17,13 +17,14 @@ public class JuegoCircusCharlie extends Juego{
 
     @Override
     public void run() {
-        CircusCharlie game = new CircusCharlie();
-        Thread t = new Thread(){
-            public void run(){
-                game.run(1.0 / 60.0);
-            }
-        };
-        t.start();
+        new PantallaInicioCC();
+        // CircusCharlie game = new CircusCharlie();
+        // Thread t = new Thread(){
+        //     public void run(){
+        //         game.run(1.0 / 60.0);
+        //     }
+        // };
+        // t.start();
         //System.exit(0); 
     }
     

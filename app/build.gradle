@@ -42,11 +42,13 @@ dependencies {
 application {
     // Define the main class for the application.
     //mainClass = 'jgame.gradle.App'
-    // mainClass = 'jgame.Main'
-    mainClass='jgame.gradle.CircusCharlie.CircusCharlie'
+    //mainClass = 'jgame.Main'
+    mainClass = 'jgame.gradle.CircusCharlie.SaveConfigDB'
+    // mainClass = 'jgame.gradle.CircusCharlie.ScoreManager'
+    // mainClass='jgame.gradle.CircusCharlie.CircusCharlie'
     //mainClass = 'jgame.gradle.AppCamaraHeroe'
     //mainClass = 'jgame.gradle.Juego02'
-    //mainClass = 'jgame.gradle.JuegoConDB'
+    // mainClass = 'jgame.gradle.JuegoConDB'
     //mainClass = 'jgame.gradle.LanzadorJuegos'
 }
 

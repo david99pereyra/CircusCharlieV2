@@ -11,7 +11,7 @@ public final class FontManager {
 
     private FontManager() {
       
-      	String[] tiposDeLetras={"CallOfOpsDutyIi-7Bgm4.ttf","SuperPixel-m2L8j.ttf","SnesItalic-1G9Be.ttf","PixelEmulator-xq08.ttf","PixelGamingRegular-d9w0g.ttf"};
+      	String[] tiposDeLetras={"CallOfOpsDutyIi-7Bgm4.ttf","SuperPixel-m2L8j.ttf","SnesItalic-1G9Be.ttf","PixelEmulator-xq08.ttf","PixelGamingRegular-d9w0g.ttf", "Deltarune.ttf"};
     	
     	try{
        		
