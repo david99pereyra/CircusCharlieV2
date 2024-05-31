@@ -1,6 +1,7 @@
 package jgame.gradle.Pong;
-import jgame.gradle.CircusCharlie.ObjetoGrafico;
-
+import jgame.gradle.Fondo;
+// import jgame.gradle.CircusCharlie.ObjetoGrafico;
+import jgame.gradle.CircusCharlie.*;
 import java.awt.*;
 
 public class Score extends ObjetoGrafico{
@@ -28,10 +29,10 @@ public class Score extends ObjetoGrafico{
         this.puntos =+ puntos;
     }
 
-    public void draw(Graphics2D g, Fondo fondito) {
+    public void draw(Graphics2D g, jgame.gradle.CircusCharlie.Fondo fondo) {
         g.setColor(Color.white);
         g.setFont(new Font("Consolas", Font.PLAIN, 60));
-        g.drawLine(fondito.getWidth() / 2, 0, fondito.getWidth() / 2, fondito.getHeight());
+        g.drawLine(fondo.getWidth() / 2, 0, fondo.getWidth() / 2, fondo.getHeight());
         g.drawString(String.valueOf(puntos / 10) + String.valueOf(puntos % 10), (int) positionX, 80);
     }
 

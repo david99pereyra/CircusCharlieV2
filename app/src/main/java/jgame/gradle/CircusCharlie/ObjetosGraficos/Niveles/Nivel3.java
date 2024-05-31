@@ -4,6 +4,7 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 
 import java.util.*;
+import com.entropyinteractive.Keyboard;
 import java.awt.Graphics2D;
 
 public class Nivel3 extends Nivel{
@@ -11,9 +12,6 @@ public class Nivel3 extends Nivel{
     public static Charlie charlie;
     private boolean accionEjecutar = false;
     private static boolean llegoAMeta = false;
-    Date dInit = new Date();
-    Date dReloj;
-    Date dAhora;
 
     private Timer temporizador = new Timer();
 
@@ -85,7 +83,9 @@ public class Nivel3 extends Nivel{
         charlie.display(g);
     }
     
-    public void gameUpdate(double delta){
+    public void gameUpdate(double delta, Keyboard keyboard){
+        // Metodo que muestra el funcionamiento de las teclas
+        super.movimientoTeclas(delta, keyboard);
         double posx = charlie.getX()+(charlie.getWidth()/2);
         double posy = charlie.getY()+charlie.getHeight();
         if(posx > 6464 && charlie.getY() < 420){
@@ -116,70 +116,16 @@ public class Nivel3 extends Nivel{
         else if(charlie.getX() < 6464 || charlie.getX()> 6586){
             charlie.setPISO(430);
         }
-        for (Pelota pelotita : listaDePelotas) {
-            if (!pelotita.getEstaMontado() && pelotita.getChocarContraotros()) {
-                pelotita.update(delta);
-                pelotita.setPosition(pelotita.getX() - 0.9, pelotita.getY());
-            }
-            
-        }
-        // Detectar si Charlie está en la pelota y actualizar estado
-        boolean charlieEnPelota = false;
-        for (Pelota pelotita : listaDePelotas) {
-            if (DetectorColiciones.detectarCharlieParadoSobrePelota(pelotita, charlie)) {
-                charlie.setEnLaPelota(true);
-                pelotita.setEstaMontado(true);
-                charlie.setPISO(407);
-                charlieEnPelota = true;
-            } else {
-                pelotita.setEstaMontado(false);
-            }
-        }
-        charlie.setEnLaPelota(charlieEnPelota);
-    
-        if (!charlie.getEnLaPelota()) {
-            charlie.setVelocidadCaida(charlie.getGravedad() * delta);
-            if (charlie.getY() >= 550) {
-                reiniciarJuegoXColisiones(charlie.getX(), charlie);
-                charlie.setVelocidadCaida(0);
-                Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
-                nuevaPelota.setPosition(charlie.getX(), 471);
-                listaDePelotas.add(nuevaPelota);
-            }
-        } else {
-            charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
-        }
-        for (int i = 0; i < listaDePelotas.size(); i++){
-            Pelota pelotita1 = listaDePelotas.get(i);
-            for (int j = i + 1; j < listaDePelotas.size(); j++){
-                Pelota pelotita2 = listaDePelotas.get(j);
-                if(DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)){
-                        pelotita1.leftMax(10);  // Pelotita1 a la izquierda
-                        pelotita2.leftMax(16); // Pelotita2 a la derecha
-                }
-            }
-        }
-        // Detectar colisiones entre pelotas
-        for (int i = 0; i < listaDePelotas.size(); i++) {
-            Pelota pelotita1 = listaDePelotas.get(i);
-            for (int j = i + 1; j < listaDePelotas.size(); j++) {
-                Pelota pelotita2 = listaDePelotas.get(j);
-                if (DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)) {
-                    pelotita1.setChocarContraotros(true);
-                    pelotita2.setChocarContraotros(true);
-                }
-            }
-        }
-        if(llegoAMeta()){
-            if (dReloj == null){
-                dReloj = new Date();
-            }
-            dAhora= new Date();
-            long diffSeconds = 0;
-            long dateDiff = dAhora.getTime() - dReloj.getTime();
-            diffSeconds = dateDiff / 1000 % 60;
-            charlie.updateLlegadaMeta(delta);
-        }
+        // Metodo que hace movimiento de las pelotas y swap de imagen.
+        movimientoySwapPelota(delta);
+        // Metodo que detecta si Charlie está en la pelota y actualizar estado
+        charlieParado(delta);
+        // Metodo que si detecta colision entre pelota las expulsa hacia la izquierda
+        colisionPelotas();
+        // Metodo que cuando la pelota esta pasando el limite de la pantalla izquierda se elimina
+        eliminarPelotaDesplazada(charlie);
+        // Metodo que hace la animacion de charlie cuando llega a la meta.
+        super.animacionMeta(delta);
     }
 
     public void reiniciarJuegoXColisiones(double x1, Charlie charlie){
@@ -218,4 +164,66 @@ public class Nivel3 extends Nivel{
     public boolean colisiono() {
         return colisiono;
     }
+
+    // Metodo que detecta los 2 tipos de monos que ya pasaron y los va eliminando
+    public void eliminarPelotaDesplazada(Charlie charlie) {
+        // Iterar sobre la lista original en sentido inverso para evitar problemas al
+        // eliminar elementos
+        for (int i = listaDePelotas.size() - 1; i >= 0; i--) {
+            Pelota pelotita = listaDePelotas.get(i);
+            if (pelotita.getX() <= charlie.getX() - 300) {
+                listaDePelotas.remove(i); // Eliminar el Mono Marron de la lista original
+            }
+        }
+    }
+
+    public void movimientoySwapPelota(double delta){
+        for (Pelota pelotita : listaDePelotas) {
+            if (!pelotita.getEstaMontado() && pelotita.getChocarContraotros()) {
+                pelotita.update(delta);
+                pelotita.setPosition(pelotita.getX() - 0.9, pelotita.getY());
+            }
+        }
+    }
+
+    public void charlieParado(double delta){
+        boolean charlieEnPelota = false;
+        for (Pelota pelotita : listaDePelotas) {
+            if (DetectorColiciones.detectarCharlieParadoSobrePelota(pelotita, charlie)) {
+                charlie.setEnLaPelota(true);
+                pelotita.setEstaMontado(true);
+                charlie.setPISO(407);
+                charlieEnPelota = true;
+            } else {
+                pelotita.setEstaMontado(false);
+            }
+        }
+        charlie.setEnLaPelota(charlieEnPelota);
+        if (!charlie.getEnLaPelota()) {
+            charlie.setVelocidadCaida(charlie.getGravedad() * delta);
+            if (charlie.getY() >= 550) {
+                reiniciarJuegoXColisiones(charlie.getX(), charlie);
+                charlie.setVelocidadCaida(0);
+                Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
+                nuevaPelota.setPosition(charlie.getX(), 471);
+                listaDePelotas.add(nuevaPelota);
+            }
+        } else {
+            charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
+        }
+    }
+
+    public void colisionPelotas(){
+        for (int i = 0; i < listaDePelotas.size(); i++){
+            Pelota pelotita1 = listaDePelotas.get(i);
+            for (int j = i + 1; j < listaDePelotas.size(); j++){
+                Pelota pelotita2 = listaDePelotas.get(j);
+                if(DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)){
+                    pelotita1.leftMax(10);  // Pelotita1 a la izquierda
+                    pelotita2.leftMax(16); // Pelotita2 a la derecha
+                }
+            }
+        }
+    }
+    
 }

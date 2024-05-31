@@ -8,17 +8,17 @@ import javax.imageio.*;
 import java.util.*;
 public class CalderoDeFuego extends ObjetoGrafico {
     private double idx;
-    BufferedImage imagen1, imagen2;
+    BufferedImage imagen;
     private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
     public CalderoDeFuego(String filename) {
         super(filename);
         try {
             if(imagenes.isEmpty()){
-                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imagenes.add(imagen1);
-                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
-                imagenes.add(imagen2);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imagenes.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
+                imagenes.add(imagen);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error al cargar la imagen del caldero", e);

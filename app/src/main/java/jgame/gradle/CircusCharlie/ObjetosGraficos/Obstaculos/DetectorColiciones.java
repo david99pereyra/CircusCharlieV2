@@ -1,23 +1,53 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 import jgame.gradle.CircusCharlie.Charlie;
+import jgame.gradle.Pong.Ball;
+import jgame.gradle.Pong.Raqueta;
+
 import java.awt.Rectangle;
 public class DetectorColiciones extends Rectangle {
-    // Colisiones 1Er nivel
-    // Detectar si colisiona con un aro
-        public static boolean detectarAro(Aro aro, Charlie charlie) {
-        // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los
-        // objetos
-                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(),
-                charlie.getHeight());
-                Rectangle rectAroQuarter = new Rectangle();
-                int aroQuarterHeight;
-                if (aro.getVerificarTamaño()) { // Detecto el aro grande
-                        aroQuarterHeight = aro.getHeight() / 4;
-                        rectAroQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + aroQuarterHeight * 3), aro.getWidth(), aroQuarterHeight);
-                } else if (aro.getVerificarTamaño()) { // Detecto el aro chico
-                        aroQuarterHeight = aro.getHeight() / 6;
-                        rectAroQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + aroQuarterHeight * 5), aro.getWidth(), aroQuarterHeight);
+        // Metodos de colisiones del juego Pong
+        public static void colisionPelotaContraBordesSupInf(Ball pelotita, jgame.gradle.CircusCharlie.Fondo fondo){
+        // Colisión de la pelota con los bordes
+                if (pelotita.getX() < 0 || pelotita.getX() + pelotita.getRadio() * 2 > fondo.getWidth()) {
+                        pelotita.rebotarHorizontal();
                 }
+                if (pelotita.getY() < 30 || pelotita.getY() + pelotita.getRadio() * 2 > fondo.getHeight()) {
+                        pelotita.rebotarVertical();
+                }
+        }
+
+        public static void colisionPelotaRaqueta(Ball pelotita, Raqueta raquetazo){
+                Rectangle raquetazoBounds = new Rectangle((int) raquetazo.getX(), (int) raquetazo.getY(), raquetazo.getWidth(), raquetazo.getHeight());
+                Rectangle pelotitaBounds = new Rectangle((int) pelotita.getX(), (int) pelotita.getY(), pelotita.getRadio() * 2, pelotita.getRadio() * 2);
+                if (raquetazoBounds.intersects(pelotitaBounds)) {
+                        pelotita.rebotarHorizontal();
+                }   
+        }
+
+        public static boolean colisionPelotaContraLateralIzquierda(Ball pelotita){
+                boolean band = false;
+                if(pelotita.getX() <= 0){
+                        band = true;
+                }
+                return band;
+        }
+
+        public static boolean colisionPelotaContraLateralDerecha(Ball pelotita, int tamañoFondo){
+                boolean band = false;
+                if(pelotita.getX() >= tamañoFondo - 15){// - pelotita.getWidth()){
+                        band = true;
+                }
+                return band;
+        }
+        // Metodos de colisiones del juego CircusCharlie
+        // Colisiones 1Er nivel
+        // Detectar si colisiona con un aro
+        public static boolean detectarAro(Aro aro, Charlie charlie) {
+                // Obtener las coordenadas y dimensiones de los rectángulos que rodean a los
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+                Rectangle rectAroQuarter = new Rectangle();
+                int aroQuarterHeight = aro.getHeight() / 4;
+                rectAroQuarter = new Rectangle((int) aro.getX(), (int) (aro.getY() + aroQuarterHeight * 3), aro.getWidth(), aroQuarterHeight);
                 return rectAroQuarter.intersects(rectCharlie);
         }
 
@@ -74,6 +104,7 @@ public class DetectorColiciones extends Rectangle {
                         charlie.getHeight());
                 return rectMonito.intersects(rectCharlie);
         }
+
         public static boolean detectarMonoAzul(MonoAzul monito, Charlie charlie) {
                 Rectangle rectMonito = new Rectangle((int) monito.getX(), (int) monito.getY(), monito.getWidth(),
                         monito.getHeight());
@@ -81,6 +112,7 @@ public class DetectorColiciones extends Rectangle {
                         charlie.getHeight());
                 return rectMonito.intersects(rectCharlie);
         }
+
         public static boolean detectarEntreMonos(MonoMarron monitoMarron, MonoAzul monitoazul) {
                 Rectangle rectMonitoMarron = new Rectangle((int) monitoMarron.getX(), (int) monitoMarron.getY(),
                         monitoMarron.getWidth(), monitoMarron.getHeight());
@@ -88,6 +120,7 @@ public class DetectorColiciones extends Rectangle {
                         monitoazul.getWidth(), monitoazul.getHeight());
                 return rectMonitoMarron.intersects(rectMonitoAzul);
         }
+
         // Colisiones 3Er nivel
         public static boolean detectarCharlieParadoSobrePelota(Pelota p, Charlie charlie) {
                 // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
@@ -99,6 +132,7 @@ public class DetectorColiciones extends Rectangle {
                 boolean intersection = areaSuperior.intersects(rectCharlie);
                 return intersection;
         }
+        
         public static boolean detectarEntrePelotas(Pelota p1, Pelota p2){
                 Rectangle rectPelota1 = new Rectangle((int) p1.getX(), (int) p1.getY(), p1.getWidth(), p1.getHeight());
                 Rectangle rectPelota2 = new Rectangle((int) p2.getX(), (int) p2.getY(), p2.getWidth(), p2.getHeight());

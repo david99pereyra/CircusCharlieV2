@@ -16,7 +16,7 @@ public class MonoMarron extends ObjetoGrafico {
     private double velocityX;
     private boolean isStopped;
     private final int stopDuration = 1000; // Duración en milisegundos que el mono se detiene
-    BufferedImage imagen1, imagen2, imagen3;
+    BufferedImage imagen;
     private ArrayList<BufferedImage> imageMonoMarron = new ArrayList<>();
     private int indiceImagenActualMonoMarron = 0;
 
@@ -24,12 +24,12 @@ public class MonoMarron extends ObjetoGrafico {
         super(filename);
         try{
             if(imageMonoMarron.isEmpty()){
-                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageMonoMarron.add(imagen1);
-                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono2.png")));
-                imageMonoMarron.add(imagen2);
-                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono3.png")));
-                imageMonoMarron.add(imagen3);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageMonoMarron.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono2.png")));
+                imageMonoMarron.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/mono3.png")));
+                imageMonoMarron.add(imagen);
             }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -47,6 +47,7 @@ public class MonoMarron extends ObjetoGrafico {
             }
         }
     }
+    
     public boolean getIsStopped(){
         return isStopped;
     }

@@ -13,20 +13,21 @@ public class MonoAzul extends ObjetoGrafico{
     private double velocityY = 20; 
     private double gravity = 0.5;
     private int indiceImagenActualMonoAzul = 0;
-    private boolean onGround = true, isJumping = false;
-    BufferedImage imagen1, imagen2, imagen3;
+    private boolean onGround = true;
+    private boolean isJumping = false;
+    BufferedImage imagen;
     private ArrayList<BufferedImage> imageMonoAzul = new ArrayList<>();
 
     public MonoAzul(String filename) {
         super(filename);
         try{
             if(imageMonoAzul.isEmpty()){
-                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageMonoAzul.add(imagen1);
-                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta2.png")));
-                imageMonoAzul.add(imagen2);
-                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta3.png")));
-                imageMonoAzul.add(imagen3);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageMonoAzul.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta2.png")));
+                imageMonoAzul.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta3.png")));
+                imageMonoAzul.add(imagen);
             }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);

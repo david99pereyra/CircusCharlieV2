@@ -132,4 +132,5 @@ public class Pelota extends ObjetoGrafico{
     public boolean getSalirDisparada(){
         return this.salirDisparada;
     }
+
 }
