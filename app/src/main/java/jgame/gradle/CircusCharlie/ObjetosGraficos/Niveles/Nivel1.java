@@ -2,7 +2,7 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
 import java.awt.Graphics2D;
 import java.util.*;
-
+import com.entropyinteractive.Keyboard;
 import jgame.gradle.CircusCharlie.*;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.*;
 
@@ -12,14 +12,9 @@ public class Nivel1 extends Nivel {
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private ArrayList<Money> listaDeBolsaDeMoneda = new ArrayList<>();
     private static boolean llegoAMeta = false, accionEjecutar;
-    // , accion = false, restar=false;
     private static boolean banderaScoreAro = false, banderaScoreCaldero = false;
-    private boolean mostrarArosYMoney = true, pasoXAro = false, pasoXCaldero = false;
+    private boolean mostrarArosYMoney = true, pasoXAro = false, pasoXCaldero = false, mostrarAros = true;
     public static Charlie charlie, leon;
-    Date dInit = new Date();
-    Date dReloj;
-    Date dAhora;
-
     private Timer temporizador = new Timer();;
 
     public Nivel1(CircusCharlie circusCharlie) {
@@ -62,7 +57,9 @@ public class Nivel1 extends Nivel {
         return colisiono;
     }
 
-    public void gameUpdate(double delta) {
+    public void gameUpdate(double delta, Keyboard keyboard) {
+        // Metodo que muestra el funcionamiento de las teclas
+        super.movimientoTeclas(delta, keyboard, leon);
         double posx = leon.getX() + (leon.getWidth() / 2);
         double posy = leon.getY() + leon.getHeight();
         if (posx > 8060 && leon.getY() < 417) {
@@ -103,95 +100,26 @@ public class Nivel1 extends Nivel {
             banderaScoreCaldero = false;
             banderaScoreAro = false;
         }
-        
-        if (!colisiono && mostrarArosYMoney) {
-            for(Money bolsita : listaDeBolsaDeMoneda){
-                // bolsita.update(delta);
-                bolsita.setPosition(bolsita.getX() - 1.2, 260);
-                if(DetectorColiciones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
-                    if(pasoXCaldero){
-                        charlie.sumarPuntaje(1000);
-                    }else {
-                        charlie.sumarPuntaje(500);
-                    }
-                    bolsita.setAspiroLaBolsita(true);
-                    circusCharlie.setTempScore(500, 180, 250);
-                }
-            }
-            // Movimiento de los aros
-            for (Aro aro : listaDeArosIzquierdo) {
-                aro.update(delta);
-                aro.setPosition(aro.getX() - 1.2, aro.getY());
-                if (DetectorColiciones.detectarAro(aro, charlie)) {
-                    colisiono = true;
-                    accion = false;
-                    restar=false;
-                    charlie.detenerBonus();
-                    choqueDelPersonaje(charlie, leon);
-                } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
-                    pasoXAro = true;
-                    if (!banderaScoreAro) {
-                        banderaScoreAro = true;
-                        circusCharlie.setTempScore(100, 180, 250);
-                    }
-                }
-            }
-            for (Aro aro : listaDeArosDerecho) {
-                aro.update(delta);
-                aro.setPosition(aro.getX() - 1.2, aro.getY());
-            }
-        }
-
+        // Metodo que da movimiento a la bolsita de money + suma los respectivos puntos
+        movimientoYSumaBolsita();
+        // Metodo que hace swap de imagenes de cada caldero
+        swapCaldero(delta);
+        // Metodo que elimina los aros desplazados cuando pasan atras de charlie.
         eliminarArosDesplazados(leon);
-
-        for (CalderoDeFuego calderito : listaDeCalderos) {
-            calderito.update(delta);
-            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)) {
-                colisiono = true;
-                accion = false;
-                restar=false;
-                charlie.detenerBonus();
-                choqueDelPersonaje(charlie, leon);
-            } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
-                pasoXCaldero = true;
-                if (!banderaScoreCaldero) {
-                    banderaScoreCaldero = true;
-                    circusCharlie.setTempScore(200, 180, 250);
-                }
-            }
-        }
-        if(pasoXAro && !pasoXCaldero){
-            if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(100);
-                pasoXAro = false;
-            }
-        }else if(pasoXCaldero && !pasoXAro){
-            if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(200);
-                pasoXCaldero = false;
-            }
-        }else if(pasoXAro && pasoXCaldero){
-            if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(400);
-                pasoXCaldero = false;
-                pasoXAro = false;
-            }
-        }
-        // Si charlie llega a la meta
-        if (llegoAMeta()) {
-            if (dReloj == null) {
-                dReloj = new Date();
-            }
-            dAhora = new Date();
-            long diffSeconds = 0;
-            long dateDiff = dAhora.getTime() - dReloj.getTime();
-            diffSeconds = dateDiff / 1000 % 60;
-            charlie.updateLlegadaMeta(delta);
-        }
+        // Seccion de colisiones
+        // Metodo que detecta si charlie choco contra un aro o si paso por en medio para sumar puntos.
+        movimientoYcolisionConElAro(delta);
+        // Metodo que detecta el caldero si colisiono o lo salto para sumar su respectivo puntaje
+        colisionConElCaldero();
+        // Metodo para detectar ciertos puntajes respectivos junto el aro con el caldero
+        saltoElAroYCaldero();
+        // Metodo que elimina los aros desplazados cuando toca el limite de charlie
+        eliminarArosDesplazados(leon);
+        // Metodo para cuando Charlie llego a la meta
+        super.animacionMeta(delta);
     }
     
     public void gameDraw(Graphics2D g) {
-
         // Dibujar los calderos
         if (!mostrarNivel) {
             for (CalderoDeFuego calderito : listaDeCalderos) {
@@ -226,7 +154,7 @@ public class Nivel1 extends Nivel {
         }
     }   
     
-    // Funcion que detecta los aros y calderos que ya pasaron y los va eliminando
+    // Metodo que detecta los aros y calderos que ya pasaron y los va eliminando
     public void eliminarArosDesplazados(Charlie leon) {
         // Iterar sobre la lista original en sentido inverso para evitar problemas al
         // eliminar elementos
@@ -273,7 +201,6 @@ public class Nivel1 extends Nivel {
         }, 4000);
     }
 
-
     // Cuando detecta una colision, reiniciamos el juego en ese punto
     public void reiniciarJuegoXColisiones(double x1, Charlie charlie, Charlie leon) {
         // Busca el checkpoint más cercano a la posición x
@@ -306,7 +233,7 @@ public class Nivel1 extends Nivel {
         charlie.reiniciarDescuento();
     }
 
-    // Funcion para crear aros
+    // Metodo para crear aros
     public void crearAros() {
         String imagenAroGrandeIzquierda = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Izquierda.png";
         String imagenAroGrandeDerecha = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego1Derecha.png";
@@ -356,7 +283,7 @@ public class Nivel1 extends Nivel {
         }
     }
 
-    // Funcion para crear calderos
+    // Metodo para crear calderos
     public void crearCalderos() {
         String imagen = "imagenes/JuegoCircusCharlie/ImagenNivel1/fuego1.png";
         int[] posicionesX = {1550, 2390, 3180, 3990, 4795, 5600, 6400, 7160, 7970 };
@@ -365,6 +292,90 @@ public class Nivel1 extends Nivel {
             CalderoDeFuego caldero = new CalderoDeFuego(imagen);
             caldero.setPosition(posX, posY);
             listaDeCalderos.add(caldero);
+        }
+    }
+
+    public void movimientoYcolisionConElAro(double delta){
+        for (Aro aro : listaDeArosIzquierdo) {
+            aro.update(delta);
+            aro.setPosition(aro.getX() - 1.2, aro.getY());
+            if (DetectorColiciones.detectarAro(aro, charlie)) {
+                colisiono = true;
+                accion = false;
+                restar=false;
+                charlie.detenerBonus();
+                choqueDelPersonaje(charlie, leon);
+            } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
+                pasoXAro = true;
+                if (!banderaScoreAro) {
+                    banderaScoreAro = true;
+                    circusCharlie.setTempScore(100, 180, 250);
+                }
+            }
+        }
+        for (Aro aro : listaDeArosDerecho) {
+            aro.update(delta);
+            aro.setPosition(aro.getX() - 1.2, aro.getY());
+        }
+    }
+
+    public void colisionConElCaldero(){
+        for (CalderoDeFuego calderito : listaDeCalderos) {
+            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)) {
+                colisiono = true;
+                accion = false;
+                restar = false;
+                charlie.detenerBonus();
+                choqueDelPersonaje(charlie, leon);
+            } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
+                pasoXCaldero = true;
+                if (!banderaScoreCaldero) {
+                    banderaScoreCaldero = true;
+                    circusCharlie.setTempScore(200, 180, 250);
+                }
+            }
+        }
+    }
+
+    public void saltoElAroYCaldero(){
+        if(pasoXAro && !pasoXCaldero){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(100);
+                pasoXAro = false;
+            }
+        }else if(pasoXCaldero && !pasoXAro){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(200);
+                pasoXCaldero = false;
+            }
+        }else if(pasoXAro && pasoXCaldero){
+            if(charlie.getY() == charlie.getPISO()){
+                charlie.sumarPuntaje(400);
+                pasoXCaldero = false;
+                pasoXAro = false;
+            }
+        }
+    }
+
+    public void swapCaldero(double delta){
+        for (CalderoDeFuego calderito : listaDeCalderos) {
+            calderito.update(delta);
+        }
+    }
+
+    public void movimientoYSumaBolsita(){
+        for(Money bolsita : listaDeBolsaDeMoneda){
+            // bolsita.update(delta);
+            bolsita.setPosition(bolsita.getX() - 1.2, 260);
+            if(DetectorColiciones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
+                if(pasoXCaldero){
+                    charlie.sumarPuntaje(1000);
+                }else {
+                    charlie.sumarPuntaje(500);
+                }
+                bolsita.setAspiroLaBolsita(true);
+                circusCharlie.setTempScore(500, 180, 250);
+            }
         }
     }
 }

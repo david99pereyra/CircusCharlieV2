@@ -2,9 +2,6 @@ package jgame.gradle.Pong;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import jgame.gradle.JuegoConDB;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

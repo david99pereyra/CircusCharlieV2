@@ -1,4 +1,6 @@
 package jgame.gradle.Pong;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.*;
+import jgame.gradle.CircusCharlie.*;
 import com.entropyinteractive.JGame;
 import com.entropyinteractive.Keyboard;
 import com.entropyinteractive.Log;
@@ -37,6 +39,7 @@ public class Pong extends JGame{
         Log.info(getClass().getSimpleName(), "Starting up game");
         fondo = new Fondo(800, 600);
         newRaquetas();
+
         newBall();
 
         scoreJ1 = new Score(1, ((int)fondo.getWidth() / 2) - 85 );
@@ -80,10 +83,10 @@ public class Pong extends JGame{
                 ball.mover();
                 // Colisiones
                 // Colisión de la pelota con los bordes
-                DetectorColisiones.colisionPelotaContraBordesSupInf(ball, fondo);
+                DetectorColiciones.colisionPelotaContraBordesSupInf(ball, fondo);
                 // Colisión de la pelota con las raquetas
-                DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo1);
-                DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo2);
+                DetectorColiciones.colisionPelotaRaqueta(ball, raquetazo1);
+                DetectorColiciones.colisionPelotaRaqueta(ball, raquetazo2);
                 // Colsiion de la pelota en los laterales
                 colisionLateral(ball);
                 
@@ -165,7 +168,7 @@ public class Pong extends JGame{
                 e.printStackTrace();
             }
         }
-        if(DetectorColisiones.colisionPelotaContraLateralDerecha(ball, (int)fondo.getWidth())){
+        if(DetectorColiciones.colisionPelotaContraLateralDerecha(ball, (int)fondo.getWidth())){
             scoreJ2.setPuntos(scoreJ2.getPuntos() + 1);
             newBall();
             newRaquetas();
