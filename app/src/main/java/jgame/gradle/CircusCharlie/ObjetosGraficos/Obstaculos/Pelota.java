@@ -13,26 +13,29 @@ public class Pelota extends ObjetoGrafico{
     private double idx = 0;
     private double velocityX = 5.0;
     private int indiceImagenActualPelota = 0;
-    protected int direccionAngulo= 1;
-    private boolean fueMontada = false; // Define si fue montado para que la pelota salga disparada para la izquierda
+    private int direccionAngulo = 1;
+    private long invulnerableTime = 0;
+    private boolean chocarContraotros = true; // Define si fue montado para que la pelota salga disparada para la izquierda
     private boolean estaMontado = false; // Define si esta montado actualmente en la pelota charlie
+    private boolean invulnerable = false;
+    private boolean salirDisparada = false;
+    // private boolean pelotaLiberada = false; // Booleano que define si la pelota fue liberada por charlie para acelerar su movimiento
     private ArrayList<BufferedImage> imagePelota = new ArrayList<>();
-    BufferedImage imagen1, imagen2, imagen3, imagen4;
-            
+    BufferedImage imagen;
+
     public Pelota(String filename, boolean montado) {
         super(filename);
-        this.fueMontada = montado;
         this.estaMontado = montado;
         try{
             if(imagePelota.isEmpty()){
-                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imagePelota.add(imagen1);
-                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota2.png")));
-                imagePelota.add(imagen2);
-                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota3.png")));
-                imagePelota.add(imagen3);
-                imagen4 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota4.png")));
-                imagePelota.add(imagen4);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imagePelota.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota2.png")));
+                imagePelota.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota3.png")));
+                imagePelota.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota4.png")));
+                imagePelota.add(imagen);
             }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -49,6 +52,10 @@ public class Pelota extends ObjetoGrafico{
     public void leftMax(double valor){
         this.setX(getX() - valor);
     }
+
+    public void rightMax(double valor) {
+        this.setX(getX() + valor);
+	} 
 
     public void left() {
         this.setX(getX() - velocityX);
@@ -84,7 +91,7 @@ public class Pelota extends ObjetoGrafico{
     }
 
     public void update(double delta){
-        idx += 0.04;
+        idx += 0.12;
         indiceImagenActualPelota = ((int)idx) % imagePelota.size();
     }
 
@@ -96,11 +103,34 @@ public class Pelota extends ObjetoGrafico{
         return estaMontado;
     }
 
-    public void setFueMontada (boolean bol){
-        this.fueMontada = bol;
+    public void setChocarContraotros (boolean bol){
+        this.chocarContraotros = bol;
     }
 
-    public boolean getFueMontada (){
-        return fueMontada;
+    public boolean getChocarContraotros (){
+        return chocarContraotros;
     }
+
+    public void setInvulnerable(boolean invulnerable, long duration) {
+        this.invulnerable = invulnerable;
+        if (invulnerable) {
+            this.invulnerableTime = System.currentTimeMillis() + duration;
+        }
+    }
+
+    public boolean isInvulnerable() {
+        if (invulnerable && System.currentTimeMillis() > invulnerableTime) {
+            invulnerable = false;
+        }
+        return invulnerable;
+    }
+
+    public void setSalirDisparada(boolean salir){
+        this.salirDisparada = salir;
+    }
+
+    public boolean getSalirDisparada(){
+        return this.salirDisparada;
+    }
+
 }

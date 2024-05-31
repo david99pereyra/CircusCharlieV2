@@ -2,10 +2,10 @@ package jgame.gradle.Pong;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Configuracion extends JFrame {
-
     private JComboBox<String> cancionesComboBox;
     private JComboBox<String> J1;
     private JComboBox<String> J2;
@@ -19,7 +19,6 @@ public class Configuracion extends JFrame {
     public Configuracion() {
         // Configurar la ventana
         setTitle("Configuracion de Pong");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
@@ -55,8 +54,8 @@ public class Configuracion extends JFrame {
         JButton guardarButton = new JButton("Guardar");
         guardarButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                guardarConfiguracion();
+            public void actionPerformed(ActionEvent arg0) {
+                guardarConfiguracion();                
             }
         });
 

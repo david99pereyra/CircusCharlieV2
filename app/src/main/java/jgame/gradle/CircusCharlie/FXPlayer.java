@@ -12,30 +12,29 @@ import javax.sound.sampled.*;
 
 
 public enum FXPlayer {
-  FIN_JUEGO("rick_morty.wav"),
-  TEMA1("spanish_flea.wav"),
-  TEMA2("muyun_brothers_the_kiffness.wav"),
-  FX00("fx00.wav"),
-  FX01("fx01.wav"),
-  FX02("fx02.wav"),
-  EVENTO1("CircusCharlie/CircusCharlieAudio1.wav"),
-  EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
-  EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
-  DERROTA("CircusCharlie/CircusCharlie(derrota).wav"),
-  DRAGONBALL("CircusCharlie/DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
-  DBRAP("CircusCharlie/DBRap.wav"),
-  DBSUPER("CircusCharlie/DragonBallSuper.wav"),
-  UI("CircusCharlie/UltraInstinto.wav"),
-  PB("CircusCharlie/PeakyBlinders.wav"),
-  BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav");
-
+   FIN_JUEGO("rick_morty.wav"),
+   TEMA1("spanish_flea.wav"),
+   TEMA2("muyun_brothers_the_kiffness.wav"),
+   FX00("fx00.wav"),
+   FX01("fx01.wav"),
+   FX02("fx02.wav"),
+   EVENTO1("CircusCharlie/CircusCharlieAudio1.wav"),
+   EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
+   EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
+   DERROTA("CircusCharlie/CircusCharlie(derrota).wav"),
+   VICTORIA("CircusCharlie/CircusCharlieSonidoVictoria.wav"),
+   DRAGONBALL("CircusCharlie/DragonballZ_OST_SonGokuIsTheStrongestAfterAll.wav"),
+   DBRAP("CircusCharlie/DBRap.wav"),
+   DBSUPER("CircusCharlie/DragonBallSuper.wav"),
+   UI("CircusCharlie/UltraInstinto.wav"),
+   PB("CircusCharlie/PeakyBlinders.wav"),
+   BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav");
 
    public static enum Volume {
       MUTE, LOW, MEDIUM, HIGH
    }
 
    public static Volume volume = Volume.LOW;
-
    private Clip clip;
 
    FXPlayer(String wav) {
@@ -74,7 +73,7 @@ public enum FXPlayer {
    }
 
    public void loop(){
-       if (volume != Volume.MUTE) {
+      if (volume != Volume.MUTE) {
          if (!clip.isRunning()){
             clip.loop(Clip.LOOP_CONTINUOUSLY);
          }
@@ -87,19 +86,19 @@ public enum FXPlayer {
             clip.setFramePosition(0);
             clip.start();
             clip.addLineListener(new LineListener() {
-                @Override
-                public void update(LineEvent event) {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        clip.stop();
-                        clip.setFramePosition(0);
-                        clip.removeLineListener(this);
-                    }
-                }
+               @Override
+               public void update(LineEvent event) {
+                  if (event.getType() == LineEvent.Type.STOP) {
+                     clip.stop();
+                     clip.setFramePosition(0);
+                     clip.removeLineListener(this);
+                  }
+               }
             });
          }
       }
    }
- 
+
    public static void init() {
       values();
    }

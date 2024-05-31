@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 public class Aro extends ObjetoGrafico{
-    BufferedImage imagen1, imagen2, imagen3, imagen4, imagen5, imagen6,imagen7, imagen8;
+    BufferedImage imagen;
     private double idx = 0;
     private int indiceImagenActualAroGrande = 0;
     private int indiceImagenActualAroChico = 0;
@@ -24,28 +24,28 @@ public class Aro extends ObjetoGrafico{
         this.verificarTamaño = verificarTam;
         try{
             if (imageAroChicoIzquierdo.isEmpty() && this.verificarTamaño == true){
-                imagen1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageAroGrandeIzquierdo.add(imagen1);
-                imagen2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego2Izquierda.png")));
-                imageAroGrandeIzquierdo.add(imagen2);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageAroGrandeIzquierdo.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego2Izquierda.png")));
+                imageAroGrandeIzquierdo.add(imagen);
             }
             if (imageAroGrandeDerecho.isEmpty() && this.verificarTamaño == true){
-                imagen3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageAroGrandeDerecho.add(imagen3);
-                imagen4 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego2Derecha.png")));
-                imageAroGrandeDerecho.add(imagen4);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageAroGrandeDerecho.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuego2Derecha.png")));
+                imageAroGrandeDerecho.add(imagen);
             }
             if (imageAroChicoIzquierdo.isEmpty() && this.verificarTamaño == false){
-                imagen5 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageAroChicoIzquierdo.add(imagen5);
-                imagen6 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico2Izquierdo.png")));
-                imageAroChicoIzquierdo.add(imagen6);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageAroChicoIzquierdo.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico2Izquierdo.png")));
+                imageAroChicoIzquierdo.add(imagen);
             }
             if (imageAroChicoDerecho.isEmpty() && this.verificarTamaño == false){
-                imagen7 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageAroChicoDerecho.add(imagen7);
-                imagen8 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico2Derecho.png")));
-                imageAroChicoDerecho.add(imagen8);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+                imageAroChicoDerecho.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico2Derecho.png")));
+                imageAroChicoDerecho.add(imagen);
             }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -69,6 +69,7 @@ public class Aro extends ObjetoGrafico{
             }
         }
     }
+
     public void display1(Graphics2D g) {
         double posX = getX();
         int posY = (int) getY();

@@ -43,7 +43,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	int direccionActual;
 	int estadoActual;
 
-	protected double velocityX = 5.0;
+	protected double velocityX = 4.0;
 	protected double velocityY = 0.0;
 	protected double gravity = 0.43;
 	protected double angulo=0.0;
@@ -151,20 +151,23 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		//acceleration.mult(0);
 	}
 	
+	public boolean saltando(){
+		return saltando;
+	}
 	public void left() {
 		positionX -= velocityX;
 		direccionAngulo=-1;
-		if(!saltando){
-			this.cambioImagen();
-		}
+		// if(!saltando){
+		// 	this.cambioImagen();
+		// }
 	}
 
 	public void right() {
 		positionX += velocityX;
 		direccionAngulo= 1;
-		if(!saltando){
-			this.cambioImagen();
-		}
+		// if(!saltando){
+		// 	this.cambioImagen();
+		// }
 	} 
 
 	public void cambioImagen(){
@@ -194,6 +197,19 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 				this.setImagen(charlieSoga1);
 				band0 = true;
 
+			}
+			andando = 0;
+		}
+	}
+	public void cambioImagen2(){
+		andando++;
+		if(andando >= 15){
+			if(band){
+				this.setImagen(charlieSoga3);
+				band = false;
+			}else if(!band){
+				this.setImagen(charlieSoga1);
+				band = true;
 			}
 			andando = 0;
 		}

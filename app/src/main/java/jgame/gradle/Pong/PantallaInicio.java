@@ -14,7 +14,7 @@ public class PantallaInicio extends JFrame {
     public PantallaInicio() {
         setTitle("Inicio de Juego");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(GamePanel.SCREEN_SIZE); // La pantalla tiene el mismo tamaño que el juego
+        setSize(900,600); // La pantalla tiene el mismo tamaño que el juego
         setLocationRelativeTo(null); // Centrar ventana
         setResizable(false); // Evitar redimensionamiento
 
@@ -86,18 +86,29 @@ public class PantallaInicio extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelFondo, BorderLayout.CENTER);
 
-        Sonido.iniciar(RWproperties.readProperties("Musica"));
-        Sonido.loop();
+        // Sonido.iniciar(RWproperties.readProperties("Musica"));
+        // Sonido.loop();
 
         setVisible(true);
     }
 
     private void iniciarJuego() {
         // Al hacer clic en "Iniciar Juego", crear una instancia de GameFrame para arrancar el juego
-        Sonido.parar();
-        new GameFrame();
+        // Sonido.parar();
+        Pong juego = new Pong();
+        Thread t = new Thread() {
+            public void run() {
+                juego.run(1.0 / 60.0);
+            }
+        };
+
+        t.start();  
         // Cerrar la pantalla de inicio
         dispose();
+    }
+
+    public static void main(String[] args) {
+        new PantallaInicio();
     }
 
 }
