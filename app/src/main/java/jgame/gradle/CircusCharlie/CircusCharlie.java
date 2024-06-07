@@ -7,6 +7,7 @@ import jgame.gradle.FontManager;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.*;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.*;
 import java.text.*;
 public class CircusCharlie extends JGame {
@@ -18,7 +19,7 @@ public class CircusCharlie extends JGame {
     public double tempScoreY = 0;
     public long tempScoreStartTime = 0;
     private final long SCORE_DISPLAY_TIME = 1000; // tiempo en milisegundos que el puntaje se muestra en pantalla
-    public static boolean inicioNivel = false;
+    public static boolean inicioNivel = false, gameover = false, inicioBD=false;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
     public static Camara cam;
@@ -45,6 +46,10 @@ public class CircusCharlie extends JGame {
     }
 
     public void gameStartup() {
+        if(!inicioBD){
+            new ScoreBD();
+            inicioBD = true;
+        }
         Log.info(getClass().getSimpleName(), "Starting up game");
         Mundo m = Mundo.getInstance();
         try {
@@ -76,22 +81,45 @@ public class CircusCharlie extends JGame {
     }
 
     public void gameUpdate(double delta) {
-        if (!inicioNivel) {
-            // FXPlayer.VICTORIA.stop();
-            charlie.nivel(nivel);
-            charlie.imagenNivel();
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    inicioNivel = true;
-                }
-            }, 3000);
-            
+        Timer timer = new Timer();
+        if (charlie.getVida() == 0) {
+            charlie.gameOver();
+            if (!gameover) {
+                    ScoreBD.insert(PantallaInicioCC.nombreJugador, charlie.getScore());
+                    gameover = true;
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                resetGame();
+                                new Ranking();
+                                getFrame().dispose();
+                               
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 8000);
+            }
+
         } else {
-            if(!nivelActual.colisiono() && inicioNivel){
-                Keyboard keyboard = getKeyboard();
-                nivelActual.gameUpdate(delta, keyboard);
+            if (!inicioNivel) {
+                // FXPlayer.VICTORIA.stop();
+                charlie.nivel(nivel);
+                charlie.imagenNivel();
+
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        inicioNivel = true;
+                    }
+                }, 3000);
+
+            } else {
+                if (!nivelActual.colisiono() && inicioNivel) {
+                    Keyboard keyboard = getKeyboard();
+                    nivelActual.gameUpdate(delta, keyboard);
+                }
             }
         }
     }
@@ -117,6 +145,15 @@ public class CircusCharlie extends JGame {
 
     public void gameShutdown() {
         // Log.info(getClass().getSimpleName(), "Shutting down game");
+    }
+
+    private void resetGame(){
+        nivel = 1;
+        inicioNivel = false;
+        gameover = false;
+        charlie.setVida(3);
+        charlie.bonusPred();
+        charlie.scorePred();
     }
 
     public static void changeState(Nivel state){

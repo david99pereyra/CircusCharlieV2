@@ -86,15 +86,15 @@ public class PantallaInicio extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelFondo, BorderLayout.CENTER);
 
-        // Sonido.iniciar(RWproperties.readProperties("Musica"));
-        // Sonido.loop();
+        Sonido.iniciar(RWproperties.readProperties(Pong.configJuego,"Musica"));
+        Sonido.loop();
 
         setVisible(true);
     }
 
     private void iniciarJuego() {
         // Al hacer clic en "Iniciar Juego", crear una instancia de GameFrame para arrancar el juego
-        // Sonido.parar();
+        Sonido.parar();
         Pong juego = new Pong();
         Thread t = new Thread() {
             public void run() {

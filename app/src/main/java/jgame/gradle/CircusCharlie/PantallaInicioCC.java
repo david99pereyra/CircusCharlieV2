@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 public class PantallaInicioCC extends JFrame {
 
     private BufferedImage tituloImagen;
+    public static String nombreJugador;
 
     public PantallaInicioCC() {
         setTitle("Circus Charlie");
@@ -88,9 +89,17 @@ public class PantallaInicioCC extends JFrame {
         CircusCharlie game = new CircusCharlie();
         Thread t = new Thread(){
             public void run(){
-                game.run(1.0 / 60.0);
+                nombreJugador = JOptionPane.showInputDialog(null, "Inserte el nombre del jugador: ","Nombre del jugador", JOptionPane.PLAIN_MESSAGE);
+
+                if (nombreJugador != null && !nombreJugador.trim().isEmpty()) {
+                    game.run(1.0 / 60.0);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe ingresar un nombre para continuar", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         };
+
         t.start();
         dispose();
     }

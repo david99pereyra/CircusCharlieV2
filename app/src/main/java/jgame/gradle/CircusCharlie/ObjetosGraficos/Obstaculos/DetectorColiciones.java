@@ -2,6 +2,7 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.Pong.Ball;
 import jgame.gradle.Pong.Raqueta;
+import jgame.gradle.Pong.Sonido;
 
 import java.awt.Rectangle;
 public class DetectorColiciones extends Rectangle {
@@ -9,9 +10,11 @@ public class DetectorColiciones extends Rectangle {
         public static void colisionPelotaContraBordesSupInf(Ball pelotita, jgame.gradle.CircusCharlie.Fondo fondo){
         // Colisión de la pelota con los bordes
                 if (pelotita.getX() < 0 || pelotita.getX() + pelotita.getRadio() * 2 > fondo.getWidth()) {
+                        
                         pelotita.rebotarHorizontal();
                 }
                 if (pelotita.getY() < 30 || pelotita.getY() + pelotita.getRadio() * 2 > fondo.getHeight()) {
+                        Sonido.iniciar("wall");
                         pelotita.rebotarVertical();
                 }
         }
@@ -20,6 +23,7 @@ public class DetectorColiciones extends Rectangle {
                 Rectangle raquetazoBounds = new Rectangle((int) raquetazo.getX(), (int) raquetazo.getY(), raquetazo.getWidth(), raquetazo.getHeight());
                 Rectangle pelotitaBounds = new Rectangle((int) pelotita.getX(), (int) pelotita.getY(), pelotita.getRadio() * 2, pelotita.getRadio() * 2);
                 if (raquetazoBounds.intersects(pelotitaBounds)) {
+                        Sonido.iniciar("Paddle");
                         pelotita.rebotarHorizontal();
                 }   
         }
@@ -27,6 +31,7 @@ public class DetectorColiciones extends Rectangle {
         public static boolean colisionPelotaContraLateralIzquierda(Ball pelotita){
                 boolean band = false;
                 if(pelotita.getX() <= 0){
+                        Sonido.iniciar("point");
                         band = true;
                 }
                 return band;
@@ -35,6 +40,7 @@ public class DetectorColiciones extends Rectangle {
         public static boolean colisionPelotaContraLateralDerecha(Ball pelotita, int tamañoFondo){
                 boolean band = false;
                 if(pelotita.getX() >= tamañoFondo - 15){// - pelotita.getWidth()){
+                        Sonido.iniciar("point");
                         band = true;
                 }
                 return band;

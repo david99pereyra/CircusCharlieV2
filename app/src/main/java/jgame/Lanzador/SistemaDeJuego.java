@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import jgame.Lanzador.gui.RecuadroJuego;
 import jgame.gradle.CircusCharlie.JuegoCircusCharlie;
 import jgame.gradle.MarioBross.MarioBross;
+import jgame.gradle.Pong.JuegoPong;
 import jgame.gradle.Pong.Pong;
 
 public class SistemaDeJuego extends JFrame{
@@ -33,7 +34,7 @@ public class SistemaDeJuego extends JFrame{
         juegos.setLayout(new FlowLayout());
 
         //add juegos 
-        // juegos.add(new RecuadroJuego(new Pong(), this));
+        juegos.add(new RecuadroJuego(new JuegoPong(), this));
         juegos.add(new RecuadroJuego(new MarioBross(), this));
         juegos.add(new RecuadroJuego(new JuegoCircusCharlie(), this));
 
