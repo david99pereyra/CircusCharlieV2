@@ -141,6 +141,26 @@ public class Score extends ObjetoGrafico {
         this.setImagen(image);
     }
 
+    public void gameOver(){
+        FontManager.getInstance();
+        BufferedImage image = new BufferedImage(850, 600, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics g = image.createGraphics();
+
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 850, 600);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Pixel Emulator", Font.BOLD, 30));
+
+        String stateText = "GAME OVER";
+        int stateWidth = g.getFontMetrics().stringWidth(stateText);
+        int stateX = (800 - stateWidth) / 2;
+        g.drawString(stateText, stateX, 300);
+
+        this.setImagen(image);
+    }
+
     public int getVida(){
         return this.vidas;
     }
@@ -159,8 +179,8 @@ public class Score extends ObjetoGrafico {
         this.score += valor;
     }
 
-    public void scorePred(){
-        this.score = 5000;
+    public void bonusPred(){
+        this.bonus = 5000;
     }
 
     public int getState(){
@@ -179,7 +199,18 @@ public class Score extends ObjetoGrafico {
     public void reiniciarDescuento(){
         bonus = 5000;
         descuentoBonusActivo = true;
+    }
 
+    public void setVida(int vida){
+        this.vidas = vida;
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+
+    public void scorePred(){
+        this.score = 0;
     }
 
 }

@@ -338,23 +338,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	}
 
 	public void gameOver(){
-		FontManager.getInstance();
-        BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics g = image.createGraphics();
-
-        g.setColor(Color.black);
-        g.fillRect(0, 0, 800, 600);
-
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Pixel Emulator", Font.BOLD, 30));
-
-        String stateText = "GAME OVER";
-        int stateWidth = g.getFontMetrics().stringWidth(stateText);
-        int stateX = (800 - stateWidth) / 2;
-        g.drawString(stateText, stateX, 300);
-
-        this.setImagen(image);
+		puntosJugador.gameOver();
 	}
 
 	public void restarVida(int vida){
@@ -388,5 +372,21 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public void sumarPuntaje(int valor){
 		puntosJugador.sumarScore(valor);
+	}
+
+	public void setVida(int vida){
+		puntosJugador.setVida(vida);
+	}
+	
+	public int getScore(){
+		return puntosJugador.getScore();
+	}
+
+	public void scorePred(){
+		puntosJugador.scorePred();
+	}
+
+	public void bonusPred(){
+		puntosJugador.bonusPred();
 	}
 }

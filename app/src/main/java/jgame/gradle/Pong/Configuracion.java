@@ -13,6 +13,7 @@ public class Configuracion extends JFrame {
     private JComboBox<String> coloresJ1;
     private JComboBox<String> coloresJ2;
     private JComboBox<String> modoDeJuego;
+    String configJuego;
 
     // private RWproperties prop = new RWproperties();
 
@@ -55,6 +56,7 @@ public class Configuracion extends JFrame {
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                configJuego = "configuracionPong.properties";
                 guardarConfiguracion();                
             }
         });
@@ -100,13 +102,13 @@ public class Configuracion extends JFrame {
 
     private void guardarConfiguracion() {
 
-        RWproperties.writeProperties("ColorJ1", (String) coloresJ1.getSelectedItem());
-        RWproperties.writeProperties("ColorJ2", (String) coloresJ2.getSelectedItem());
-        RWproperties.writeProperties("TeclasJ1", (String) J1.getSelectedItem());
-        RWproperties.writeProperties("TeclasJ2", (String) J2.getSelectedItem());
-        RWproperties.writeProperties("ModoJuego", (String) modoDeJuego.getSelectedItem());
-        RWproperties.writeProperties("Musica", (String) cancionesComboBox.getSelectedItem());
-        RWproperties.writeProperties("Ventana", (String) opcionesVentana.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"ColorJ1", (String) coloresJ1.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"ColorJ2", (String) coloresJ2.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"TeclasJ1", (String) J1.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"TeclasJ2", (String) J2.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"ModoJuego", (String) modoDeJuego.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"Musica", (String) cancionesComboBox.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"Ventana", (String) opcionesVentana.getSelectedItem());
 
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();

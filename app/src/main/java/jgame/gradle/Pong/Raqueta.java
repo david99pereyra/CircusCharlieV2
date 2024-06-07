@@ -10,7 +10,7 @@ public class Raqueta extends ObjetoGrafico{
     private double speed = 4;
     private int id;
 
-    public Raqueta(int x, int y, int nroJugador){
+    public Raqueta(int x, int y, int nroJugador, Color color){
         this.positionX = x;
         this.positionY = y;
         this.id = nroJugador;
@@ -18,7 +18,7 @@ public class Raqueta extends ObjetoGrafico{
         this.setWidth(10);
         this.imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = this.imagen.createGraphics();
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(color);
         g2d.fillRect(0, 0, width, height);
         g2d.dispose();
     }

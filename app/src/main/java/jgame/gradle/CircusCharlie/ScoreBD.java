@@ -7,62 +7,63 @@ import java.util.Date;
 public class ScoreBD {
     private static final String NOMBRE_BASEDATOS = "db/score.db";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private Connection conn;
-    private Statement stmt;
-    private PreparedStatement pstmt;
+    private static Connection conn;
+    private static Statement stmt;
+    private static PreparedStatement pstmt;
 
-    public ScoreBD() {
-        this.stmt = null;
-        this.pstmt = null;
+    public void inicializar() {
+        stmt = null;
+        pstmt = null;
         try {
-            String url = "jdbc:sqlite:" + getClass().getClassLoader().getResource(NOMBRE_BASEDATOS);
+            String url = "jdbc:sqlite:" + ScoreBD.class.getClassLoader().getResource(NOMBRE_BASEDATOS);
             System.out.println(url);
-            this.conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url);
             System.out.println("Conectado a SQLite");
         } catch (SQLException e) {
             System.out.println("Error " + e);
         }
     }
 
-    public ResultSet getData() {
-        try {
-            this.stmt = this.conn.createStatement();
-            String sql = "SELECT * FROM gamescore";
-            ResultSet rs = stmt.executeQuery(sql);
-            // while (rs.next()) {
-            //     System.out.println(
-            //             rs.getInt("id") + " "
-            //                     + rs.getString("nombre") + " "
-            //                     + rs.getString("puntaje") + " "
-            //                     + rs.getString("fecha"));
-            // }
-            return rs;
-        } catch (Exception e) {
-            System.out.println("Error" + e);
-        }
-        return null;
+    public static ResultSet getData() throws SQLException {
+
+        stmt = conn.createStatement();
+        String sql = "SELECT * FROM gamescore ORDER BY puntaje DESC LIMIT 10";
+        ResultSet rs = stmt.executeQuery(sql);
+        // while (rs.next()) {
+        //     System.out.println(
+        //             rs.getInt("id") + " "
+        //                     + rs.getString("nombre") + " "
+        //                     + rs.getString("puntaje") + " "
+        //                     + rs.getString("fecha"));
+        // }
+        return rs;
 
     }
 
-    public void insert(String nombre, int score) {
+    public static void insert(String nombre, int score) {
         String sql = "INSERT INTO gamescore(nombre, puntaje, fecha) VALUES(?,?,?)";
         try {
-            this.pstmt = this.conn.prepareStatement(sql);
-            this.pstmt.setString(1, nombre);
-            this.pstmt.setInt(2, score);
-            this.pstmt.setString(3, DATE_FORMAT.format(new Date()));
-            this.pstmt.executeUpdate();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            pstmt.setInt(2, score);
+            pstmt.setString(3, DATE_FORMAT.format(new Date()));
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error " + e);
         }
     }
 
-    // public static void main(String[] args) {
-    // ScoreBD scoreBD = new ScoreBD();
-    // scoreBD.insert("sofi", 2000);
-    // scoreBD.insert("facu", 2000);
-    // // scoreBD.insert("santi", 2000);
-    // // scoreBD.insert("feli", 2000);
-    // scoreBD.getData();
-    // }
+    public ScoreBD() {
+        inicializar();
+        // insert("sofi", 10000);
+        // insert("facu", 8800);
+        // insert("santi", 2650);
+        // insert("feli", 4200);
+        // ScoreBD.getData();
+    }
+
+    public static void main(String[] args) throws SQLException {
+        ScoreBD scoreBD = new ScoreBD();
+        scoreBD.getData();
+    }
 }

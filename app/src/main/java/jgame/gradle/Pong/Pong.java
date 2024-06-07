@@ -24,6 +24,13 @@ public class Pong extends JGame{
     private boolean finJuego = false;
     private boolean pPresionado = false;
     private boolean enterPresionado = false;
+    public static final String configJuego = "configuracionPong.properties";
+
+    private int arribaJ1;
+    private int abajoJ1;
+
+    private int arribaJ2;
+    private int abajoJ2;
 
     public static void main(String[] args) {
         Pong game = new Pong();
@@ -137,8 +144,28 @@ public class Pong extends JGame{
         }
     }
     public void newRaquetas(){
-        raquetazo1 = new Raqueta(13, 280, 1);
-        raquetazo2 = new Raqueta(790, 280, 2);
+        Color raquetaColorJ1;
+        Color raquetaColorJ2;
+        if (RWproperties.readProperties(Pong.configJuego, "ModoJuego").equals("facilito")) {
+
+            if (RWproperties.readProperties(Pong.configJuego, "ColorJ1").equals("azul")) {
+                raquetaColorJ1 = Color.blue;
+
+            } else
+                raquetaColorJ1 = Color.yellow;
+
+            if (RWproperties.readProperties(Pong.configJuego, "ColorJ2").equals("rojo")) {
+                raquetaColorJ2 = Color.red;
+
+            } else
+                raquetaColorJ2 = Color.blue;
+
+            raquetazo1 = new Raqueta(13, 280, 1, raquetaColorJ1);
+            raquetazo2 = new Raqueta(790, 280, 2, raquetaColorJ2);
+        } else{
+            raquetazo1 = new Raqueta(13, 280, 1, Color.black);
+            raquetazo2 = new Raqueta(790, 280, 2, Color.black);
+        }
     }
 
     public void newBall(){
@@ -202,17 +229,33 @@ public class Pong extends JGame{
     }
 
     public void movimientoTeclado(Keyboard keyboard){
+
+        if (RWproperties.readProperties(Pong.configJuego, "TeclasJ1").equals("w - s")) {
+            this.arribaJ1 = KeyEvent.VK_W;
+            this.abajoJ1 = KeyEvent.VK_S;
+        } else {
+            this.arribaJ1 = KeyEvent.VK_E;
+            this.abajoJ1 = KeyEvent.VK_D;
+        }
+
+        if (RWproperties.readProperties(Pong.configJuego, "TeclasJ2").equals("UP - DOWN")) {
+            this.arribaJ2 = KeyEvent.VK_UP;
+            this.abajoJ2 = KeyEvent.VK_DOWN;
+        } else {
+            this.arribaJ2 = KeyEvent.VK_O;
+            this.abajoJ2 = KeyEvent.VK_L;
+        }
         
-        if(keyboard.isKeyPressed(KeyEvent.VK_UP)){
+        if(keyboard.isKeyPressed(arribaJ1)){
             raquetazo1.up();
         }
-        if(keyboard.isKeyPressed(KeyEvent.VK_DOWN)){
+        if(keyboard.isKeyPressed(abajoJ1)){
             raquetazo1.down();
         }
-        if(keyboard.isKeyPressed(KeyEvent.VK_W)){
+        if(keyboard.isKeyPressed(arribaJ2)){
             raquetazo2.up();
         }
-        if(keyboard.isKeyPressed(KeyEvent.VK_S)){
+        if(keyboard.isKeyPressed(abajoJ2)){
             raquetazo2.down();
         }
     }
