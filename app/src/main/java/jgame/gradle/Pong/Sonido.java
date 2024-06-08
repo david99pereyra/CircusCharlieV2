@@ -37,4 +37,10 @@ public class Sonido {
     public static void loop(){
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
+    public static void cambiarCancion(String ruta){
+        parar();
+        iniciar(ruta);
+        loop();
+    }
 }
