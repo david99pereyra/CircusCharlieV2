@@ -110,6 +110,8 @@ public class Configuracion extends JFrame {
         RWproperties.writeProperties(configJuego,"Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego,"Ventana", (String) opcionesVentana.getSelectedItem());
 
+        Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
+        
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();
     }

@@ -107,6 +107,7 @@ public class PantallaInicioCC extends JFrame {
     private void abrirConfiguracion() {
         // Aquí debes implementar el código para abrir la configuración
         System.out.println("Abriendo configuración...");
+        new ConfiguracionCC();
     }
 
     public static void main(String[] args) {
