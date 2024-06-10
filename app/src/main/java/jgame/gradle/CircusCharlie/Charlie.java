@@ -4,6 +4,10 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import javax.imageio.*;
+
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel1;
+
 import java.io.*;
 import java.util.*;
 
@@ -35,6 +39,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	private boolean enElSuelo = false;
 	private boolean saltando=false;
 	private boolean enLaPelota = true;
+	private Vehiculo vehiculo;
 
 	private Score puntosJugador = new Score();
 
@@ -43,6 +48,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		try{
 			imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
 			images.add(imagen);
+
 		} catch (IOException e){
 			throw new RuntimeException("Error al cargar la imagen del caldero", e);
 		}
@@ -215,7 +221,6 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		if ( velocityY != 0.0){
 			saltando = true;
 			//mientras este saltando
-	    	//this.rotarImagenGrados(10 * direccionAngulo);
 		}
 		if(velocityY == 0.0){
 			saltando = false;
@@ -288,5 +293,9 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public void continuarDescuento(){
 		puntosJugador.continuarDescuento();
+	}
+
+	public void movimientoTeclas(){
+
 	}
 }
