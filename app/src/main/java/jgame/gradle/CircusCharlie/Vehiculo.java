@@ -9,6 +9,11 @@ public abstract class Vehiculo extends ObjetoGrafico {
 	protected double velocityY = 0.0;
 	protected double angulo = 0.0;
 	protected double idx = 0;
+	protected int estadoActual;
+    protected final int ESTADO_SALTANDO = 2;
+	protected final int ESTADO_QUIETO = -1;
+	protected boolean saltando = false;
+	protected boolean enElSuelo = true;
 
 
     public Vehiculo(String filename) {
@@ -41,4 +46,20 @@ public abstract class Vehiculo extends ObjetoGrafico {
 		positionX += velocityX;
 		direccionAngulo = 1;
 	}
+
+	public void quieto(){
+		if(saltando){
+			estadoActual = ESTADO_QUIETO;
+		}
+	}
+	public void jump(){
+		if (enElSuelo) {
+			velocityY =- 12.0;
+			enElSuelo = false;
+			saltando = true;
+			estadoActual = ESTADO_SALTANDO;
+		}
+	}
+
+	public void update(double delta){}
 }

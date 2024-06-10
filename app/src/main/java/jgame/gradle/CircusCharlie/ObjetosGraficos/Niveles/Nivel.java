@@ -1,12 +1,10 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.*;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
-
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.util.*;
 import com.entropyinteractive.Keyboard;
-
+import java.awt.event.KeyEvent;
 
 public abstract class Nivel{
     protected CircusCharlie circusCharlie;
@@ -26,6 +24,7 @@ public abstract class Nivel{
     public Nivel(CircusCharlie cc){
         this.circusCharlie = cc;
     }
+
     public abstract void gameDraw(Graphics2D g);
     public abstract void gameUpdate(double delta, Keyboard keyboard);
     public abstract boolean colisiono();

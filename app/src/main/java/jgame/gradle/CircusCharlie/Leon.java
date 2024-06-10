@@ -7,14 +7,9 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Leon extends Vehiculo{
-    private int estadoActual;
-    private final int ESTADO_SALTANDO = 2;
-	private final int ESTADO_QUIETO = -1;
 	private double indiceImagenActual = 0;
 	private double gravity = 0.43;
 	private	double andandoLeon;
-	private boolean saltando = false;
-	private boolean enElSuelo = true;
 	private boolean l1;
 	private boolean l2;
 	private	boolean band1;
@@ -44,33 +39,22 @@ public class Leon extends Vehiculo{
 	}
 
 	public void jump(){
-		if (enElSuelo) {
-			this.setImagen(leonJump);
-			velocityY =- 12.0;
-			enElSuelo = false;
-			saltando = true;
-			estadoActual = ESTADO_SALTANDO;
-		}
+		super.jump();
+		this.setImagen(leonJump);
 	}
 	
 	public void quieto(){
+		super.quieto();
 		this.setImagen(leonCorriendo1);
-		if(saltando){
-			estadoActual = ESTADO_QUIETO;
-		}
 	}
 
 	public void left() {
 		super.left();
-		// this.positionX -= velocityX;
-		// direccionAngulo =- 1;
 		this.cambioImagenLeon();
 	}
 
 	public void right() {
 		super.right();
-		// positionX += velocityX;
-		// direccionAngulo = 1;
 		this.cambioImagenLeon();
 	}
 

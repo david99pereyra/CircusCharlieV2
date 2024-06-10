@@ -16,7 +16,6 @@ public class MonoMarron extends ObjetoGrafico {
     private double velocityX;
     private boolean isStopped;
     private final int stopDuration = 1000; // Duración en milisegundos que el mono se detiene
-    BufferedImage imagen;
     private ArrayList<BufferedImage> imageMonoMarron = new ArrayList<>();
     private int indiceImagenActualMonoMarron = 0;
 

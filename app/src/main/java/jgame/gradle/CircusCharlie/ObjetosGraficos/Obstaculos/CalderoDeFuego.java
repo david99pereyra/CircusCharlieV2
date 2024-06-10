@@ -8,17 +8,15 @@ import javax.imageio.*;
 import java.util.*;
 public class CalderoDeFuego extends ObjetoGrafico {
     private double idx;
-    BufferedImage imagen;
-    private ArrayList<BufferedImage> imagenes = new ArrayList<>();
     private int indiceImagenActual = 0;
     public CalderoDeFuego(String filename) {
         super(filename);
         try {
-            if(imagenes.isEmpty()){
+            if(images.isEmpty()){
                 imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imagenes.add(imagen);
-                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
-                imagenes.add(imagen);
+                images.add(imagen);
+                imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/JuegoCircusCharlie/ImagenNivel1/fuego2.png")));
+                images.add(imagen);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -29,8 +27,8 @@ public class CalderoDeFuego extends ObjetoGrafico {
     public void display(Graphics2D g) {
         double posX = getX();
         int posY = (int) getY();
-        if (!imagenes.isEmpty()){
-            BufferedImage imagenActualMonoMarron = imagenes.get(indiceImagenActual);
+        if (!images.isEmpty()){
+            BufferedImage imagenActualMonoMarron = images.get(indiceImagenActual);
             if (imagenActualMonoMarron != null){
                 g.drawImage(imagenActualMonoMarron, (int) Math.round(posX), posY, null);
             }
@@ -39,6 +37,6 @@ public class CalderoDeFuego extends ObjetoGrafico {
 
     public void update(double delta){
         idx += 0.165;
-        indiceImagenActual = ((int)idx) % imagenes.size();
+        indiceImagenActual = ((int)idx) % images.size();
     }
 }
