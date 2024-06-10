@@ -2,7 +2,7 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 
 import jgame.gradle.CircusCharlie.*;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoMarron;
-import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColisiones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.MonoAzul;
 
 import java.util.*;
@@ -14,15 +14,13 @@ public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
     private static boolean banderaScoreMono = false;
-    private static boolean llegoAMeta = false;
-    private boolean accionEjecutar = false;
-    private boolean mostrarMonos = true;
+    private boolean mostrarMonos = true,pasoXMonoMarron = false, pasoXMonoAzul = false;
     public static Charlie charlie;
-
-    private Timer temporizador = new Timer();
 
     public Nivel2(CircusCharlie circusCharlie){
         super(circusCharlie);
+        llegoAMeta = false;
+        accionEjecutar = false;
         Mundo m = Mundo.getInstance();
         try {
             FXPlayer.init();
@@ -101,6 +99,8 @@ public class Nivel2 extends Nivel{
         }
         // Metodo que le da movimiento a ambos monos y detecta colisiones de los entre charlie y monos
         movimientoMonoYColision(delta);
+        // Método que suma los puntos al saltar los monos
+        sumarPuntosPorObstaculo();
         // Metodo que detecta la colision entre monos
         colisionEntreMonos();
         // Metodo que detecta si cualquiera de los 2 monos lo paso a charlie
@@ -233,9 +233,15 @@ public class Nivel2 extends Nivel{
         if(!colisiono){          
             for (MonoAzul mA : listaDeMonosAzul){
                 mA.update(delta);
-                mA.setPosition(mA.getX() - 2.5, mA.getY());
-                if(DetectorColiciones.detectarMonoAzul(mA, charlie)){
-                    reiniciarJuegoXColisiones(charlie.getX(),charlie);
+                mA.setPosition(mA.getX() - 5.0, mA.getY());
+                if(DetectorColisiones.detectarMonoAzul(mA, charlie)){
+                    colisiono = true;
+                    accion = false;
+                    restar = false;
+                    charlie.detenerBonus();
+                    choqueDelPersonaje(charlie);
+                }else if(DetectorColisiones.detectarArribaMonoAzul(mA, charlie)){
+                    pasoXMonoAzul = true;
                 }
             }
             for (MonoMarron mM : listaDeMonosMarron){
@@ -243,17 +249,38 @@ public class Nivel2 extends Nivel{
                     mM.update(delta);
                     mM.setPosition(mM.getX() - 1.5, mM.getY());
                 }
-                if(DetectorColiciones.detectarMonoNormal(mM, charlie)){
-                    reiniciarJuegoXColisiones(charlie.getX(),charlie);
+                if(DetectorColisiones.detectarMonoNormal(mM, charlie)){
+                    colisiono = true;
+                    accion = false;
+                    restar = false;
+                    charlie.detenerBonus();
+                    choqueDelPersonaje(charlie);
+                }else if(DetectorColisiones.detectarArribaMonoMarron(mM, charlie)){
+                    pasoXMonoAzul = true;
                 }
             }
         }
     }
 
+    public void sumarPuntosPorObstaculo(){
+        if((pasoXMonoMarron && !pasoXMonoAzul)||(!pasoXMonoMarron && pasoXMonoAzul)){
+            if(charlie.getY() == charlie.getPISO()){
+                Score.sumarScore(100);
+                pasoXMonoAzul = false;
+                pasoXMonoMarron = false;
+            }else if(pasoXMonoMarron && pasoXMonoAzul){
+                if(charlie.getY() == charlie.getPISO()){
+                    Score.sumarScore(500);
+                    pasoXMonoMarron = false;
+                    pasoXMonoAzul = false;
+                }
+            }
+        }
+    }
     public void colisionEntreMonos(){
         for(MonoMarron mM : listaDeMonosMarron){
             for(MonoAzul mA: listaDeMonosAzul){
-                if(DetectorColiciones.detectarEntreMonos(mM, mA)){
+                if(DetectorColisiones.detectarEntreMonos(mM, mA)){
                     mA.saltoMonoAZul();
                     mM.detenerMono();
                 }

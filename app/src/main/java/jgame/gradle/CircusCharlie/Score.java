@@ -13,7 +13,7 @@ import java.awt.*;
 public class Score extends ObjetoGrafico {
 
     private int bonus = 5000;
-    private int score = 0;
+    private static int score = 0;
     private int hiScore = 0;
     private int state = 0;
     private int vidas = 3;
@@ -103,11 +103,11 @@ public class Score extends ObjetoGrafico {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(descuentoBonusActivo){
+                if(CircusCharlie.inicioNivel && descuentoBonusActivo){
                     disminuirBonus();
                 }
             }
-        }, 14000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
+        }, 10000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
     }
 
     private synchronized void disminuirBonus() {
@@ -175,8 +175,8 @@ public class Score extends ObjetoGrafico {
         this.state = nivel;
     }
 
-    public void sumarScore(int valor) {
-        this.score += valor;
+    public static void sumarScore(int valor) {
+        Score.score += valor;
     }
 
     public void bonusPred(){
@@ -201,16 +201,20 @@ public class Score extends ObjetoGrafico {
         descuentoBonusActivo = true;
     }
 
+    public void continuarDescuento(){
+        descuentoBonusActivo = true;
+    }
+
     public void setVida(int vida){
         this.vidas = vida;
     }
 
     public int getScore(){
-        return this.score;
+        return Score.score;
     }
 
     public void scorePred(){
-        this.score = 0;
+        Score.score = 0;
     }
 
 }

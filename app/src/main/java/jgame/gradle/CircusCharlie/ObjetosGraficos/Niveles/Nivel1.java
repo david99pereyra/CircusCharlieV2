@@ -15,10 +15,11 @@ public class Nivel1 extends Nivel {
     private static boolean banderaScoreAro = false, banderaScoreCaldero = false;
     private boolean mostrarArosYMoney = true, pasoXAro = false, pasoXCaldero = false, mostrarAros = true;
     public static Charlie charlie, leon;
-    private Timer temporizador = new Timer();;
 
     public Nivel1(CircusCharlie circusCharlie) {
         super(circusCharlie);
+        llegoAMeta = false;
+        accionEjecutar = false;
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
@@ -112,7 +113,7 @@ public class Nivel1 extends Nivel {
         // Metodo que detecta el caldero si colisiono o lo salto para sumar su respectivo puntaje
         colisionConElCaldero();
         // Metodo para detectar ciertos puntajes respectivos junto el aro con el caldero
-        saltoElAroYCaldero();
+        sumarPuntosPorObstaculo();
         // Metodo que elimina los aros desplazados cuando toca el limite de charlie
         eliminarArosDesplazados(leon);
         // Metodo para cuando Charlie llego a la meta
@@ -298,14 +299,14 @@ public class Nivel1 extends Nivel {
     public void movimientoYcolisionConElAro(double delta){
         for (Aro aro : listaDeArosIzquierdo) {
             aro.update(delta);
-            aro.setPosition(aro.getX() - 1.2, aro.getY());
-            if (DetectorColiciones.detectarAro(aro, charlie)) {
+            aro.setPosition(aro.getX() - 1.3, aro.getY());
+            if (DetectorColisiones.detectarAro(aro, charlie)) {
                 colisiono = true;
                 accion = false;
                 restar=false;
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
-            } else if (DetectorColiciones.detectarMedioAro(aro, charlie)) {
+            } else if (DetectorColisiones.detectarMedioAro(aro, charlie)) {
                 pasoXAro = true;
                 if (!banderaScoreAro) {
                     banderaScoreAro = true;
@@ -315,19 +316,19 @@ public class Nivel1 extends Nivel {
         }
         for (Aro aro : listaDeArosDerecho) {
             aro.update(delta);
-            aro.setPosition(aro.getX() - 1.2, aro.getY());
+            aro.setPosition(aro.getX() - 1.3, aro.getY());
         }
     }
 
     public void colisionConElCaldero(){
         for (CalderoDeFuego calderito : listaDeCalderos) {
-            if (DetectorColiciones.detectarCalderoDeFuego(calderito, charlie)) {
+            if (DetectorColisiones.detectarCalderoDeFuego(calderito, charlie)) {
                 colisiono = true;
                 accion = false;
                 restar = false;
                 charlie.detenerBonus();
                 choqueDelPersonaje(charlie, leon);
-            } else if (DetectorColiciones.detectarArribaCalderoDeFuego(calderito, charlie)) {
+            } else if (DetectorColisiones.detectarArribaCalderoDeFuego(calderito, charlie)) {
                 pasoXCaldero = true;
                 if (!banderaScoreCaldero) {
                     banderaScoreCaldero = true;
@@ -337,20 +338,20 @@ public class Nivel1 extends Nivel {
         }
     }
 
-    public void saltoElAroYCaldero(){
+    public void sumarPuntosPorObstaculo(){
         if(pasoXAro && !pasoXCaldero){
             if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(100);
+                Score.sumarScore(100);
                 pasoXAro = false;
             }
         }else if(pasoXCaldero && !pasoXAro){
             if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(200);
+                Score.sumarScore(200);
                 pasoXCaldero = false;
             }
         }else if(pasoXAro && pasoXCaldero){
             if(charlie.getY() == charlie.getPISO()){
-                charlie.sumarPuntaje(400);
+                Score.sumarScore(400);
                 pasoXCaldero = false;
                 pasoXAro = false;
             }
@@ -366,12 +367,12 @@ public class Nivel1 extends Nivel {
     public void movimientoYSumaBolsita(){
         for(Money bolsita : listaDeBolsaDeMoneda){
             // bolsita.update(delta);
-            bolsita.setPosition(bolsita.getX() - 1.2, 260);
-            if(DetectorColiciones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
+            bolsita.setPosition(bolsita.getX() - 1.3, 260);
+            if(DetectorColisiones.detectarBolsita(bolsita, charlie) && !bolsita.getAspiroLaBolsita()){
                 if(pasoXCaldero){
-                    charlie.sumarPuntaje(1000);
+                    Score.sumarScore(1000);
                 }else {
-                    charlie.sumarPuntaje(500);
+                    Score.sumarScore(500);
                 }
                 bolsita.setAspiroLaBolsita(true);
                 circusCharlie.setTempScore(500, 180, 250);

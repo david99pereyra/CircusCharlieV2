@@ -370,10 +370,6 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		puntosJugador.reiniciarDescuento();
 	}
 
-	public void sumarPuntaje(int valor){
-		puntosJugador.sumarScore(valor);
-	}
-
 	public void setVida(int vida){
 		puntosJugador.setVida(vida);
 	}
@@ -388,5 +384,9 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public void bonusPred(){
 		puntosJugador.bonusPred();
+	}
+
+	public void continuarDescuento(){
+		puntosJugador.continuarDescuento();
 	}
 }

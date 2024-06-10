@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 public class Pelota extends ObjetoGrafico{
     private double idx = 0;
-    private double velocityX = 5.0;
+    private double velocityX = 4.0;
     private int indiceImagenActualPelota = 0;
     private int direccionAngulo = 1;
     private long invulnerableTime = 0;
