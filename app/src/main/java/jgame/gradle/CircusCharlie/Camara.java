@@ -2,32 +2,32 @@ package jgame.gradle.CircusCharlie;
 
 
 public class Camara {
-
-	private double x,y;
-
-	private double resX,resY;
+	private double x;
+	private double y;
+	private double resX;
+	private double resY;
 
     public Camara(double x,double y) {
 		this.x=x;
 		this.y=y;
     }
 
-	public void seguirPersonaje(Charlie obj, int index){
-		Mundo m=Mundo.getInstance();
-		//this.x = -b.getX()+(m.getWidth()/8);
-		this.x = -obj.getX()+index;
-		if (this.x>0){
-			this.x=0;
+	public void seguirPersonaje(Charlie charlie, int index){
+		Mundo m = Mundo.getInstance();
+		this.x =- charlie.getX() + index;
+		if (this.x > 0){
+			this.x = 0;
 		}
-		if(this.x < -(m.getWidth()-resX)){
-			this.x = -(m.getWidth()-resX);
+		if(this.x <- (m.getWidth() - resX)){
+			this.x =- (m.getWidth() - resX);
 		}
 	}
 
-	public void seguirPersonaje(Leon obj, int index){
+	public void seguirPersonaje(Charlie charlie, Leon leon, int index){
 		Mundo m=Mundo.getInstance();
-		//this.x = -b.getX()+(m.getWidth()/8);
-		this.x = -obj.getX()+index;
+		this.x =- charlie.getX() + index;
+		this.x =- leon.getX() + index;
+
 		if (this.x>0){
 			this.x=0;
 		}
@@ -59,15 +59,4 @@ public class Camara {
 	public double getY(){
 		return this.y;
     }
-
-    /////
-    /*
-     * init
-     * g2d.translate(camera.getX(),camera.getY());
-     *
-     *
-     * end
-     * g2d.translate(-camera.getX(),-camera.getY());
-     **/
-
 }

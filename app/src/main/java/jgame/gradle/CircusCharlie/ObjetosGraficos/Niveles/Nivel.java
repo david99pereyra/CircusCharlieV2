@@ -12,7 +12,11 @@ public abstract class Nivel{
     protected CircusCharlie circusCharlie;
     Camara cam;
     Fondo fondo;
-    protected static boolean colisiono = false, llegoAMeta = false, mostrarNivel = false, accion = false, restar = false;
+    protected static boolean colisiono = false;
+    protected static boolean llegoAMeta = false;
+    protected static boolean mostrarNivel = false;
+    protected static boolean accion = false;
+    protected static boolean restar = false;
     protected boolean accionEjecutar;
     protected Timer temporizador = new Timer();
     Date dInit = new Date();
@@ -73,23 +77,23 @@ public abstract class Nivel{
         cam.seguirPersonaje(circusCharlie.getCharlie(),180); /// la camara sigue al Personaje
     }
 
-    public void movimientoTeclas(double delta, Keyboard keyboard, Charlie leon){
+    public void movimientoTeclas(double delta, Keyboard keyboard, Leon leon){
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
             if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
                 circusCharlie.getCharlie().left();
+                leon.left();
                 if(!circusCharlie.getCharlie().saltando()){
                     circusCharlie.getCharlie().cambioImagen();
                 }
-                leon.leftLeon();
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
             if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
                 circusCharlie.getCharlie().right();
+                leon.right();
                 if(!circusCharlie.getCharlie().saltando()){
                     circusCharlie.getCharlie().cambioImagen();
                 }
-                leon.rightLeon();
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
@@ -101,12 +105,12 @@ public abstract class Nivel{
         for (KeyEvent event : keyEvents) {
             if ((event.getID() == KeyEvent.KEY_RELEASED)) {
                 circusCharlie.getCharlie().quieto();
-                leon.quietoLeon();
+                leon.quieto();
             }
             if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
                 if (Nivel1.llegoAMeta() == false) {
                     circusCharlie.getCharlie().jump();
-                    leon.jumpLeon();
+                    leon.jump();
                     FXPlayer.FX00.play();
                 }
             }
@@ -117,8 +121,7 @@ public abstract class Nivel{
         }
         leon.update(delta);
         circusCharlie.getCharlie().update(delta);
-        cam.seguirPersonaje(circusCharlie.getCharlie(),143); /// la camara sigue al Personaje
-        cam.seguirPersonaje(leon,143);
+        cam.seguirPersonaje(circusCharlie.getCharlie(), leon, 143); /// la camara sigue al Leon
     }
 
     public void animacionMeta(double delta){
