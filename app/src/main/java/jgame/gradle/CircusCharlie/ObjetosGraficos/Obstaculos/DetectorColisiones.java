@@ -3,8 +3,8 @@ import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.Pong.Ball;
 import jgame.gradle.Pong.Raqueta;
 import jgame.gradle.Pong.Sonido;
-
 import java.awt.Rectangle;
+
 public class DetectorColisiones extends Rectangle {
         // Metodos de colisiones del juego Pong
         public static void colisionPelotaContraBordesSupInf(Ball pelotita, jgame.gradle.CircusCharlie.Fondo fondo){

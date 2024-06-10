@@ -29,7 +29,8 @@ public class CircusCharlie extends JGame {
     public static Fondo fondo;
     public static Charlie charlie;
     private static Nivel nivelActual;
-    private boolean enPausa = false, pPresionado = false;
+    private boolean enPausa = false;
+    private boolean pPresionado = false;
     // Variables del level 1
     Nivel1 nivel1;
     // Variables del level 2
@@ -57,7 +58,7 @@ public class CircusCharlie extends JGame {
         Mundo m = Mundo.getInstance();
         try {
             if(nivelActual == null){
-                nivelActual = new Nivel1(this);
+                nivelActual = new Nivel2(this);
             }
             cam.setRegionVisible(getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());

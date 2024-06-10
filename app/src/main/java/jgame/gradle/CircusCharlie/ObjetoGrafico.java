@@ -4,15 +4,16 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
+import java.util.*;
 
 public class ObjetoGrafico {
-	protected BufferedImage imagen = null;
+	protected BufferedImage imagen;
+	protected double positionX = 0;
+	protected double positionY = 0;
+	protected double height;
+	protected double width;
+	protected ArrayList<BufferedImage> images = new ArrayList<>();
 
-	public double positionX = 0;
-	public double positionY = 0;
-	private int height;
-	private int width;
-	
     public ObjetoGrafico(String filename) {
 		try {
 			imagen= ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
@@ -50,10 +51,16 @@ public class ObjetoGrafico {
 		this.width = width;
 	}
 
-	public void setPosition(double d,double e){
-		this.positionX = d;
-		this.positionY = e;
+	public void setPosition(double x,double y){
+		this.positionX = x;
+		this.positionY = y;
 	}
+
+	public void setPosition(int x,int y){
+		this.positionX = x;
+		this.positionY = y;
+	}
+
 	//No utilizamos este ya que necesitamos para el swap
 	public void display(Graphics2D g2) {
 		g2.drawImage(imagen,(int) this.positionX,(int) this.positionY,null);

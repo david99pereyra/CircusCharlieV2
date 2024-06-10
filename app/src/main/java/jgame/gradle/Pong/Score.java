@@ -1,6 +1,4 @@
 package jgame.gradle.Pong;
-import jgame.gradle.Fondo;
-// import jgame.gradle.CircusCharlie.ObjetoGrafico;
 import jgame.gradle.CircusCharlie.*;
 import java.awt.*;
 

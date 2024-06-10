@@ -25,7 +25,7 @@ public class Nivel3 extends Nivel{
             charlie.setPISO(430);
             charlie.setPosition(185, charlie.getPISO());
             charlie.quieto();
-            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
+            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png", 31);
             cam = new Camara(0, 0);
             cam.setRegionVisible(circusCharlie.getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());

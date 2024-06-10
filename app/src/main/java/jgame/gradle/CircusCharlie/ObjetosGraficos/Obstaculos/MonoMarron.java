@@ -1,6 +1,5 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
-
-import jgame.gradle.ObjetoGrafico;
+import jgame.gradle.CircusCharlie.ObjetoGrafico;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
@@ -10,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+
 
 public class MonoMarron extends ObjetoGrafico {
     private double idx = 0;

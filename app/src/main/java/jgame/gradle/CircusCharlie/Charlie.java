@@ -16,7 +16,6 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	private BufferedImage charlieSoga1;
 	private BufferedImage charlieSoga2;
 	private BufferedImage charlieSoga3;
-	private BufferedImage imagen;
 	private ArrayList<BufferedImage> imagenesMeta = new ArrayList<>();
 	private double idx;
 	private final int ESTADO_QUIETO = -1;
@@ -41,6 +40,13 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public Charlie(String filename){
 		super(filename);
+		try{
+			imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
+			images.add(imagen);
+		} catch (IOException e){
+			throw new RuntimeException("Error al cargar la imagen del caldero", e);
+		}
+		
 		charlie = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
 		charlie2 = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie2.png");
 		charlieSoga1 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");

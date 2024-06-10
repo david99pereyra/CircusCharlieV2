@@ -11,9 +11,6 @@ public class Leon extends Vehiculo{
     private final int ESTADO_SALTANDO = 2;
 	private final int ESTADO_QUIETO = -1;
 	private double indiceImagenActual = 0;
-	private double velocityX = 4.0;
-	private double velocityY = 0.0;
-	private double angulo = 0.0;
 	private double gravity = 0.43;
 	private	double andandoLeon;
 	private boolean saltando = false;
@@ -64,14 +61,16 @@ public class Leon extends Vehiculo{
 	}
 
 	public void left() {
-		this.positionX -= velocityX;
-		direccionAngulo =- 1;
+		super.left();
+		// this.positionX -= velocityX;
+		// direccionAngulo =- 1;
 		this.cambioImagenLeon();
 	}
 
 	public void right() {
-		positionX += velocityX;
-		direccionAngulo = 1;
+		super.right();
+		// positionX += velocityX;
+		// direccionAngulo = 1;
 		this.cambioImagenLeon();
 	}
 
