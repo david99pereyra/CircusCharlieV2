@@ -52,17 +52,6 @@ public class MonoMarron extends ObjetoGrafico {
         return isStopped;
     }
 
-    public void SwapImage(){
-        while (true) {
-            try{
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException("Error al cargar la imagen del Mono Marron", ex);
-            }
-            indiceImagenActualMonoMarron = (indiceImagenActualMonoMarron + 1) % imageMonoMarron.size();
-        }
-    }
-
     public void update(double delta) {
         double posX = this.getX();
         // Solo actualizar la posición si no está detenido

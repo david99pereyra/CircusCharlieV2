@@ -7,6 +7,7 @@ import jgame.gradle.FontManager;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.*;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.*;
 import java.text.*;
@@ -26,6 +27,7 @@ public class CircusCharlie extends JGame {
     public static Fondo fondo;
     public static Charlie charlie;
     private static Nivel nivelActual;
+    private boolean enPausa = false, pPresionado = false;
     // Variables del level 1
     Nivel1 nivel1;
     public static Charlie leon;
@@ -107,7 +109,6 @@ public class CircusCharlie extends JGame {
                 // FXPlayer.VICTORIA.stop();
                 charlie.nivel(nivel);
                 charlie.imagenNivel();
-
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -116,9 +117,21 @@ public class CircusCharlie extends JGame {
                 }, 3000);
 
             } else {
-                if (!nivelActual.colisiono() && inicioNivel) {
-                    Keyboard keyboard = getKeyboard();
-                    nivelActual.gameUpdate(delta, keyboard);
+                Keyboard keyboard = getKeyboard();
+                if(keyboard.isKeyPressed(KeyEvent.VK_P)){
+                    if(!pPresionado && inicioNivel){
+                        enPausa = !enPausa;
+                        pPresionado = true;
+                        charlie.detenerBonus();
+                    }
+                }else{
+                    pPresionado = false;
+                }
+                if(!enPausa){
+                    charlie.continuarDescuento();
+                    if (!nivelActual.colisiono() && inicioNivel) {
+                        nivelActual.gameUpdate(delta, keyboard);
+                    }
                 }
             }
         }
@@ -139,6 +152,12 @@ public class CircusCharlie extends JGame {
         charlie.displayScore(g);
         g.setColor(Color.red);
         g.drawString("Tecla ESC = Fin del Juego ", 490, 20);
+
+        if(enPausa){
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Pixel Emulator", Font.BOLD, 40));
+            g.drawString("Pausa", WIDTH / 2 - 83, HEIGHT / 2);
+        }
 
         displayTempScore(g);
     }

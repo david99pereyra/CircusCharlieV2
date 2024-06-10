@@ -5,7 +5,7 @@ import jgame.gradle.Pong.Raqueta;
 import jgame.gradle.Pong.Sonido;
 
 import java.awt.Rectangle;
-public class DetectorColiciones extends Rectangle {
+public class DetectorColisiones extends Rectangle {
         // Metodos de colisiones del juego Pong
         public static void colisionPelotaContraBordesSupInf(Ball pelotita, jgame.gradle.CircusCharlie.Fondo fondo){
         // Colisión de la pelota con los bordes
@@ -125,6 +125,28 @@ public class DetectorColiciones extends Rectangle {
                 Rectangle rectMonitoAzul = new Rectangle((int) monitoazul.getX(), (int) monitoazul.getY(),
                         monitoazul.getWidth(), monitoazul.getHeight());
                 return rectMonitoMarron.intersects(rectMonitoAzul);
+        }
+
+        public static boolean detectarArribaMonoMarron(MonoMarron monoMarron, Charlie charlie) {
+                // Obtener las coordenadas y dimensiones del rectángulo que rodea al caldero
+                // Definir un área en la parte superior del caldero
+                int areaArriba = 100; // Altura del área superior (ajústala según tus necesidades)
+                Rectangle areaSuperior = new Rectangle((int) monoMarron.getX(), (int) monoMarron.getY() - areaArriba,monoMarron.getWidth(), areaArriba);
+                // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+                // Verificar si los rectángulos se superponen
+                return areaSuperior.intersects(rectCharlie);
+        }
+
+        public static boolean detectarArribaMonoAzul(MonoAzul monoAzul, Charlie charlie) {
+                // Obtener las coordenadas y dimensiones del rectángulo que rodea al caldero
+                // Definir un área en la parte superior del caldero
+                int areaArriba = 100; // Altura del área superior (ajústala según tus necesidades)
+                Rectangle areaSuperior = new Rectangle((int) monoAzul.getX(), (int) monoAzul.getY() - areaArriba,monoAzul.getWidth(), areaArriba);
+                // Obtener las coordenadas y dimensiones del rectángulo que rodea al personaje
+                Rectangle rectCharlie = new Rectangle((int) charlie.getX(), (int) charlie.getY(), charlie.getWidth(), charlie.getHeight());
+                // Verificar si los rectángulos se superponen
+                return areaSuperior.intersects(rectCharlie);
         }
 
         // Colisiones 3Er nivel

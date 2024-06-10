@@ -1,6 +1,6 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.*;
-import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColiciones;
+import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.DetectorColisiones;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 
 import java.util.*;
@@ -10,21 +10,20 @@ import java.awt.Graphics2D;
 public class Nivel3 extends Nivel{
     private static ArrayList<Pelota> listaDePelotas = new ArrayList<>();
     public static Charlie charlie;
-    private boolean accionEjecutar = false;
-    private static boolean llegoAMeta = false;
-
-    private Timer temporizador = new Timer();
+    public boolean charlieEnPelota, puntuacionOtorgada = true;
 
     public Nivel3(CircusCharlie circusCharlie){
         super(circusCharlie);
+        llegoAMeta = false;
+        accionEjecutar = false;
         Mundo m = Mundo.getInstance();
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-            //FXPlayer.EVENTO1.loop(); 
+            //FXPlayer.EVENTO3.loop(); 
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(430);
-            charlie.setPosition(174, charlie.getPISO());
+            charlie.setPosition(185, charlie.getPISO());
             charlie.quieto();
             fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel3/FONDO_Nivel3.png");
             cam = new Camara(0, 0);
@@ -97,7 +96,6 @@ public class Nivel3 extends Nivel{
                     @Override
                     public void run() {
                         if (!accionEjecutar) {
-                            System.out.println("esperando 2...");
                             CircusCharlie.setNivel(CircusCharlie.getNivel()+1);
                             Nivel1.setCharlie(charlie);
                             CircusCharlie.inicioNivel(false);
@@ -114,7 +112,10 @@ public class Nivel3 extends Nivel{
             }
         }
         else if(charlie.getX() < 6464 || charlie.getX()> 6586){
-            charlie.setPISO(430);
+            charlie.setPISO(510);
+        }
+        if(charlie.getY() >= 510){
+            cayoAlPiso();
         }
         // Metodo que hace movimiento de las pelotas y swap de imagen.
         movimientoySwapPelota(delta);
@@ -138,8 +139,12 @@ public class Nivel3 extends Nivel{
             }
         }
         // Reinicia el juego en el checkpoint más cercano
-        int newX = checkpointsEjeX[pos]; 
+        int newX = checkpointsEjeX[pos];
+        CircusCharlie.inicioNivel(false); 
         reiniciarJuego(newX, charlie);
+        Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
+        nuevaPelota.setPosition(charlie.getX(), 471);
+        listaDePelotas.add(nuevaPelota);
     }
 
     private void reiniciarJuego(double x, Charlie charlie) {
@@ -148,8 +153,9 @@ public class Nivel3 extends Nivel{
         llegoAMeta = false;
         colisiono = false;
         FXPlayer.DERROTA.stop();
-        //FXPlayer.EVENTO1.loop();
+        //FXPlayer.EVENTO3.loop();
         charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+        charlie.reiniciarDescuento();
     }
 
     public static Pelota getPelotaEnLaQueEstaParadoCharlie(Charlie charlie) {
@@ -187,30 +193,44 @@ public class Nivel3 extends Nivel{
     }
 
     public void charlieParado(double delta){
-        boolean charlieEnPelota = false;
+        charlieEnPelota = false;
         for (Pelota pelotita : listaDePelotas) {
-            if (DetectorColiciones.detectarCharlieParadoSobrePelota(pelotita, charlie)) {
+            if (DetectorColisiones.detectarCharlieParadoSobrePelota(pelotita, charlie)) {
                 charlie.setEnLaPelota(true);
                 pelotita.setEstaMontado(true);
                 charlie.setPISO(407);
                 charlieEnPelota = true;
+                if((pelotita.getX()+pelotita.getWidth()/2)>(charlie.getX()+charlie.getWidth()/2)){
+                    charlie.setX(charlie.getX()+1);
+                }else if((pelotita.getX()+pelotita.getWidth()/2)<(charlie.getX()+charlie.getWidth()/2)){
+                    charlie.setX(charlie.getX()-1);
+                }
+            } else if(charlie.saltando()){
+                puntuacionOtorgada = false;
             } else {
                 pelotita.setEstaMontado(false);
             }
         }
-        charlie.setEnLaPelota(charlieEnPelota);
-        if (!charlie.getEnLaPelota()) {
-            charlie.setVelocidadCaida(charlie.getGravedad() * delta);
-            if (charlie.getY() >= 550) {
-                reiniciarJuegoXColisiones(charlie.getX(), charlie);
-                charlie.setVelocidadCaida(0);
-                Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
-                nuevaPelota.setPosition(charlie.getX(), 471);
-                listaDePelotas.add(nuevaPelota);
+
+        if(!puntuacionOtorgada){
+            if(charlie.getY() == charlie.getPISO()){
+                Score.sumarScore(100);
+                puntuacionOtorgada = true;
             }
-        } else {
-            charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
         }
+        charlie.setEnLaPelota(charlieEnPelota);
+        // if (!charlie.getEnLaPelota()) {
+        //     charlie.setVelocidadCaida(charlie.getGravedad() * delta);
+        //     if (charlie.getY() >= 550) {
+        //         reiniciarJuegoXColisiones(charlie.getX(), charlie);
+        //         charlie.setVelocidadCaida(0);
+        //         Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
+        //         nuevaPelota.setPosition(charlie.getX(), 471);
+        //         listaDePelotas.add(nuevaPelota);
+        //     }
+        // } else {
+        //     charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
+        // }
     }
 
     public void colisionPelotas(){
@@ -218,12 +238,44 @@ public class Nivel3 extends Nivel{
             Pelota pelotita1 = listaDePelotas.get(i);
             for (int j = i + 1; j < listaDePelotas.size(); j++){
                 Pelota pelotita2 = listaDePelotas.get(j);
-                if(DetectorColiciones.detectarEntrePelotas(pelotita1, pelotita2)){
+                if(DetectorColisiones.detectarEntrePelotas(pelotita1, pelotita2)){
                     pelotita1.leftMax(10);  // Pelotita1 a la izquierda
                     pelotita2.leftMax(16); // Pelotita2 a la derecha
                 }
             }
         }
+    }
+
+    public void cayoAlPiso(){
+        colisiono = true;
+        accion = false;
+        restar = false;
+        charlie.detenerBonus();
+        choqueDelPersonaje(charlie);
+    }
+
+    public void choqueDelPersonaje(Charlie charlie){
+        FXPlayer.EVENTO3.stop();
+        FXPlayer.DERROTA.playOnce();
+        charlie.setPISO(charlie.getY());
+        charlie.setPosition(charlie.getX(), charlie.getPISO());
+        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
+        Timer tempo = new Timer();
+
+        tempo.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!accion) {
+                    if(!restar){
+                        System.out.println(charlie.getVida());
+                        charlie.restarVida(1);
+                        restar = true;
+                    }
+                    reiniciarJuegoXColisiones(charlie.getX(), charlie);
+                    accion = true;
+                }
+            }
+        }, 4000);
     }
     
 }

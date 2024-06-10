@@ -90,10 +90,10 @@ public class Pong extends JGame{
                 ball.mover();
                 // Colisiones
                 // Colisión de la pelota con los bordes
-                DetectorColiciones.colisionPelotaContraBordesSupInf(ball, fondo);
+                DetectorColisiones.colisionPelotaContraBordesSupInf(ball, fondo);
                 // Colisión de la pelota con las raquetas
-                DetectorColiciones.colisionPelotaRaqueta(ball, raquetazo1);
-                DetectorColiciones.colisionPelotaRaqueta(ball, raquetazo2);
+                DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo1);
+                DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo2);
                 // Colsiion de la pelota en los laterales
                 colisionLateral(ball);
                 
@@ -195,7 +195,7 @@ public class Pong extends JGame{
                 e.printStackTrace();
             }
         }
-        if(DetectorColiciones.colisionPelotaContraLateralDerecha(ball, (int)fondo.getWidth())){
+        if(DetectorColisiones.colisionPelotaContraLateralDerecha(ball, (int)fondo.getWidth())){
             scoreJ2.setPuntos(scoreJ2.getPuntos() + 1);
             newBall();
             newRaquetas();
