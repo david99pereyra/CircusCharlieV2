@@ -2,7 +2,6 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.Objects;
@@ -15,19 +14,17 @@ public class MonoAzul extends ObjetoGrafico{
     private int indiceImagenActualMonoAzul = 0;
     private boolean onGround = true;
     private boolean isJumping = false;
-    BufferedImage imagen;
-    private ArrayList<BufferedImage> imageMonoAzul = new ArrayList<>();
 
     public MonoAzul(String filename) {
         super(filename);
         try{
-            if(imageMonoAzul.isEmpty()){
+            if(images.isEmpty()){
                 imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-                imageMonoAzul.add(imagen);
+                images.add(imagen);
                 imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta2.png")));
-                imageMonoAzul.add(imagen);
+                images.add(imagen);
                 imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta3.png")));
-                imageMonoAzul.add(imagen);
+                images.add(imagen);
             }
         } catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -38,8 +35,8 @@ public class MonoAzul extends ObjetoGrafico{
     public void display(Graphics2D g) {
         double posX = getX();
         int posY = (int) getY();
-        if (!imageMonoAzul.isEmpty()){
-            BufferedImage imagenActualMonoAzul = imageMonoAzul.get(indiceImagenActualMonoAzul);
+        if (!images.isEmpty()){
+            BufferedImage imagenActualMonoAzul = images.get(indiceImagenActualMonoAzul);
             if (imagenActualMonoAzul != null){
                 g.drawImage(imagenActualMonoAzul, (int) Math.round(posX), (int)posY, null);
             }
@@ -76,7 +73,7 @@ public class MonoAzul extends ObjetoGrafico{
             onGround = true;
         }
         idx += 0.04;
-        indiceImagenActualMonoAzul = ((int) idx) % imageMonoAzul.size();
+        indiceImagenActualMonoAzul = ((int) idx) % images.size();
     }
 
     public void saltoMonoAZul() {

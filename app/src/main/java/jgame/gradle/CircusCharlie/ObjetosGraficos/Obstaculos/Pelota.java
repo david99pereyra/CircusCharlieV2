@@ -47,9 +47,7 @@ public class Pelota extends Vehiculo{
         this.setX(getX() - valor);
     }
 
-    public void rightMax(double valor) {
-        this.setX(getX() + valor);
-	} 
+    public void jump(){}
 
     // Dibujar el aro en la posición especificada
     public void display(Graphics2D g) {

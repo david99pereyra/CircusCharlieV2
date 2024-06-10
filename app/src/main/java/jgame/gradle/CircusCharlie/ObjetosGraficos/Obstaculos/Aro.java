@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 public class Aro extends ObjetoGrafico{
-    BufferedImage imagen;
     private double idx = 0;
     private int indiceImagenActualAroGrande = 0;
     private int indiceImagenActualAroChico = 0;
