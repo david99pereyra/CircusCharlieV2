@@ -29,7 +29,7 @@ public class Nivel2 extends Nivel{
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(220);
             charlie.setPosition(174, charlie.getPISO());
-            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png");
+            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png", 31);
             cam = new Camara(0, -26);
             cam.setRegionVisible(circusCharlie.getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());

@@ -38,7 +38,7 @@ public class Nivel1 extends Nivel {
             charlie.quieto();
             leon.quieto();
             cam = new Camara(0,0);
-            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
+            fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png", 31);
             CircusCharlie.setCharlie(charlie);
             CircusCharlie.setCamara(cam);
             CircusCharlie.setFondo(fondo);

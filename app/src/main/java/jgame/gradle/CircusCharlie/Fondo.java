@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 public class Fondo extends ObjetoGrafico {
-	public Fondo(String filename) {
+	public Fondo(String filename, double posY) {
 		super(filename);
-		setPosition(0,31); // El fondo es una imagen estatica, pero muy grande
+		setPosition(0, posY); // El fondo es una imagen estatica, pero muy grande
 	}
 
 	public Fondo(int width, int height){

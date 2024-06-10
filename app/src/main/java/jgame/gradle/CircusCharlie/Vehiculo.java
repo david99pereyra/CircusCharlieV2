@@ -1,12 +1,15 @@
 package jgame.gradle.CircusCharlie;
-import jgame.gradle.ObjetoGrafico;
 import javax.imageio.*;
 import java.util.*;
 
 public abstract class Vehiculo extends ObjetoGrafico {
-    protected double PISO;
     protected int direccionAngulo = 0;
-	protected int idx = 0;
+	protected double PISO;
+	protected double velocityX = 4.0;
+	protected double velocityY = 0.0;
+	protected double angulo = 0.0;
+	protected double idx = 0;
+
 
     public Vehiculo(String filename) {
 		super(filename);
@@ -27,5 +30,15 @@ public abstract class Vehiculo extends ObjetoGrafico {
 
 	public double getPISO(){
 		return this.PISO;
+	}
+
+	public void left() {
+		this.positionX -= velocityX;
+		direccionAngulo =- 1;
+	}
+
+	public void right() {
+		positionX += velocityX;
+		direccionAngulo = 1;
 	}
 }

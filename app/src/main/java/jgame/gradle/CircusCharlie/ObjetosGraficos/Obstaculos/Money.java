@@ -1,10 +1,10 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
-import jgame.gradle.ObjetoGrafico;
-
+import jgame.gradle.CircusCharlie.ObjetoGrafico;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 import javax.imageio.ImageIO;
+
 
 public class Money extends ObjetoGrafico{
     private BufferedImage imagen;
