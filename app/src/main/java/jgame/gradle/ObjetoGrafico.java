@@ -7,14 +7,16 @@ import java.io.*;
 
 public class ObjetoGrafico {
 	protected BufferedImage imagen = null;
-
-	double positionX = 0;
+	protected double positionX = 0;
 	protected double positionY = 0;
+	protected int height;
+	protected int width;
 	
     public ObjetoGrafico(String filename) {
+		this.positionX = 0;
+		this.positionY = 0;
 		try {
 			imagen= ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-
 		} catch (IOException e) {
 			System.out.println("ZAS! en ObjectoGrafico "+e);
 		}
@@ -48,5 +50,13 @@ public class ObjetoGrafico {
 
 	public double getY(){
 		return positionY;
+	}
+
+	public void setX(double x){
+		this.positionX = x;
+	}
+
+	public void setY(double y){
+		this.positionY = y;
 	}
 }

@@ -11,10 +11,15 @@ public class Nivel1 extends Nivel {
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private ArrayList<Money> listaDeBolsaDeMoneda = new ArrayList<>();
-    private static boolean llegoAMeta = false, accionEjecutar;
-    private static boolean banderaScoreAro = false, banderaScoreCaldero = false;
-    private boolean mostrarArosYMoney = true, pasoXAro = false, pasoXCaldero = false, mostrarAros = true;
-    public static Charlie charlie, leon;
+    private static boolean llegoAMeta = false;
+    private static boolean banderaScoreAro = false;
+    private boolean accionEjecutar;
+    private boolean banderaScoreCaldero = false;
+    private boolean mostrarArosYMoney = true;
+    private boolean pasoXAro = false;
+    private boolean pasoXCaldero = false;
+    public static Charlie charlie;
+    public static Leon leon;
 
     public Nivel1(CircusCharlie circusCharlie) {
         super(circusCharlie);
@@ -25,17 +30,16 @@ public class Nivel1 extends Nivel {
             FXPlayer.volume = FXPlayer.Volume.LOW;
             // FXPlayer.EVENTO1.loop();
             charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-            leon = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
+            leon = new Leon("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
             charlie.setPISO(412);
             charlie.setPosition(174, charlie.getPISO());
             leon.setPISO(477);
             leon.setPosition(143, leon.getPISO());
             charlie.quieto();
-            leon.quietoLeon();
+            leon.quieto();
             cam = new Camara(0,0);
             fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png");
             CircusCharlie.setCharlie(charlie);
-            CircusCharlie.setLeon(leon);
             CircusCharlie.setCamara(cam);
             CircusCharlie.setFondo(fondo);
             // Crear los aros
@@ -156,7 +160,7 @@ public class Nivel1 extends Nivel {
     }   
     
     // Metodo que detecta los aros y calderos que ya pasaron y los va eliminando
-    public void eliminarArosDesplazados(Charlie leon) {
+    public void eliminarArosDesplazados(Leon leon) {
         // Iterar sobre la lista original en sentido inverso para evitar problemas al
         // eliminar elementos
         for (int i = listaDeArosIzquierdo.size() - 1; i >= 0; i--) {
@@ -174,7 +178,7 @@ public class Nivel1 extends Nivel {
         }
     }
 
-    public void choqueDelPersonaje(Charlie charlie, Charlie leon) {
+    public void choqueDelPersonaje(Charlie charlie, Leon leon) {
         FXPlayer.EVENTO1.stop();
         FXPlayer.DERROTA.playOnce();
         charlie.setPISO(charlie.getY());
@@ -203,7 +207,7 @@ public class Nivel1 extends Nivel {
     }
 
     // Cuando detecta una colision, reiniciamos el juego en ese punto
-    public void reiniciarJuegoXColisiones(double x1, Charlie charlie, Charlie leon) {
+    public void reiniciarJuegoXColisiones(double x1, Charlie charlie, Leon leon) {
         // Busca el checkpoint más cercano a la posición x
         int[] checkpointsEjeX = { 201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433 };
         int pos = 0, i;
@@ -220,7 +224,7 @@ public class Nivel1 extends Nivel {
     }
 
     // Método para reiniciar el juego en una posición específica
-    private void reiniciarJuego(double x, Charlie charlie, Charlie leon) {
+    private void reiniciarJuego(double x, Charlie charlie, Leon leon) {
         charlie.setPISO(412);
         charlie.setPosition(x + 31, charlie.getPISO());
         leon.setPISO(477);

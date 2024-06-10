@@ -20,7 +20,9 @@ public class CircusCharlie extends JGame {
     public double tempScoreY = 0;
     public long tempScoreStartTime = 0;
     private final long SCORE_DISPLAY_TIME = 1000; // tiempo en milisegundos que el puntaje se muestra en pantalla
-    public static boolean inicioNivel = false, gameover = false, inicioBD=false;
+    public static boolean inicioNivel = false;
+    public static boolean gameover = false; 
+    public static boolean inicioBD = false;
     Date dInit = new Date(), dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
     public static Camara cam;
@@ -30,7 +32,6 @@ public class CircusCharlie extends JGame {
     private boolean enPausa = false, pPresionado = false;
     // Variables del level 1
     Nivel1 nivel1;
-    public static Charlie leon;
     // Variables del level 2
     Nivel2 nivel2;
     // Variables del level 3
@@ -77,10 +78,6 @@ public class CircusCharlie extends JGame {
     public static void setCharlie(Charlie charlie){
         CircusCharlie.charlie = charlie;
     }
-    
-    public static void setLeon(Charlie leon){
-        CircusCharlie.leon = leon;
-    }
 
     public void gameUpdate(double delta) {
         Timer timer = new Timer();
@@ -96,7 +93,6 @@ public class CircusCharlie extends JGame {
                                 resetGame();
                                 new Ranking();
                                 getFrame().dispose();
-                               
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
