@@ -13,8 +13,9 @@ import java.awt.Graphics2D;
 public class Nivel2 extends Nivel{
     private ArrayList<MonoMarron> listaDeMonosMarron = new ArrayList<>();
     private ArrayList<MonoAzul> listaDeMonosAzul = new ArrayList<>();
-    private static boolean banderaScoreMono = false;
-    private boolean mostrarMonos = true,pasoXMonoMarron = false, pasoXMonoAzul = false;
+    private boolean mostrarMonos = true;
+    private boolean pasoXMonoMarron = false;
+    private boolean pasoXMonoAzul = false;
     public static Charlie charlie;
 
     public Nivel2(CircusCharlie circusCharlie){
@@ -27,6 +28,7 @@ public class Nivel2 extends Nivel{
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO2.loop(); 
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
+            charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(220);
             charlie.setPosition(174, charlie.getPISO());
             fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel2/FONDO_Nivel2.png", 31);
@@ -80,6 +82,7 @@ public class Nivel2 extends Nivel{
                             CircusCharlie.inicioNivel(false);
                             CircusCharlie.changeState(new Nivel3(circusCharlie));
                             accionEjecutar = true;
+                            llegoAMeta = false;
                         }
                     }
                 }, 4000);
@@ -93,9 +96,6 @@ public class Nivel2 extends Nivel{
         else if(charlie.getX()<5550 || charlie.getX()>5743){
             charlie.setPISO(220);
             mostrarMonos = true;
-        }
-        if (charlie.getY() + charlie.getHeight() > charlie.getPISO()) {
-            banderaScoreMono = false;
         }
         // Metodo que le da movimiento a ambos monos y detecta colisiones de los entre charlie y monos
         movimientoMonoYColision(delta);
@@ -113,10 +113,10 @@ public class Nivel2 extends Nivel{
         if(!mostrarNivel){
             if(mostrarMonos){
                 for (MonoMarron monitoMarron: listaDeMonosMarron){
-                    monitoMarron.display(g);
+                    monitoMarron.displayObjetos(g);
                 }
                 for (MonoAzul monitoAzul: listaDeMonosAzul){
-                    monitoAzul.display(g);
+                    monitoAzul.displayObjetos(g);
                 }
             }
             charlie.display(g);

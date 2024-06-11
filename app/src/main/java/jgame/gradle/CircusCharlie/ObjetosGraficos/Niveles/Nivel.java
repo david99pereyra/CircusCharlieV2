@@ -30,25 +30,31 @@ public abstract class Nivel{
     public abstract boolean colisiono();
 
     public void movimientoTeclas(double delta, Keyboard keyboard){
-        Pelota pelotaActual = Nivel3.getPelotaEnLaQueEstaParadoCharlie(circusCharlie.getCharlie());
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
-            if (circusCharlie.getCharlie().getX() > 10){
-                circusCharlie.getCharlie().left();
-                circusCharlie.getCharlie().cambioImagen2();
-                if(circusCharlie.getNivelActual() instanceof Nivel3 && circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
+        if(circusCharlie.getNivelActual() instanceof Nivel3){
+            Pelota pelotaActual = Nivel3.getPelotaEnLaQueEstaParadoCharlie(circusCharlie.getCharlie());
+            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+                if(circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
                     pelotaActual.left();
                     pelotaActual.update(delta);
                 }
+            }
+            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                if(circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
+                    pelotaActual.right();
+                    pelotaActual.update(delta);
+                }
+            }
+        }
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+            if (circusCharlie.getCharlie().getX() > 10){
+                circusCharlie.getCharlie().left();
+                circusCharlie.getCharlie().cambioImagen1();
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
             if ((circusCharlie.getCharlie().getX() + circusCharlie.getCharlie().getWidth() < fondo.getWidth() && !Nivel2.llegoAMeta()) || (circusCharlie.getCharlie().getX() + circusCharlie.getCharlie().getWidth() < fondo.getWidth() && !Nivel3.llegoAMeta())) {
                 circusCharlie.getCharlie().right();
                 circusCharlie.getCharlie().cambioImagen1();
-                if(circusCharlie.getNivelActual() instanceof Nivel3 && circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
-                    pelotaActual.right();
-                    pelotaActual.update(delta);
-                }
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {

@@ -23,8 +23,6 @@ public class Ranking extends JFrame{
     private ArrayList<Integer> puntuaciones = new ArrayList<>();
     
     public Ranking() throws SQLException{
-        
-        
         obtenerDatos();
         FontManager.getInstance();
         for (String string : nombres) {
@@ -70,13 +68,10 @@ public class Ranking extends JFrame{
         panel.add(southPanel, BorderLayout.SOUTH);
 
         this.setVisible(true);
-
     }
 
     private void obtenerDatos() throws SQLException {
-        
         ResultSet rs = ScoreBD.getData();
-
         try {
             while (rs != null && rs.next()) {
                 nombres.add(rs.getString("nombre"));

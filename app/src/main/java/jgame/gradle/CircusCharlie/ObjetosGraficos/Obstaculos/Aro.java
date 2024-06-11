@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
 
 public class Aro extends ObjetoGrafico{
-    private double idx = 0;
     private int indiceImagenActualAroGrande = 0;
     private int indiceImagenActualAroChico = 0;
     private boolean verificarTamaño; //True es para saber si es el AroGrande y false si es Aro Chico
@@ -52,7 +51,7 @@ public class Aro extends ObjetoGrafico{
     }
 
     // Dibujar el aro en la posición especificada
-    public void display(Graphics2D g) {
+    public void displayAroParteIzquierda(Graphics2D g) {
         double posX = getX();
         int posY = (int) getY();
         if (!imageAroGrandeIzquierdo.isEmpty() && this.verificarTamaño == true){
@@ -69,7 +68,7 @@ public class Aro extends ObjetoGrafico{
         }
     }
 
-    public void display1(Graphics2D g) {
+    public void displayAroParteDerecha(Graphics2D g) {
         double posX = getX();
         int posY = (int) getY();
         if (!imageAroGrandeDerecho.isEmpty() && this.verificarTamaño == true){

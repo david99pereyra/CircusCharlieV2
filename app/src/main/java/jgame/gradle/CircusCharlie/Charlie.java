@@ -1,13 +1,8 @@
 package jgame.gradle.CircusCharlie;
-
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import javax.imageio.*;
-
-import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel;
-import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.Nivel1;
-
 import java.io.*;
 import java.util.*;
 
@@ -15,17 +10,9 @@ import java.util.*;
 ///   http://jsfiddle.net/LyM87/
 /// https://stackoverflow.com/questions/37758061/rotate-a-buffered-image-in-java/37758533
 public class Charlie extends ObjetoGrafico implements ObjetoMovible {
-	private BufferedImage charlie;
-	private BufferedImage charlie2;
-	private BufferedImage charlieSoga1;
-	private BufferedImage charlieSoga2;
-	private BufferedImage charlieSoga3;
-	private ArrayList<BufferedImage> imagenesMeta = new ArrayList<>();
-	private double idx;
 	private final int ESTADO_QUIETO = -1;
 	private int estadoActual;
 	private int direccionAngulo= 1;
-    private int indiceImagenActualCharlieEnMeta = 0;
 	private int andando = 0;
 	private double velocidadCaida = 0;
 	private double gravedad = 9.8;
@@ -39,43 +26,30 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	private boolean enElSuelo = false;
 	private boolean saltando=false;
 	private boolean enLaPelota = true;
-	private Vehiculo vehiculo;
 
 	private Score puntosJugador = new Score();
 
 	public Charlie(String filename){
 		super(filename);
 		try{
-			imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename)));
-			images.add(imagen);
-
+			if(images.isEmpty()){
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlie.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlie2.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga2.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga3.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria1.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoCircusCharlie/Generales/charlieVictoria2.png")));
+				images.add(imagen);
+			}
 		} catch (IOException e){
 			throw new RuntimeException("Error al cargar la imagen del caldero", e);
-		}
-		
-		charlie = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-		charlie2 = cargarImagen("imagenes/JuegoCircusCharlie/Generales/charlie2.png");
-		charlieSoga1 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
-		charlieSoga2 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga2.png");
-		charlieSoga3 = cargarImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga3.png");
-		cargarImagenMeta("imagenes/JuegoCircusCharlie/Generales/charlieVictoria1.png", imagenesMeta);
-		cargarImagenMeta("imagenes/JuegoCircusCharlie/Generales/charlieVictoria2.png", imagenesMeta);
-	}
-
-	public void cargarImagenMeta(String path, ArrayList<BufferedImage> guardar){
-		try {
-			imagen = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
-			guardar.add(imagen);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private BufferedImage cargarImagen(String path){
-		try {
-			return ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -149,54 +123,49 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 		direccionAngulo= 1;
 	} 
 
-	public void cambioImagen(){
+	public void cambioImagen(){ // Metodo para el cambio de imagen del nivel 1
 		andando++;
-		if(andando >= 15){
-			if(band){
-				this.setImagen(charlie2);
+		if (andando >= 15) {
+			if (band) {
+				this.setImagen(images.get(1)); // Establece la imagen de la posición 1
 				band = false;
-			}else if(!band){
-				this.setImagen(charlie);
+			} else {
+				this.setImagen(images.get(0)); // Establece la imagen de la posición 0
 				band = true;
 			}
-			andando = 0;
+			andando = 0; // Reinicia el contador
 		}
 	}
 
-	public void cambioImagen1(){
+	public void cambioImagen1(){ // Metodo para el cambio de imagen del nivel 2 y 3
 		andando++;
-		if(andando >= 15){
-			if(band && band0){
-				this.setImagen(charlieSoga2);
-				band = false; band0 = false;
-			}else if(!band && !band){
-				this.setImagen(charlieSoga3);
+		if (andando >= 15) {
+			if (band && band0) {
+				this.setImagen(images.get(3)); // Establece la imagen de la posición 3
+				band = false; 
+				band0 = false;
+			} else if (!band && !band0) {
+				this.setImagen(images.get(4)); // Establece la imagen de la posición 4
 				band = true;
-			}else if(band && !band0){
-				this.setImagen(charlieSoga1);
+			} else if (band && !band0) {
+				this.setImagen(images.get(2)); // Establece la imagen de la posición 2
 				band0 = true;
 			}
-			andando = 0;
-		}
-	}
-	public void cambioImagen2(){
-		andando++;
-		if(andando >= 15){
-			if(band){
-				this.setImagen(charlieSoga3);
-				band = false;
-			}else if(!band){
-				this.setImagen(charlieSoga1);
-				band = true;
-			}
-			andando = 0;
+			andando = 0; // Reinicia el contador
 		}
 	}
 	//Animacion de cuando charlie llega a la meta
 	public void updateLlegadaMeta(double delta){
-		idx += 0.1;
-        indiceImagenActualCharlieEnMeta = ((int)idx) % imagenesMeta.size();
-		setImagen(imagenesMeta.get(indiceImagenActualCharlieEnMeta));
+		andando++;
+		if(andando >= 25){
+			this.setImagen(images.get(5)); // Establece la imagen de la posición 5
+		}
+		if(andando == 45){
+			this.setImagen(images.get(6)); // Establece la imagen de la posición 6
+		}
+		if (andando > 45){
+			andando = 0;
+		}
     }
 
 	public void update(double delta) {
@@ -293,9 +262,5 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 
 	public void continuarDescuento(){
 		puntosJugador.continuarDescuento();
-	}
-
-	public void movimientoTeclas(){
-
 	}
 }

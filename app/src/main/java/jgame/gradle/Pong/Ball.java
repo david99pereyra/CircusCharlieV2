@@ -1,17 +1,14 @@
 package jgame.gradle.Pong;
 import jgame.gradle.CircusCharlie.ObjetoGrafico;
-
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.util.*;
-
 
 public class Ball extends ObjetoGrafico {
     private final int RADIO = 10;
     private int dx = 5;
     private int dy = 5;
-    private int initialSpeed = 2;
-    private Random random = new Random();
+    // private int initialSpeed = 2;
+    // private Random random = new Random();
 
     public Ball(int x, int y){
         this.positionX = x;

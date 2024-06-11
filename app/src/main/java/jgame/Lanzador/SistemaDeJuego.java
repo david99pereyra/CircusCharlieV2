@@ -14,7 +14,6 @@ import jgame.Lanzador.gui.RecuadroJuego;
 import jgame.gradle.CircusCharlie.JuegoCircusCharlie;
 import jgame.gradle.MarioBross.MarioBross;
 import jgame.gradle.Pong.JuegoPong;
-import jgame.gradle.Pong.Pong;
 
 public class SistemaDeJuego extends JFrame{
     public SistemaDeJuego(){

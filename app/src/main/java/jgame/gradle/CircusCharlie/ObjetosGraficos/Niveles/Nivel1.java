@@ -30,6 +30,7 @@ public class Nivel1 extends Nivel {
             FXPlayer.volume = FXPlayer.Volume.LOW;
             // FXPlayer.EVENTO1.loop();
             charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+            charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
             leon = new Leon("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
             charlie.setPISO(412);
             charlie.setPosition(174, charlie.getPISO());
@@ -52,7 +53,9 @@ public class Nivel1 extends Nivel {
         }
     }
 
-    public static void setCharlie(Charlie charlie){Nivel1.charlie = charlie;}
+    public static void setCharlie(Charlie charlie){
+        Nivel1.charlie = charlie;
+    }
 
     public static boolean llegoAMeta() {
         return llegoAMeta;
@@ -85,6 +88,7 @@ public class Nivel1 extends Nivel {
                             CircusCharlie.inicioNivel(false);
                             CircusCharlie.changeState(new Nivel2(circusCharlie));
                             accionEjecutar = true;
+                            llegoAMeta = false;
                         }
                     }
                 }, 4000);
@@ -128,12 +132,12 @@ public class Nivel1 extends Nivel {
         // Dibujar los calderos
         if (!mostrarNivel) {
             for (CalderoDeFuego calderito : listaDeCalderos) {
-                calderito.display(g);
+                calderito.displayObjetos(g);
             }
             // Dibujar los aros
             if(mostrarArosYMoney){
-                for (Aro aro : listaDeArosIzquierdo) {
-                    aro.display(g);
+                for (Aro aroDerecha : listaDeArosIzquierdo) {
+                    aroDerecha.displayAroParteIzquierda(g);
                 }
             }
             leon.display(g);
@@ -142,8 +146,8 @@ public class Nivel1 extends Nivel {
                 for(Money bolsita : listaDeBolsaDeMoneda){
                     bolsita.display(g);
                 }
-                for (Aro aro1 : listaDeArosDerecho) {
-                    aro1.display1(g);
+                for (Aro aroIzquierda : listaDeArosDerecho) {
+                    aroIzquierda.displayAroParteDerecha(g);
                 }
             }
 
