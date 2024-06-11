@@ -97,8 +97,10 @@ public class Nivel2 extends Nivel{
             charlie.setPISO(220);
             mostrarMonos = true;
         }
-        // Metodo que le da movimiento a ambos monos y detecta colisiones de los entre charlie y monos
-        movimientoMonoYColision(delta);
+        if(!llegoAMeta){
+            // Metodo que le da movimiento a ambos monos y detecta colisiones de los entre charlie y monos
+            movimientoMonoYColision(delta);
+        }
         // Método que suma los puntos al saltar los monos
         sumarPuntosPorObstaculo();
         // Metodo que detecta la colision entre monos
@@ -161,54 +163,13 @@ public class Nivel2 extends Nivel{
     }
 
     public void choqueDelPersonaje(Charlie charlie){
+        super.choqueDelPersonaje(charlie);
         FXPlayer.EVENTO2.stop();
-        FXPlayer.DERROTA.playOnce();
-        charlie.setPISO(charlie.getY());
-        charlie.setPosition(charlie.getX(), charlie.getPISO());
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
-        Timer tempo = new Timer();
-
-        tempo.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!accion) {
-                    if(!restar){
-                        System.out.println(charlie.getVida());
-                        charlie.restarVida(1);
-                        restar = true;
-                    }
-                    reiniciarJuegoXColisiones(charlie.getX(), charlie);
-                    accion = true;
-                }
-            }
-        }, 4000);
     }
 
-    public void reiniciarJuegoXColisiones(double x1, Charlie charlie){
-        // Busca el checkpoint más cercano a la posición x
-        int[] checkpointsEjeX = {201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433};
-        int pos = 0, i;
-        for (i = 1; i < checkpointsEjeX.length; i++) {
-            if (checkpointsEjeX[i] < x1) {
-                pos = i - 1;
-            }
-        }
-        // Reinicia el juego en el checkpoint más cercano
-        int newX = checkpointsEjeX[pos]; 
-        mostrarNivel = true;
-        CircusCharlie.inicioNivel(false);
-        reiniciarJuego(newX, charlie);
-    }
-
-    private void reiniciarJuego(double x, Charlie charlie) {
-        charlie.setPISO(412);
-        charlie.setPosition(x + 31,charlie.getPISO());
-        llegoAMeta = false;
-        colisiono = false;
-        FXPlayer.DERROTA.stop();
+    public void reiniciarJuego(double x, Charlie charlie) {
+        super.reiniciarJuego(x, charlie);
         //FXPlayer.EVENTO2.loop();
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-        charlie.reiniciarDescuento();
     }
 
     // Metodo que detecta los 2 tipos de monos que ya pasaron y los va eliminando

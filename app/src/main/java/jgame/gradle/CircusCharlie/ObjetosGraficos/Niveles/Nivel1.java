@@ -11,9 +11,7 @@ public class Nivel1 extends Nivel {
     private ArrayList<Aro> listaDeArosDerecho = new ArrayList<>();
     private ArrayList<CalderoDeFuego> listaDeCalderos = new ArrayList<>();
     private ArrayList<Money> listaDeBolsaDeMoneda = new ArrayList<>();
-    private static boolean llegoAMeta = false;
     private static boolean banderaScoreAro = false;
-    private boolean accionEjecutar;
     private boolean banderaScoreCaldero = false;
     private boolean mostrarArosYMoney = true;
     private boolean pasoXAro = false;
@@ -25,21 +23,27 @@ public class Nivel1 extends Nivel {
         super(circusCharlie);
         llegoAMeta = false;
         accionEjecutar = false;
+        Mundo m = Mundo.getInstance();
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
             // FXPlayer.EVENTO1.loop();
-            charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+            if(charlie == null){
+                charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+                leon = new Leon("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
+            }
             charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-            leon = new Leon("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
+            leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
             charlie.setPISO(412);
             charlie.setPosition(174, charlie.getPISO());
+            charlie.quieto();
             leon.setPISO(477);
             leon.setPosition(143, leon.getPISO());
-            charlie.quieto();
             leon.quieto();
-            cam = new Camara(0,0);
             fondo = new Fondo("imagenes/JuegoCircusCharlie/ImagenNivel1/FONDO.png", 31);
+            cam = new Camara(0,0);
+            cam.setRegionVisible(circusCharlie.getWidth(), 480);
+            m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             CircusCharlie.setCharlie(charlie);
             CircusCharlie.setCamara(cam);
             CircusCharlie.setFondo(fondo);
@@ -109,21 +113,23 @@ public class Nivel1 extends Nivel {
             banderaScoreCaldero = false;
             banderaScoreAro = false;
         }
-        // Metodo que da movimiento a la bolsita de money + suma los respectivos puntos
-        movimientoYSumaBolsita();
         // Metodo que hace swap de imagenes de cada caldero
         swapCaldero(delta);
         // Metodo que elimina los aros desplazados cuando pasan atras de charlie.
-        eliminarArosDesplazados(leon);
+        eliminarArosDesplazados();
         // Seccion de colisiones
-        // Metodo que detecta si charlie choco contra un aro o si paso por en medio para sumar puntos.
-        movimientoYcolisionConElAro(delta);
+        if(!llegoAMeta){
+            // Metodo que da movimiento a la bolsita de money + suma los respectivos puntos
+            movimientoYSumaBolsita();
+            // Metodo que detecta si charlie choco contra un aro o si paso por en medio para sumar puntos.
+            movimientoYcolisionConElAro(delta);
+        }
         // Metodo que detecta el caldero si colisiono o lo salto para sumar su respectivo puntaje
         colisionConElCaldero();
         // Metodo para detectar ciertos puntajes respectivos junto el aro con el caldero
         sumarPuntosPorObstaculo();
         // Metodo que elimina los aros desplazados cuando toca el limite de charlie
-        eliminarArosDesplazados(leon);
+        eliminarArosDesplazados();
         // Metodo para cuando Charlie llego a la meta
         super.animacionMeta(delta);
     }
@@ -164,7 +170,7 @@ public class Nivel1 extends Nivel {
     }   
     
     // Metodo que detecta los aros y calderos que ya pasaron y los va eliminando
-    public void eliminarArosDesplazados(Leon leon) {
+    public void eliminarArosDesplazados() {
         // Iterar sobre la lista original en sentido inverso para evitar problemas al
         // eliminar elementos
         for (int i = listaDeArosIzquierdo.size() - 1; i >= 0; i--) {
@@ -182,64 +188,21 @@ public class Nivel1 extends Nivel {
         }
     }
 
-    public void choqueDelPersonaje(Charlie charlie, Leon leon) {
+    public void choqueDelPersonaje(Charlie charlie) {
+        super.choqueDelPersonaje(charlie);
         FXPlayer.EVENTO1.stop();
-        FXPlayer.DERROTA.playOnce();
-        charlie.setPISO(charlie.getY());
         leon.setPISO(leon.getY());
-        charlie.setPosition(charlie.getX(), charlie.getPISO());
         leon.setPosition(leon.getX(), leon.getPISO());
         leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leonDerrota.png");
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
-        Timer tempo = new Timer();
-
-        tempo.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!accion) {
-                    if(!restar){
-                        System.out.println(charlie.getVida());
-                        charlie.restarVida(1);
-                        restar = true;
-                    }
-                    reiniciarJuegoXColisiones(charlie.getX(), charlie, leon);
-                    accion = true;
-                }
-            }
-
-        }, 4000);
-    }
-
-    // Cuando detecta una colision, reiniciamos el juego en ese punto
-    public void reiniciarJuegoXColisiones(double x1, Charlie charlie, Leon leon) {
-        // Busca el checkpoint más cercano a la posición x
-        int[] checkpointsEjeX = { 201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433 };
-        int pos = 0, i;
-        for (i = 1; i < checkpointsEjeX.length; i++) {
-            if (checkpointsEjeX[i] < x1) {
-                pos = i - 1;
-            }
-        }
-        // Reinicia el juego en el checkpoint más cercano
-        int newX = checkpointsEjeX[pos];
-        mostrarNivel = true;
-        CircusCharlie.inicioNivel(false);
-        reiniciarJuego(newX, charlie, leon);
     }
 
     // Método para reiniciar el juego en una posición específica
-    private void reiniciarJuego(double x, Charlie charlie, Leon leon) {
-        charlie.setPISO(412);
-        charlie.setPosition(x + 31, charlie.getPISO());
+    public void reiniciarJuego(double x, Charlie charlie) {
+        super.reiniciarJuego(x, charlie);
+        // FXPlayer.EVENTO1.loop();
         leon.setPISO(477);
         leon.setPosition(x, leon.getPISO());
-        llegoAMeta = false;
-        colisiono = false;
-        FXPlayer.DERROTA.stop();
-        // FXPlayer.EVENTO1.loop();
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
         leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
-        charlie.reiniciarDescuento();
     }
 
     // Metodo para crear aros
@@ -313,7 +276,7 @@ public class Nivel1 extends Nivel {
                 accion = false;
                 restar=false;
                 charlie.detenerBonus();
-                choqueDelPersonaje(charlie, leon);
+                choqueDelPersonaje(charlie);
             } else if (DetectorColisiones.detectarMedioAro(aro, charlie)) {
                 pasoXAro = true;
                 if (!banderaScoreAro) {
@@ -335,7 +298,7 @@ public class Nivel1 extends Nivel {
                 accion = false;
                 restar = false;
                 charlie.detenerBonus();
-                choqueDelPersonaje(charlie, leon);
+                choqueDelPersonaje(charlie);
             } else if (DetectorColisiones.detectarArribaCalderoDeFuego(calderito, charlie)) {
                 pasoXCaldero = true;
                 if (!banderaScoreCaldero) {

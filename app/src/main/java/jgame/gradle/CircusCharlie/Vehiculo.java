@@ -8,7 +8,6 @@ public abstract class Vehiculo extends ObjetoGrafico {
 	protected double velocityX = 4.0;
 	protected double velocityY = 0.0;
 	protected double angulo = 0.0;
-	protected double idx = 0;
 	protected int estadoActual;
     protected final int ESTADO_SALTANDO = 2;
 	protected final int ESTADO_QUIETO = -1;

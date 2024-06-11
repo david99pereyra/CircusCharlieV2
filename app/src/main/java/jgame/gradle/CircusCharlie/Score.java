@@ -15,8 +15,8 @@ public class Score extends ObjetoGrafico {
     private int bonus = 5000;
     private static int score = 0;
     private int hiScore = 0;
-    private int state = 0;
-    private int vidas = 3;
+    private int stage = 0;
+    private static int vidas = 3;
     private BufferedImage vidaImagen;
 
     private boolean descuentoBonusActivo = true;
@@ -44,7 +44,7 @@ public class Score extends ObjetoGrafico {
         Graphics g = img.createGraphics();
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Pixel Emulator", Font.PLAIN, 20));
+        g.setFont(new Font("Nintendo NES Font", Font.PLAIN, 16));
 
         String scoreText = String.format("%06d", score);
         g.drawString(scoreText, 200, 55);
@@ -54,7 +54,7 @@ public class Score extends ObjetoGrafico {
         int HITextX = (800 - HITextWidth) / 2;
         g.drawString(HIText, HITextX, 55);
 
-        String StateText = "State-" + state;
+        String StateText = "STAGE-" + stage;
         g.drawString(StateText, 500, 55);
 
                 
@@ -107,7 +107,7 @@ public class Score extends ObjetoGrafico {
                     disminuirBonus();
                 }
             }
-        }, 10000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
+        }, 1000, 300); // Inicia el temporizador después de 200 ms, y luego lo repite cada 200 ms
     }
 
     private synchronized void disminuirBonus() {
@@ -130,9 +130,9 @@ public class Score extends ObjetoGrafico {
         g.fillRect(0, 0, CircusCharlie.WIDTH+10, CircusCharlie.HEIGHT);
         
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Pixel Emulator", Font.BOLD,30));
+        g.setFont(new Font("Nintendo NES Font", Font.BOLD,30));
 
-        String stateText = "STATE - " + this.state;
+        String stateText = "STAGE - " + this.stage;
         int stateWidth = g.getFontMetrics().stringWidth(stateText);
         int stateX = (CircusCharlie.WIDTH - stateWidth)/2;
         //int stateY = (400 - stateWidth)/2;
@@ -151,7 +151,7 @@ public class Score extends ObjetoGrafico {
         g.fillRect(0, 0, 850, 600);
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Pixel Emulator", Font.BOLD, 30));
+        g.setFont(new Font("Nintendo NES Font", Font.BOLD, 30));
 
         String stateText = "GAME OVER";
         int stateWidth = g.getFontMetrics().stringWidth(stateText);
@@ -162,17 +162,17 @@ public class Score extends ObjetoGrafico {
     }
 
     public int getVida(){
-        return this.vidas;
+        return Score.vidas;
     }
 
     public void restarBida(int bida){
-        if (this.vidas > 0) {
-            this.vidas -= bida;
+        if (Score.vidas > 0) {
+            Score.vidas -= bida;
         }
     }
 
     public void nivelActual(int nivel) {
-        this.state = nivel;
+        this.stage = nivel;
     }
 
     public static void sumarScore(int valor) {
@@ -184,7 +184,7 @@ public class Score extends ObjetoGrafico {
     }
 
     public int getState(){
-        return this.state;
+        return this.stage;
     }
 
     public void detenerDescuentoBonus() {
@@ -206,10 +206,10 @@ public class Score extends ObjetoGrafico {
     }
 
     public void setVida(int vida){
-        this.vidas = vida;
+        Score.vidas = vida;
     }
 
-    public int getScore(){
+    public static int getScore(){
         return Score.score;
     }
 

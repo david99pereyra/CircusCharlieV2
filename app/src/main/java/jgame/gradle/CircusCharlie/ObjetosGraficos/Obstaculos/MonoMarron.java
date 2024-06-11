@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 
 public class MonoMarron extends ObjetoGrafico {
-    private double idx = 0;
     private double velocityX;
     private boolean isStopped;
     private final int stopDuration = 1000; // Duración en milisegundos que el mono se detiene
