@@ -157,13 +157,14 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	//Animacion de cuando charlie llega a la meta
 	public void updateLlegadaMeta(double delta){
 		andando++;
-		if(andando >= 25){
-			this.setImagen(images.get(5)); // Establece la imagen de la posición 5
-		}
-		if(andando == 45){
-			this.setImagen(images.get(6)); // Establece la imagen de la posición 6
-		}
-		if (andando > 45){
+		if(andando >= 15){
+			if(band){
+				this.setImagen(images.get(5)); // Establece la imagen de la posición 5
+				band = false;
+			}else{
+				this.setImagen(images.get(6)); // Establece la imagen de la posición 6
+				band = true;
+			}
 			andando = 0;
 		}
     }
