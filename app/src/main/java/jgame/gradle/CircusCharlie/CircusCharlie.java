@@ -28,16 +28,12 @@ public class CircusCharlie extends JGame {
     public static Camara cam;
     public static Fondo fondo;
     public static Charlie charlie;
+    public static Leon leon;
     private static Nivel nivelActual;
     private boolean enPausa = false;
     private boolean pPresionado = false;
-    // Variables del level 1
-    Nivel1 nivel1;
-    // Variables del level 2
-    Nivel2 nivel2;
-    // Variables del level 3
-    Nivel3 nivel3;
-    
+    private int puntos = 10000;
+        
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
         game.run(1.0 / 60.0);
@@ -115,7 +111,7 @@ public class CircusCharlie extends JGame {
 
             } else {
                 Keyboard keyboard = getKeyboard();
-                if(keyboard.isKeyPressed(KeyEvent.VK_P)){
+                if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
                     if(!pPresionado && inicioNivel){
                         enPausa = !enPausa;
                         pPresionado = true;
@@ -124,12 +120,15 @@ public class CircusCharlie extends JGame {
                 }else{
                     pPresionado = false;
                 }
-                if(!enPausa){
+                if (!nivelActual.colisiono() && inicioNivel && !enPausa) {
                     charlie.continuarDescuento();
-                    if (!nivelActual.colisiono() && inicioNivel) {
-                        nivelActual.gameUpdate(delta, keyboard);
+                    nivelActual.gameUpdate(delta, keyboard);
+                    if(Score.getScore() > puntos && charlie.getVida() <= 4){
+                        charlie.setVida(charlie.getVida()+1);
+                        puntos += 10000;
                     }
                 }
+                
             }
         }
     }

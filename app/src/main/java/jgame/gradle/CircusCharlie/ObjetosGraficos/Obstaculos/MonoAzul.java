@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class MonoAzul extends ObjetoGrafico{
-    private double idx = 0;
     private double velocityY = 20; 
     private double gravity = 0.5;
     private boolean onGround = true;

@@ -58,7 +58,7 @@ public abstract class Nivel{
             }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-            circusCharlie.getCharlie().setPosition(5000 + 174, circusCharlie.getCharlie().getY());
+            circusCharlie.getCharlie().setPosition(5700, circusCharlie.getCharlie().getY());
         }
         // check the list of key events for a pressed escape key
         LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
@@ -140,5 +140,55 @@ public abstract class Nivel{
             diffSeconds = dateDiff / 1000 % 60;
             circusCharlie.getCharlie().updateLlegadaMeta(delta);
         }
-    }    
+    }
+    
+    protected void choqueDelPersonaje(Charlie charlie) {
+        FXPlayer.DERROTA.playOnce();
+        charlie.setPISO(charlie.getY());
+        charlie.setPosition(charlie.getX(), charlie.getPISO());
+        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
+        Timer tempo = new Timer();
+
+        tempo.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!accion) {
+                    if(!restar){
+                        charlie.restarVida(1);
+                        restar = true;
+                    }
+                    reiniciarJuegoXColisiones(charlie.getX(), charlie);
+                    accion = true;
+                }
+            }
+        }, 4000);
+    }
+
+    // Cuando detecta una colision, reiniciamos el juego en ese punto
+    protected void reiniciarJuegoXColisiones(double x1, Charlie charlie) {
+        // Busca el checkpoint más cercano a la posición x
+        int[] checkpointsEjeX = { 201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433 };
+        int pos = 0, i;
+        for (i = 1; i < checkpointsEjeX.length; i++) {
+            if (checkpointsEjeX[i] < x1) {
+                pos = i - 1;
+            }
+        }
+        // Reinicia el juego en el checkpoint más cercano
+        int newX = checkpointsEjeX[pos];
+        mostrarNivel = true;
+        CircusCharlie.inicioNivel(false);
+        reiniciarJuego(newX, charlie);
+    }
+
+    // Método para reiniciar el juego en una posición específica
+    protected void reiniciarJuego(double x, Charlie charlie) {
+        charlie.setPISO(412);
+        charlie.setPosition(x + 31, charlie.getPISO());
+        llegoAMeta = false;
+        colisiono = false;
+        FXPlayer.DERROTA.stop();
+        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
+        charlie.reiniciarDescuento();
+    }
 }

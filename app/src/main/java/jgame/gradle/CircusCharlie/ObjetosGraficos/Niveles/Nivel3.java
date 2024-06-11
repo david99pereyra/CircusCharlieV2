@@ -89,10 +89,12 @@ public class Nivel3 extends Nivel{
         double posx = charlie.getX()+(charlie.getWidth()/2);
         double posy = charlie.getY()+charlie.getHeight();
         if(posx > 6464 && charlie.getY() < 420){
-            charlie.setPISO(407);
+            charlie.setPISO(400);
             if(charlie.getY() >= charlie.getPISO()){
                 llegoAMeta = true;
                 charlie.sumarBonusScore();
+                FXPlayer.EVENTO3.stop();
+                FXPlayer.VICTORIA.playOnce();
                 temporizador.schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -118,8 +120,10 @@ public class Nivel3 extends Nivel{
         if(charlie.getY() >= 510){
             cayoAlPiso();
         }
-        // Metodo que hace movimiento de las pelotas y swap de imagen.
-        movimientoySwapPelota(delta);
+        if(!llegoAMeta){
+            // Metodo que hace movimiento de las pelotas y swap de imagen.
+            movimientoySwapPelota(delta);
+        }
         // Metodo que detecta si Charlie está en la pelota y actualizar estado
         charlieParado(delta);
         // Metodo que si detecta colision entre pelota las expulsa hacia la izquierda
@@ -130,33 +134,21 @@ public class Nivel3 extends Nivel{
         super.animacionMeta(delta);
     }
 
+    public void choqueDelPersonaje(Charlie charlie){
+        super.choqueDelPersonaje(charlie);
+        FXPlayer.EVENTO3.stop();
+    }
+
     public void reiniciarJuegoXColisiones(double x1, Charlie charlie){
-        // Busca el checkpoint más cercano a la posición x
-        int[] checkpointsEjeX = {201, 990, 1814, 2654, 3451, 4259, 5066, 5869, 6668, 7433};
-        int pos = 0, i;
-        for (i = 1; i < checkpointsEjeX.length; i++) {
-            if (checkpointsEjeX[i] < x1) {
-                pos = i - 1;
-            }
-        }
-        // Reinicia el juego en el checkpoint más cercano
-        int newX = checkpointsEjeX[pos];
-        CircusCharlie.inicioNivel(false); 
-        reiniciarJuego(newX, charlie);
+        super.reiniciarJuegoXColisiones(x1, charlie);
         Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
         nuevaPelota.setPosition(charlie.getX(), 471);
         listaDePelotas.add(nuevaPelota);
     }
 
-    private void reiniciarJuego(double x, Charlie charlie) {
-        charlie.setPISO(412);
-        charlie.setPosition(x + 31,charlie.getPISO());
-        llegoAMeta = false;
-        colisiono = false;
-        FXPlayer.DERROTA.stop();
+    public void reiniciarJuego(double x, Charlie charlie) {
+        super.reiniciarJuego(x, charlie);
         //FXPlayer.EVENTO3.loop();
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlie.png");
-        charlie.reiniciarDescuento();
     }
 
     public static Pelota getPelotaEnLaQueEstaParadoCharlie(Charlie charlie) {
@@ -220,18 +212,6 @@ public class Nivel3 extends Nivel{
             }
         }
         charlie.setEnLaPelota(charlieEnPelota);
-        // if (!charlie.getEnLaPelota()) {
-        //     charlie.setVelocidadCaida(charlie.getGravedad() * delta);
-        //     if (charlie.getY() >= 550) {
-        //         reiniciarJuegoXColisiones(charlie.getX(), charlie);
-        //         charlie.setVelocidadCaida(0);
-        //         Pelota nuevaPelota = new Pelota("imagenes/JuegoCircusCharlie/ImagenNivel3/Pelota1.png", true);
-        //         nuevaPelota.setPosition(charlie.getX(), 471);
-        //         listaDePelotas.add(nuevaPelota);
-        //     }
-        // } else {
-        //     charlie.setVelocidadCaida(0); // Resetear la velocidad de caída si está en una pelota
-        // }
     }
 
     public void colisionPelotas(){
@@ -253,30 +233,5 @@ public class Nivel3 extends Nivel{
         restar = false;
         charlie.detenerBonus();
         choqueDelPersonaje(charlie);
-    }
-
-    public void choqueDelPersonaje(Charlie charlie){
-        FXPlayer.EVENTO3.stop();
-        FXPlayer.DERROTA.playOnce();
-        charlie.setPISO(charlie.getY());
-        charlie.setPosition(charlie.getX(), charlie.getPISO());
-        charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
-        Timer tempo = new Timer();
-
-        tempo.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!accion) {
-                    if(!restar){
-                        System.out.println(charlie.getVida());
-                        charlie.restarVida(1);
-                        restar = true;
-                    }
-                    reiniciarJuegoXColisiones(charlie.getX(), charlie);
-                    accion = true;
-                }
-            }
-        }, 4000);
-    }
-    
+    }   
 }
