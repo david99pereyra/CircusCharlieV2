@@ -22,6 +22,7 @@ public class Nivel3 extends Nivel{
             FXPlayer.volume = FXPlayer.Volume.LOW;
             //FXPlayer.EVENTO3.loop(); 
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
+            charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(430);
             charlie.setPosition(185, charlie.getPISO());
             charlie.quieto();
@@ -77,7 +78,7 @@ public class Nivel3 extends Nivel{
 
     public void gameDraw(Graphics2D g){
         for (Pelota pelotita : listaDePelotas){
-            pelotita.display(g);
+            pelotita.displayObjetos(g);
         }
         charlie.display(g);
     }

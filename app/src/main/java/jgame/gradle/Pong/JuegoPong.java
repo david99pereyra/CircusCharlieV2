@@ -1,7 +1,5 @@
 package jgame.gradle.Pong;
-
 import javax.swing.ImageIcon;
-
 import jgame.Lanzador.Juego;
 
 public class JuegoPong extends Juego{

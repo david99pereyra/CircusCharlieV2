@@ -58,7 +58,7 @@ public class CircusCharlie extends JGame {
         Mundo m = Mundo.getInstance();
         try {
             if(nivelActual == null){
-                nivelActual = new Nivel2(this);
+                nivelActual = new Nivel1(this);
             }
             cam.setRegionVisible(getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());

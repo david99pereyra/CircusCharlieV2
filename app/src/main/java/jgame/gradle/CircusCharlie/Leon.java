@@ -1,33 +1,25 @@
 package jgame.gradle.CircusCharlie;
-
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Leon extends Vehiculo{
-	private double indiceImagenActual = 0;
 	private double gravity = 0.43;
 	private	double andandoLeon;
 	private boolean l1;
 	private boolean l2;
-	private	boolean band1;
-    private BufferedImage leonCorriendo1;
-	private BufferedImage leonCorriendo2;
-	private BufferedImage leonJump;
-    private ArrayList<BufferedImage> imagenLeon = new ArrayList<>();
 	
     public Leon(String filename) {
         super(filename);
         try{
-            if(imagenLeon.isEmpty()){
-				leonCorriendo1 = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png")));
-				imagenLeon.add(leonCorriendo1);
-				leonJump = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo1.png")));
-				imagenLeon.add(leonJump);
-				leonCorriendo2 = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo2.png")));
-				imagenLeon.add(leonCorriendo2);
+            if(images.isEmpty()){
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png")));
+				images.add(imagen);
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo1.png")));
+				images.add(imagen); //Imagen leon corriendo
+				imagen = ImageIO.read(Objects.requireNonNull(getClass().getResource("/imagenes/JuegoCircusCharlie/ImagenNivel1/leonCorriendo2.png")));
+				images.add(imagen);
             }
         }catch (IOException e){
             throw new RuntimeException("Error al cargar la imagen del caldero", e);
@@ -40,12 +32,12 @@ public class Leon extends Vehiculo{
 
 	public void jump(){
 		super.jump();
-		this.setImagen(leonJump);
+		this.setImagen(images.get(1));
 	}
 	
 	public void quieto(){
 		super.quieto();
-		this.setImagen(leonCorriendo1);
+		this.setImagen(images.get(0));
 	}
 
 	public void left() {
@@ -60,31 +52,17 @@ public class Leon extends Vehiculo{
 
     public void cambioImagenLeon(){
 		andandoLeon++;
-		if(andandoLeon >=10){
+		if(andandoLeon >=10 && !saltando){
 			if(l1 && l2){
-				this.setImagen(leonJump);
+				this.setImagen(images.get(1));
 				l1 = false;
 				l2 = false;
 			}else if(!l2 &&! l1){
-				this.setImagen(leonCorriendo2);
+				this.setImagen(images.get(2));
 				l1=true;
 			}else if(l1 &&! l2){
-				this.setImagen(leonCorriendo1);
+				this.setImagen(images.get(0));
 				l2=true;
-			}
-			andandoLeon = 0;
-		}
-	}
-
-	public void cambioImagenLeonLeft(){
-		andandoLeon ++;
-		if(andandoLeon >= 15){	
-			if(band1) {
-				this.setImagen(leonCorriendo2);
-				band1 = false;
-			}else if(!band1) {
-				this.setImagen(leonCorriendo1);
-				band1 = true;
 			}
 			andandoLeon = 0;
 		}
@@ -112,10 +90,9 @@ public class Leon extends Vehiculo{
 		if ( velocityY != 0.0){
 			saltando = true;
 			//mientras este saltando
-	    	//this.rotarImagenGrados(10 * direccionAngulo);
 		}
 		if(velocityY == 0.0){
 			saltando = false;
-		}		
+		}	
     }
 }

@@ -12,11 +12,13 @@ public class ObjetoGrafico {
 	protected double positionY = 0;
 	protected double height;
 	protected double width;
+	protected double idx = 0;
+	protected int indiceImagen;
 	protected ArrayList<BufferedImage> images = new ArrayList<>();
 
     public ObjetoGrafico(String filename) {
 		try {
-			imagen= ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
+			imagen = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
 		} catch (IOException e) {
 			System.out.println("ZAS! en ObjectoGrafico "+e);
 		}
@@ -64,6 +66,16 @@ public class ObjetoGrafico {
 	//No utilizamos este ya que necesitamos para el swap
 	public void display(Graphics2D g2) {
 		g2.drawImage(imagen,(int) this.positionX,(int) this.positionY,null);
+	}
+	
+	// Este metodo es para los objetos 
+	public void displayObjetos(Graphics2D g2){
+        if (!images.isEmpty()){
+            BufferedImage imagenActual = images.get(indiceImagen);
+            if (imagenActual != null){
+                g2.drawImage(imagenActual, (int) Math.round(positionX), (int)positionY, null);
+            }
+        }
 	}
 
 	public double getX(){

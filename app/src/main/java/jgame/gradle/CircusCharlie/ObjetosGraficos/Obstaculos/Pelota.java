@@ -2,14 +2,11 @@ package jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos;
 import jgame.gradle.CircusCharlie.Charlie;
 import jgame.gradle.CircusCharlie.Vehiculo;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Pelota extends Vehiculo{
-    private int indiceImagenActualPelota = 0;
     private long invulnerableTime = 0;
     private boolean chocarContraotros = true; // Define si fue montado para que la pelota salga disparada para la izquierda
     private boolean estaMontado = false; // Define si esta montado actualmente en la pelota charlie
@@ -49,21 +46,9 @@ public class Pelota extends Vehiculo{
 
     public void jump(){}
 
-    // Dibujar el aro en la posición especificada
-    public void display(Graphics2D g) {
-        double posX = getX();
-        int posY = (int) getY();
-        if (!images.isEmpty()){
-            BufferedImage imagenActualMonoPelota = images.get(indiceImagenActualPelota);
-            if (imagenActualMonoPelota != null){
-                g.drawImage(imagenActualMonoPelota, (int) Math.round(posX), posY, null);
-            }
-        }
-    }
-
     public void update(double delta){
         idx += 0.12;
-        indiceImagenActualPelota = ((int)idx) % images.size();
+        indiceImagen = ((int)idx) % images.size();
     }
 
     public void setEstaMontado (boolean montadoActualmente){
