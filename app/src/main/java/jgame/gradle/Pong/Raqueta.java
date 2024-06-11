@@ -28,8 +28,4 @@ public class Raqueta extends ObjetoGrafico{
     public void down(){
         this.positionY += speed;
     }
-
-    public void display(Graphics2D g2) {
-        g2.drawImage(imagen, (int) positionX, (int) positionY, null);
-    }
 }
