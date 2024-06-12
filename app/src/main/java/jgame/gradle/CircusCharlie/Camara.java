@@ -1,6 +1,5 @@
 package jgame.gradle.CircusCharlie;
 
-
 public class Camara {
 	private double x;
 	private double y;
@@ -27,7 +26,6 @@ public class Camara {
 		Mundo m=Mundo.getInstance();
 		this.x =- charlie.getX() + index;
 		this.x =- leon.getX() + index;
-
 		if (this.x>0){
 			this.x=0;
 		}

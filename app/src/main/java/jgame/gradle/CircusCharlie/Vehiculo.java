@@ -14,7 +14,6 @@ public abstract class Vehiculo extends ObjetoGrafico {
 	protected boolean saltando = false;
 	protected boolean enElSuelo = true;
 
-
     public Vehiculo(String filename) {
 		super(filename);
     }
@@ -51,6 +50,7 @@ public abstract class Vehiculo extends ObjetoGrafico {
 			estadoActual = ESTADO_QUIETO;
 		}
 	}
+	
 	public void jump(){
 		if (enElSuelo) {
 			velocityY =- 12.0;

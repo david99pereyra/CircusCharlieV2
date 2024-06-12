@@ -20,7 +20,7 @@ public class Nivel3 extends Nivel{
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-            //FXPlayer.EVENTO3.loop(); 
+            FXPlayer.EVENTO3.loop(); 
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(430);
@@ -148,7 +148,7 @@ public class Nivel3 extends Nivel{
 
     public void reiniciarJuego(double x, Charlie charlie) {
         super.reiniciarJuego(x, charlie);
-        //FXPlayer.EVENTO3.loop();
+        FXPlayer.EVENTO3.loop();
     }
 
     public static Pelota getPelotaEnLaQueEstaParadoCharlie(Charlie charlie) {
@@ -166,8 +166,7 @@ public class Nivel3 extends Nivel{
 
     // Metodo que detecta los 2 tipos de monos que ya pasaron y los va eliminando
     public void eliminarPelotaDesplazada(Charlie charlie) {
-        // Iterar sobre la lista original en sentido inverso para evitar problemas al
-        // eliminar elementos
+        // Iterar sobre la lista original en sentido inverso para evitar problemas al eliminar elementos
         for (int i = listaDePelotas.size() - 1; i >= 0; i--) {
             Pelota pelotita = listaDePelotas.get(i);
             if (pelotita.getX() <= charlie.getX() - 300) {

@@ -27,7 +27,7 @@ public class Nivel1 extends Nivel {
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-            // FXPlayer.EVENTO1.loop();
+            FXPlayer.EVENTO1.loop();
             if(charlie == null){
                 charlie = new Charlie("imagenes/JuegoCircusCharlie/Generales/charlie.png");
                 leon = new Leon("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
@@ -156,7 +156,6 @@ public class Nivel1 extends Nivel {
                     aroIzquierda.displayAroParteDerecha(g);
                 }
             }
-
         }else{
             charlie.imagenNivel();
             Timer timer = new Timer();
@@ -199,7 +198,7 @@ public class Nivel1 extends Nivel {
     // Método para reiniciar el juego en una posición específica
     public void reiniciarJuego(double x, Charlie charlie) {
         super.reiniciarJuego(x, charlie);
-        // FXPlayer.EVENTO1.loop();
+        FXPlayer.EVENTO1.loop();
         leon.setPISO(477);
         leon.setPosition(x, leon.getPISO());
         leon.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel1/leon.png");
@@ -213,15 +212,12 @@ public class Nivel1 extends Nivel {
         String imagenAroChicoDerecho = "imagenes/JuegoCircusCharlie/ImagenNivel1/aroDeFuegoChico1Derecho.png";
         String imagenBolsitaDeMoneda = "imagenes/JuegoCircusCharlie/ImagenNivel1/money.png";
         int posXPixel = 850;
-
         Aro primerAroIzquierda = new Aro(imagenAroGrandeIzquierda, true);
         primerAroIzquierda.setPosition(posXPixel, 217);
         listaDeArosIzquierdo.add(primerAroIzquierda);
-
         Aro primerAroDerecha = new Aro(imagenAroGrandeDerecha, true);
         primerAroDerecha.setPosition(posXPixel, 217);
         listaDeArosDerecho.add(primerAroDerecha);
-
         for (int i = 0; i < 20; i++) {
             // Generar un número aleatorio entre 2 y 5
             int numeroAleatorio2 = 2 + (int) (Math.random() * ((5 - 2) + 1));
@@ -229,26 +225,21 @@ public class Nivel1 extends Nivel {
                 // Generar un número aleatorio entre 350 y 600 para los pixeles
                 int numeroAleatorio1 = 350 + (int) (Math.random() * ((600 - 350) + 1));
                 posXPixel += numeroAleatorio1;
-
                 Aro aroGrandeIzquierda = new Aro(imagenAroGrandeIzquierda, true);
                 aroGrandeIzquierda.setPosition(posXPixel, 217);
                 listaDeArosIzquierdo.add(aroGrandeIzquierda);
-
                 Aro aroGrandeDerecha = new Aro(imagenAroGrandeDerecha, true);
                 aroGrandeDerecha.setPosition(posXPixel, 217);
                 listaDeArosDerecho.add(aroGrandeDerecha);
             }
             int numeroAleatorio1 = 250 + (int) (Math.random() * ((400 - 250) + 1));
             posXPixel += numeroAleatorio1;
-
             Aro aroChicoIzquierdo = new Aro(imagenAroChicoIzquierdo, false);
             aroChicoIzquierdo.setPosition(posXPixel, 217);
             listaDeArosIzquierdo.add(aroChicoIzquierdo);
-
             Aro aroChicoDerecho = new Aro(imagenAroChicoDerecho, false);
             aroChicoDerecho.setPosition(posXPixel, 217);
             listaDeArosDerecho.add(aroChicoDerecho);
-
             Money bolsita = new Money(imagenBolsitaDeMoneda, false);
             bolsita.setPosition(posXPixel + 7, 260);
             listaDeBolsaDeMoneda.add(bolsita);

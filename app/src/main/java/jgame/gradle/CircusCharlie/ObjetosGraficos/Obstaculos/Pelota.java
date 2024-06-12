@@ -12,7 +12,6 @@ public class Pelota extends Vehiculo{
     private boolean estaMontado = false; // Define si esta montado actualmente en la pelota charlie
     private boolean invulnerable = false;
     private boolean salirDisparada = false;
-    // private boolean pelotaLiberada = false; // Booleano que define si la pelota fue liberada por charlie para acelerar su movimiento
 
     public Pelota(String filename, boolean montado) {
         super(filename);

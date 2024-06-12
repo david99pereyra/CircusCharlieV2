@@ -25,19 +25,10 @@ public class ScoreBD {
     }
 
     public static ResultSet getData() throws SQLException {
-
         stmt = conn.createStatement();
         String sql = "SELECT * FROM gamescore ORDER BY puntaje DESC LIMIT 10";
         ResultSet rs = stmt.executeQuery(sql);
-        // while (rs.next()) {
-        //     System.out.println(
-        //             rs.getInt("id") + " "
-        //                     + rs.getString("nombre") + " "
-        //                     + rs.getString("puntaje") + " "
-        //                     + rs.getString("fecha"));
-        // }
         return rs;
-
     }
 
     public static void insert(String nombre, int score) {

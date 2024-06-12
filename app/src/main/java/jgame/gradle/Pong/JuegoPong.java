@@ -3,7 +3,6 @@ import javax.swing.ImageIcon;
 import jgame.Lanzador.Juego;
 
 public class JuegoPong extends Juego{
-
     public JuegoPong(){
         setNombre("Pong");
         setVersion("1.0");

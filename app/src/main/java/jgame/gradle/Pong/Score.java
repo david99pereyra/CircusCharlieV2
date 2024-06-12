@@ -41,7 +41,6 @@ public class Score extends ObjetoGrafico{
         int x = (fondo.getWidth() - metrics.stringWidth(ganador)) / 2;
         int y = fondo.getHeight() / 2;
         g.drawString(ganador, x, y);
-
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         FontMetrics metrics2 = g.getFontMetrics();

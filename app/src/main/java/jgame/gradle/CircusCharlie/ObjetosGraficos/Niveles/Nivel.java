@@ -51,9 +51,8 @@ public abstract class Nivel{
         }else {
             this.salto = KeyEvent.VK_W;
         }
-
-
     }
+
     public void movimientoTeclas(double delta, Keyboard keyboard){
         configTeclas();
         if(circusCharlie.getNivelActual() instanceof Nivel3){
@@ -172,7 +171,6 @@ public abstract class Nivel{
         charlie.setPosition(charlie.getX(), charlie.getPISO());
         charlie.setImagen("imagenes/JuegoCircusCharlie/Generales/charlieDerrota.png");
         Timer tempo = new Timer();
-
         tempo.schedule(new TimerTask() {
             @Override
             public void run() {
