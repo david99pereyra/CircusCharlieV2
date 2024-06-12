@@ -44,8 +44,8 @@ public abstract class Nivel{
             this.derecha = KeyEvent.VK_D;
         }
 
-        if(RWproperties.readProperties(configProp, "Salto").equals("Espacio")){
-            this.salto = KeyEvent.VK_SPACE;
+        if(RWproperties.readProperties(configProp, "Salto").equals("X")){
+            this.salto = KeyEvent.VK_X;
         }else if (RWproperties.readProperties(configProp, "Salto").equals("Flecha arriba")){
             this.salto = KeyEvent.VK_UP;
         }else {

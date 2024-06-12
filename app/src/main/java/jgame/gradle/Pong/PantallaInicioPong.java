@@ -14,7 +14,7 @@ public class PantallaInicioPong extends JFrame {
     public PantallaInicioPong() {
         setTitle("Inicio de Juego");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900,600); // La pantalla tiene el mismo tamaño que el juego
+        setSize(900, 600); // La pantalla tiene el mismo tamaño que el juego
         setLocationRelativeTo(null); // Centrar ventana
         setResizable(false); // Evitar redimensionamiento
 
@@ -24,7 +24,7 @@ public class PantallaInicioPong extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error" + e);
-        }  
+        }
 
         // Crear un JPanel personalizado con la imagen de fondo
         JPanel panelFondo = new JPanel() {
@@ -66,7 +66,9 @@ public class PantallaInicioPong extends JFrame {
         configuracion.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ", "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto, iniciar el juego
+                // JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ",
+                // "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto,
+                // iniciar el juego
                 new ConfiguracionPong();
             }
 
@@ -86,14 +88,15 @@ public class PantallaInicioPong extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelFondo, BorderLayout.CENTER);
 
-        Sonido.iniciar(RWproperties.readProperties(Pong.configJuego,"Musica"));
+        Sonido.iniciar(RWproperties.readProperties(Pong.configJuego, "Musica"));
         Sonido.loop();
 
         setVisible(true);
     }
 
     private void iniciarJuego() {
-        // Al hacer clic en "Iniciar Juego", crear una instancia de GameFrame para arrancar el juego
+        // Al hacer clic en "Iniciar Juego", crear una instancia de GameFrame para
+        // arrancar el juego
         Sonido.parar();
         Pong juego = new Pong();
         Thread t = new Thread() {
@@ -102,7 +105,7 @@ public class PantallaInicioPong extends JFrame {
             }
         };
 
-        t.start();  
+        t.start();
         // Cerrar la pantalla de inicio
         dispose();
     }

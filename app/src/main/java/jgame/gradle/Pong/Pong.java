@@ -165,11 +165,11 @@ public class Pong extends JGame {
             } else
                 raquetaColorJ2 = Color.blue;
 
-            raquetazo1 = new Raqueta(13, 280, 1, raquetaColorJ1);
-            raquetazo2 = new Raqueta(790, 280, 2, raquetaColorJ2);
+            raquetazo1 = new Raqueta(13, 280, raquetaColorJ1);
+            raquetazo2 = new Raqueta(790, 280, raquetaColorJ2);
         } else {
-            raquetazo1 = new Raqueta(13, 280, 1, Color.black);
-            raquetazo2 = new Raqueta(790, 280, 2, Color.black);
+            raquetazo1 = new Raqueta(13, 280, Color.black);
+            raquetazo2 = new Raqueta(790, 280, Color.black);
         }
     }
 

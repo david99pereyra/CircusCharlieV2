@@ -55,15 +55,8 @@ public class ScoreBD {
 
     public ScoreBD() {
         inicializar();
-        // insert("sofi", 10000);
-        // insert("facu", 8800);
-        // insert("santi", 2650);
-        // insert("feli", 4200);
-        // ScoreBD.getData();
+        insert("sofi", 10000);
+        insert("facu", 8800);
     }
 
-    public static void main(String[] args) throws SQLException {
-        ScoreBD scoreBD = new ScoreBD();
-        scoreBD.getData();
-    }
 }

@@ -6,7 +6,6 @@ package jgame.gradle.CircusCharlie;
 import com.entropyinteractive.*; //jgame
 import jgame.gradle.FontManager;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles.*;
-import jgame.gradle.Pong.RWproperties;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,8 +25,8 @@ public class CircusCharlie extends JGame {
     public static boolean inicioNivel = false;
     private static boolean gameover = false;
     private static boolean inicioBD = false;
-    private static Camara cam;
-    public static Fondo fondo;
+    private Camara cam;
+    private Fondo fondo;
     public static Charlie charlie;
     public static Leon leon;
     private static Nivel nivelActual;
@@ -69,12 +68,12 @@ public class CircusCharlie extends JGame {
         }
     }
 
-    public static void setFondo(Fondo fondo) {
-        CircusCharlie.fondo = fondo;
+    public void setFondo(Fondo fondo) {
+        this.fondo = fondo;
     }
 
-    public static void setCamara(Camara camara) {
-        CircusCharlie.cam = camara;
+    public void setCamara(Camara camara) {
+        this.cam = camara;
     }
 
     public static void setCharlie(Charlie charlie) {

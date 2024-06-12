@@ -31,8 +31,8 @@ public class Nivel3 extends Nivel{
             cam.setRegionVisible(circusCharlie.getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             CircusCharlie.setCharlie(charlie);
-            CircusCharlie.setCamara(cam);
-            CircusCharlie.setFondo(fondo);
+            circusCharlie.setCamara(cam);
+            circusCharlie.setFondo(fondo);
             //Crear las pelotas
             this.crearPelota();
         } catch (Exception e) {
