@@ -34,14 +34,20 @@ dependencies {
     //implementation 'com.google.guava:guava:31.0.1-jre'
 
     implementation 'org.xerial:sqlite-jdbc:3.45.3.0'
+
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '20240303'
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'jgame.gradle.App'
+    //mainClass = 'jgame.gradle.App'
+    mainClass = 'jgame.Main'
+    // mainClass='jgame.gradle.CircusCharlie.CircusCharlie'
+    // mainClass='jgame.gradle.Pong.PantallaInicio'
     //mainClass = 'jgame.gradle.AppCamaraHeroe'
     //mainClass = 'jgame.gradle.Juego02'
-    //mainClass = 'jgame.gradle.JuegoConDB'
+    // mainClass = 'jgame.gradle.JuegoConDB'
     //mainClass = 'jgame.gradle.LanzadorJuegos'
 }
 
