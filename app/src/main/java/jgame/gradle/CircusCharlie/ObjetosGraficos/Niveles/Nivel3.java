@@ -6,6 +6,7 @@ import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
 import java.util.*;
 import com.entropyinteractive.Keyboard;
 import java.awt.Graphics2D;
+import java.sql.SQLException;
 
 public class Nivel3 extends Nivel{
     private static ArrayList<Pelota> listaDePelotas = new ArrayList<>();
@@ -101,11 +102,15 @@ public class Nivel3 extends Nivel{
                     @Override
                     public void run() {
                         if (!accionEjecutar) {
-                            CircusCharlie.setNivel(CircusCharlie.getNivel()+1);
-                            Nivel1.setCharlie(charlie);
-                            CircusCharlie.inicioNivel(false);
-                            CircusCharlie.changeState(new Nivel1(circusCharlie));
                             accionEjecutar = true;
+                            try {
+                                circusCharlie.getFrame().dispose();
+                                new Ranking();
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            
                         }
                     }
                 }, 4000);
