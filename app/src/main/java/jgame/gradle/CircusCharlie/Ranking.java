@@ -1,9 +1,7 @@
 package jgame.gradle.CircusCharlie;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -67,10 +65,10 @@ public class Ranking extends JFrame{
             }
         });
 
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        southPanel.setBackground(Color.BLACK);
-        southPanel.add(jugarDeNuevo);
-        panel.add(southPanel, BorderLayout.SOUTH);
+        // JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // southPanel.setBackground(Color.BLACK);
+        // southPanel.add(jugarDeNuevo);
+        // panel.add(southPanel, BorderLayout.SOUTH);
 
         this.setVisible(true);
     }

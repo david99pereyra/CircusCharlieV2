@@ -36,8 +36,8 @@ public class Nivel2 extends Nivel{
             cam.setRegionVisible(circusCharlie.getWidth(), 480);
             m.setLimitesMundo(fondo.getWidth(), fondo.getHeight());
             CircusCharlie.setCharlie(charlie);
-            CircusCharlie.setFondo(fondo);
-            CircusCharlie.setCamara(cam);
+            circusCharlie.setFondo(fondo);
+            circusCharlie.setCamara(cam);
             //Crear los Monos
             this.crearMonos();
         } catch (Exception e) {

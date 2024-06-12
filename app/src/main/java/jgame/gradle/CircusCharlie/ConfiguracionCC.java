@@ -39,7 +39,7 @@ public class ConfiguracionCC extends JFrame {
         movimiento = new JComboBox<>(teclasMov);
 
         JLabel textoSalto = new JLabel("Tecla de Salto");
-        String[] teclasSalto = { "Espacio", "Flecha arriba", "W" };
+        String[] teclasSalto = { "X", "Flecha arriba", "W" };
         salto = new JComboBox<>(teclasSalto);
 
         JLabel cancionesLabel = new JLabel("Seleccionar cancion:");
@@ -113,6 +113,14 @@ public class ConfiguracionCC extends JFrame {
             CircusCharlie.pantallaCompleta("false");
         }else{
             CircusCharlie.pantallaCompleta("true");
+        }
+
+        if(desactivarSonido.getSelectedItem().equals("Desactivado")){
+            FXPlayer.LEON.stop();
+        }
+        else{
+            FXPlayer.init();
+            FXPlayer.LEON.loop();
         }
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();

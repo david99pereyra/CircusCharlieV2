@@ -62,7 +62,6 @@ public class PantallaInicioCC extends JFrame {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
                 int y = e.getY();
 
                 int iniciarY = (getHeight() - tituloImagen.getHeight()) / 4 + tituloImagen.getHeight() + 50;
@@ -79,11 +78,11 @@ public class PantallaInicioCC extends JFrame {
                 }
             }
         });
-
-        FXPlayer.LEON.play();
+        add(panel);
+        
+        FXPlayer.init();
         FXPlayer.LEON.loop();
 
-        add(panel);
         setVisible(true);
     }
 
