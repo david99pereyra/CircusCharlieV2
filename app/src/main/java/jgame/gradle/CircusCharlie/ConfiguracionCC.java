@@ -3,13 +3,11 @@ package jgame.gradle.CircusCharlie;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import jgame.gradle.Pong.RWproperties;
 
 public class ConfiguracionCC extends JFrame {
@@ -19,8 +17,6 @@ public class ConfiguracionCC extends JFrame {
     private JComboBox<String> salto;
     private JComboBox<String> opcionesVentana;
     String configJuego;
-
-    // private RWproperties prop = new RWproperties();
 
     public ConfiguracionCC() {
         // Configurar la ventana
@@ -43,7 +39,7 @@ public class ConfiguracionCC extends JFrame {
         salto = new JComboBox<>(teclasSalto);
 
         JLabel cancionesLabel = new JLabel("Seleccionar cancion:");
-        String[] canciones = { "dbz", "muchachos" }; // Lista de canciones disponibles
+        String[] canciones = { "Leon" }; // Lista de canciones disponibles
         cancionesComboBox = new JComboBox<>(canciones);
 
         JLabel sonido = new JLabel("Sonido:");
@@ -102,7 +98,6 @@ public class ConfiguracionCC extends JFrame {
     }
 
     private void guardarConfiguracion() {
-
         RWproperties.writeProperties(configJuego, "Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Movimiento", (String) movimiento.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Salto", (String) salto.getSelectedItem());
@@ -132,7 +127,6 @@ public class ConfiguracionCC extends JFrame {
         RWproperties.writeProperties(configJuego, "Salto", "ESPACE");
         RWproperties.writeProperties(configJuego, "Ventana", "Ventana");
         RWproperties.writeProperties(configJuego, "Sonido", "Activado");
-
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();
     }

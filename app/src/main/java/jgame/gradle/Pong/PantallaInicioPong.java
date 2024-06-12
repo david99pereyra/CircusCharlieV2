@@ -17,7 +17,6 @@ public class PantallaInicioPong extends JFrame {
         setSize(900, 600); // La pantalla tiene el mismo tamaño que el juego
         setLocationRelativeTo(null); // Centrar ventana
         setResizable(false); // Evitar redimensionamiento
-
         // Cargar la imagen de fondo
         try {
             imagenFondo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("imagenes/JuegoPong/Pong.png"));
@@ -25,7 +24,6 @@ public class PantallaInicioPong extends JFrame {
             e.printStackTrace();
             System.out.println("Error" + e);
         }
-
         // Crear un JPanel personalizado con la imagen de fondo
         JPanel panelFondo = new JPanel() {
             @Override
@@ -36,10 +34,8 @@ public class PantallaInicioPong extends JFrame {
                 }
             }
         };
-
         // Configurar el panelFondo
         panelFondo.setLayout(new GridLayout());
-
         JLabel iniciarJuegoLabel = new JLabel("<html><h1>Iniciar Juego</h1></html>", SwingConstants.CENTER);
         iniciarJuegoLabel.setForeground(Color.WHITE); // Texto blanco
         iniciarJuegoLabel.setFont(new Font("Copperplate Gothic Light", Font.PLAIN, 40)); // Tamaño y estilo del texto
@@ -48,7 +44,6 @@ public class PantallaInicioPong extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 iniciarJuego(); // Al hacer clic en el texto, iniciar el juego
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 iniciarJuegoLabel.setForeground(Color.YELLOW); // Cambiar color al pasar el ratón
@@ -59,24 +54,19 @@ public class PantallaInicioPong extends JFrame {
                 iniciarJuegoLabel.setForeground(Color.WHITE); // Restaurar color al salir del texto
             }
         });
-
         JLabel configuracion = new JLabel("<html><h1>Configuracion</h1></html>", SwingConstants.CENTER);
         configuracion.setForeground(Color.WHITE); // Texto blanco
         configuracion.setFont(new Font("Copperplate Gothic Light", Font.PLAIN, 40)); // Tamaño y estilo del texto
         configuracion.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ",
-                // "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto,
                 // iniciar el juego
                 new ConfiguracionPong();
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 configuracion.setForeground(Color.YELLOW); // Cambiar color al pasar el ratón
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
                 configuracion.setForeground(Color.WHITE); // Restaurar color al salir del texto
@@ -87,10 +77,8 @@ public class PantallaInicioPong extends JFrame {
         panelFondo.add(configuracion);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelFondo, BorderLayout.CENTER);
-
         Sonido.iniciar(RWproperties.readProperties(Pong.configJuego, "Musica"));
         Sonido.loop();
-
         setVisible(true);
     }
 
@@ -104,7 +92,6 @@ public class PantallaInicioPong extends JFrame {
                 juego.run(1.0 / 60.0);
             }
         };
-
         t.start();
         // Cerrar la pantalla de inicio
         dispose();
@@ -113,5 +100,4 @@ public class PantallaInicioPong extends JFrame {
     public static void main(String[] args) {
         new PantallaInicioPong();
     }
-
 }

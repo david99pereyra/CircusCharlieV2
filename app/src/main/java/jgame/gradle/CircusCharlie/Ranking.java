@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import jgame.gradle.FontManager;
 
 public class Ranking extends JFrame{
@@ -31,17 +30,14 @@ public class Ranking extends JFrame{
         this.setSize(800,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
         panel.setLayout(new GridLayout(0,1));
         this.add(panel);
-        
         JLabel title = new JLabel("Ranking", SwingConstants.CENTER);
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Pixel Emulator",Font.BOLD, 24));
         panel.add(title);
-        
         for(int i = 0; i<nombres.size(); i++){
             JLabel scoreLabel = new JLabel((i + 1) + ". " 
             + nombres.get(i) + " - " 
@@ -52,7 +48,6 @@ public class Ranking extends JFrame{
             scoreLabel.setFont(new Font("Pixel Emulator", Font.PLAIN, 18));
             panel.add(scoreLabel);
         }
-
         JLabel jugarDeNuevo = new JLabel("Jugar de nuevo", SwingConstants.LEFT);
         jugarDeNuevo.setForeground(Color.WHITE);
         jugarDeNuevo.setFont(new Font("Pixel Emulator", Font.PLAIN,18));
@@ -64,12 +59,6 @@ public class Ranking extends JFrame{
                 new PantallaInicioCC();
             }
         });
-
-        // JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        // southPanel.setBackground(Color.BLACK);
-        // southPanel.add(jugarDeNuevo);
-        // panel.add(southPanel, BorderLayout.SOUTH);
-
         this.setVisible(true);
     }
 

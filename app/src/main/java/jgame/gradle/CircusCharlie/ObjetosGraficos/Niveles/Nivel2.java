@@ -26,7 +26,7 @@ public class Nivel2 extends Nivel{
         try {
             FXPlayer.init();
             FXPlayer.volume = FXPlayer.Volume.LOW;
-            //FXPlayer.EVENTO2.loop(); 
+            FXPlayer.EVENTO2.loop(); 
             charlie = new Charlie("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setImagen("imagenes/JuegoCircusCharlie/ImagenNivel2/charlieSoga1.png");
             charlie.setPISO(220);
@@ -169,13 +169,12 @@ public class Nivel2 extends Nivel{
 
     public void reiniciarJuego(double x, Charlie charlie) {
         super.reiniciarJuego(x, charlie);
-        //FXPlayer.EVENTO2.loop();
+        FXPlayer.EVENTO2.loop();
     }
 
     // Metodo que detecta los 2 tipos de monos que ya pasaron y los va eliminando
     public void eliminarMonosDesplazados(Charlie charlie) {
-        // Iterar sobre la lista original en sentido inverso para evitar problemas al
-        // eliminar elementos
+        // Iterar sobre la lista original en sentido inverso para evitar problemas al eliminar elementos
         for (int i = listaDeMonosMarron.size() - 1; i >= 0; i--) {
             MonoMarron mM = listaDeMonosMarron.get(i);
             if (mM.getX() <= charlie.getX() - 180) {
@@ -238,6 +237,7 @@ public class Nivel2 extends Nivel{
             }
         }
     }
+    
     public void colisionEntreMonos(){
         for(MonoMarron mM : listaDeMonosMarron){
             for(MonoAzul mA: listaDeMonosAzul){

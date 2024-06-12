@@ -23,42 +23,32 @@ public class ConfiguracionPong extends JFrame {
         setTitle("Configuracion de Pong");
         setSize(400, 500);
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
-
         JLabel ventanaTexto = new JLabel("Opciones de ventanas");
         String[] opciones = { "Ventana", "Pantalla Completa" };
         opcionesVentana = new JComboBox<>(opciones);
-
         // Crear y configurar los elementos de la interfaz
         JLabel jugador1Label = new JLabel("Teclas Jugador 1:");
         String[] teclasJ1 = { "w - s", "e - d" };
         J1 = new JComboBox<>(teclasJ1);
-
         JLabel jugador2Label = new JLabel("Teclas Jugador 2:");
         String[] teclasJ2 = { "UP - DOWN", "o - l" };
         J2 = new JComboBox<>(teclasJ2);
-
         JLabel colorpaddleJ1 = new JLabel("Color de la paleta Jugador 1");
         String[] colorJ1 = { "azul", "amarillo" };
         coloresJ1 = new JComboBox<>(colorJ1);
-
         JLabel colorpaddleJ2 = new JLabel("Color de la paleta Jugador 2");
         String[] colorJ2 = { "rojo", "azul" };
         coloresJ2 = new JComboBox<>(colorJ2);
-
         JLabel gameMode = new JLabel("Seleccione el modo de juego");
         String[] modos = { "facilito", "Modo harcord extremo" };
         modoDeJuego = new JComboBox<>(modos);
-
         JLabel cancionesLabel = new JLabel("Seleccionar cancion:");
         String[] canciones = { "dbz", "muchachos" }; // Lista de canciones disponibles
         cancionesComboBox = new JComboBox<>(canciones);
-
         JLabel sonido = new JLabel("Sonido:");
         String[] des = { "Activado", "Desactivado" };
         desactivarSonido = new JComboBox<>(des);
-
         JButton guardarButton = new JButton("GUARDAR");
-
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -66,9 +56,7 @@ public class ConfiguracionPong extends JFrame {
                 guardarConfiguracion();
             }
         });
-
         JButton reset = new JButton("RESET");
-
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,16 +102,13 @@ public class ConfiguracionPong extends JFrame {
         panel.add(new JLabel());
         panel.add(guardarButton);
         panel.add(reset);
-
         // Agregar el panel a la ventana
         getContentPane().add(panel);
-
         // Hacer visible la ventana
         setVisible(true);
     }
 
     private void guardarConfiguracion() {
-
         RWproperties.writeProperties(configJuego, "ColorJ1", (String) coloresJ1.getSelectedItem());
         RWproperties.writeProperties(configJuego, "ColorJ2", (String) coloresJ2.getSelectedItem());
         RWproperties.writeProperties(configJuego, "TeclasJ1", (String) J1.getSelectedItem());
@@ -132,7 +117,6 @@ public class ConfiguracionPong extends JFrame {
         RWproperties.writeProperties(configJuego, "Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Ventana", (String) opcionesVentana.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Sonido", (String) desactivarSonido.getSelectedItem());
-
         if (opcionesVentana.getSelectedItem().equals("Ventana")) {
             Pong.pantallaCompleta("false");
         } else {
@@ -140,7 +124,6 @@ public class ConfiguracionPong extends JFrame {
         }
 
         Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
-
         if(desactivarSonido.getSelectedItem().equals("Desactivado")){
             Sonido.parar();
         }
@@ -157,9 +140,7 @@ public class ConfiguracionPong extends JFrame {
         RWproperties.writeProperties(configJuego, "Musica", "dbz");
         RWproperties.writeProperties(configJuego, "Ventana", "Ventana");
         RWproperties.writeProperties(configJuego, "Sonido", "Activado");
-
         Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
-
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();
     }

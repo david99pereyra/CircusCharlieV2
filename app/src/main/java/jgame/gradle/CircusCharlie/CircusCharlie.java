@@ -28,12 +28,10 @@ public class CircusCharlie extends JGame {
     private Camara cam;
     private Fondo fondo;
     public static Charlie charlie;
-    public static Leon leon;
     private static Nivel nivelActual;
     private boolean enPausa = false;
     private boolean pPresionado = false;
     private int puntos = 10000;
-
     private static Properties prop = new Properties();
 
     public static void main(String[] args) {
@@ -45,11 +43,9 @@ public class CircusCharlie extends JGame {
     public CircusCharlie() {
         // call game constructor
         super("AppCamaracharlie ", WIDTH, HEIGHT);
-
     }
 
     public void gameStartup() {
-
         if (!inicioBD) {
             new ScoreBD();
             inicioBD = true;
@@ -91,6 +87,9 @@ public class CircusCharlie extends JGame {
                     @Override
                     public void run() {
                         try {
+                            FXPlayer.EVENTO1.stop();
+                            FXPlayer.EVENTO2.stop();
+                            FXPlayer.EVENTO3.stop();
                             resetGame();
                             getFrame().dispose();
                             new Ranking();
@@ -112,7 +111,6 @@ public class CircusCharlie extends JGame {
                         inicioNivel = true;
                     }
                 }, 3000);
-
             } else {
                 Keyboard keyboard = getKeyboard();
                 if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
@@ -139,30 +137,21 @@ public class CircusCharlie extends JGame {
 
     public void gameDraw(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         Mundo m = Mundo.getInstance();
-
         g.translate(cam.getX(), cam.getY());
-
         fondo.display(g);
         m.display(g);
         nivelActual.gameDraw(g);
-
         g.translate(-cam.getX(), -cam.getY());
         charlie.displayScore(g);
-
         if (enPausa) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Pixel Emulator", Font.BOLD, 40));
             g.drawString("Pausa", WIDTH / 2 - 83, HEIGHT / 2);
         }
-
         displayTempScore(g);
     }
-
-    public void gameShutdown() {
-        // Log.info(getClass().getSimpleName(), "Shutting down game");
-    }
+    public void gameShutdown() {}
 
     private void resetGame() {
         nivel = 1;
@@ -220,15 +209,11 @@ public class CircusCharlie extends JGame {
 
     public static void pantallaCompleta(String valor) {
         String resourseUrl = CircusCharlie.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-                + "/jgame.properties";
-
+        + "/jgame.properties";
         System.out.println("Entro al writeProperties");
         try (OutputStream input = new FileOutputStream(resourseUrl)) {
-
             prop.setProperty("fullScreen", valor);
-
             prop.store(input, null);
-
             System.out.println(prop.getProperty("fullScreen"));
         } catch (IOException e) {
             e.printStackTrace();

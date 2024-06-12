@@ -27,10 +27,8 @@ public class Pong extends JGame {
     private boolean pPresionado = false;
     private boolean enterPresionado = false;
     public static final String configJuego = "configuracionPong.properties";
-
     private int arribaJ1;
     private int abajoJ1;
-
     private int arribaJ2;
     private int abajoJ2;
     private static Properties prop = new Properties();
@@ -50,9 +48,7 @@ public class Pong extends JGame {
         Log.info(getClass().getSimpleName(), "Starting up game");
         fondo = new Fondo(800, 600);
         newRaquetas();
-
         newBall();
-
         scoreJ1 = new Score(1, ((int) fondo.getWidth() / 2) - 85);
         scoreJ2 = new Score(2, ((int) fondo.getWidth() / 2) + 20);
     }
@@ -69,7 +65,6 @@ public class Pong extends JGame {
             } else {
                 pPresionado = false;
             }
-
             // Verificar si se presiona 'Enter' para reiniciar el juego
             if (keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 if (!enterPresionado && finJuego) {
@@ -82,7 +77,6 @@ public class Pong extends JGame {
             if (!enPausa) {
                 // Funcion movimiento de las paletas
                 movimientoTeclado(keyboard);
-
                 // Check the list of key events for a pressed escape key
                 LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
                 for (KeyEvent event : keyEvents) {
@@ -100,7 +94,6 @@ public class Pong extends JGame {
                 DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo2);
                 // Colsiion de la pelota en los laterales
                 colisionLateral(ball);
-
                 // Limitar movimiento de las raquetas
                 limitesPaletas(raquetazo1, raquetazo2);
             }
@@ -117,7 +110,6 @@ public class Pong extends JGame {
         // Dibujar las raquetas
         raquetazo1.display(g);
         raquetazo2.display(g);
-
         // Dibujar la pelota solo si el juego no ha terminado
         if (!finJuego) {
             g.setColor(Color.WHITE);
@@ -152,19 +144,16 @@ public class Pong extends JGame {
         Color raquetaColorJ1;
         Color raquetaColorJ2;
         if (RWproperties.readProperties(Pong.configJuego, "ModoJuego").equals("facilito")) {
-
             if (RWproperties.readProperties(Pong.configJuego, "ColorJ1").equals("azul")) {
                 raquetaColorJ1 = Color.blue;
-
-            } else
+            } else{
                 raquetaColorJ1 = Color.yellow;
-
+            }
             if (RWproperties.readProperties(Pong.configJuego, "ColorJ2").equals("rojo")) {
                 raquetaColorJ2 = Color.red;
-
-            } else
+            } else{
                 raquetaColorJ2 = Color.blue;
-
+            }
             raquetazo1 = new Raqueta(13, 280, raquetaColorJ1);
             raquetazo2 = new Raqueta(790, 280, raquetaColorJ2);
         } else {
@@ -242,7 +231,6 @@ public class Pong extends JGame {
             this.arribaJ1 = KeyEvent.VK_E;
             this.abajoJ1 = KeyEvent.VK_D;
         }
-
         if (RWproperties.readProperties(Pong.configJuego, "TeclasJ2").equals("UP - DOWN")) {
             this.arribaJ2 = KeyEvent.VK_UP;
             this.abajoJ2 = KeyEvent.VK_DOWN;
@@ -266,16 +254,11 @@ public class Pong extends JGame {
     }
 
     public static void pantallaCompleta(String valor) {
-        String resourseUrl = Pong.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-                + "/jgame.properties";
-
+        String resourseUrl = Pong.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/jgame.properties";
         System.out.println("Entro al writeProperties");
         try (OutputStream input = new FileOutputStream(resourseUrl)) {
-
             prop.setProperty("fullScreen", valor);
-
             prop.store(input, null);
-
             System.out.println(prop.getProperty("fullScreen"));
         } catch (IOException e) {
             e.printStackTrace();

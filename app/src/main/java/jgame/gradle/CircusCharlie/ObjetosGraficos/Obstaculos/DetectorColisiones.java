@@ -10,7 +10,6 @@ public class DetectorColisiones extends Rectangle {
         public static void colisionPelotaContraBordesSupInf(Ball pelotita, jgame.gradle.CircusCharlie.Fondo fondo){
         // Colisión de la pelota con los bordes
                 if (pelotita.getX() < 0 || pelotita.getX() + pelotita.getRadio() * 2 > fondo.getWidth()) {
-                        
                         pelotita.rebotarHorizontal();
                 }
                 if (pelotita.getY() < 30 || pelotita.getY() + pelotita.getRadio() * 2 > fondo.getHeight()) {

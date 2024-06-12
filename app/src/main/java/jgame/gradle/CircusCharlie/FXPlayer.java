@@ -1,15 +1,10 @@
 /*
- Ejemplo original
-
- https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
-
+Ejemplo original https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
  */
 package jgame.gradle.CircusCharlie;
-
 import java.io.*;
 import java.net.URL;
 import javax.sound.sampled.*;
-
 
 public enum FXPlayer {
    FX00("CircusCharlie/fx00.wav"),
@@ -35,12 +30,10 @@ public enum FXPlayer {
 
    FXPlayer(String wav) {
       try {
-
          URL url = this.getClass().getClassLoader().getResource("musica/"+wav);
          AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
          clip = AudioSystem.getClip();
          clip.open(audioInputStream);
-
       } catch (UnsupportedAudioFileException e) {
          e.printStackTrace();
       } catch (IOException e) {
