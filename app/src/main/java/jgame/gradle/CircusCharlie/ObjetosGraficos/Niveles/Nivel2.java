@@ -17,6 +17,8 @@ public class Nivel2 extends Nivel{
     private boolean pasoXMonoMarron = false;
     private boolean pasoXMonoAzul = false;
     public static Charlie charlie;
+    private boolean banderaScoreMA;
+    private boolean banderaScoreMM;
 
     public Nivel2(CircusCharlie circusCharlie){
         super(circusCharlie);
@@ -97,6 +99,10 @@ public class Nivel2 extends Nivel{
             charlie.setPISO(220);
             mostrarMonos = true;
         }
+        if(charlie.getY() + charlie.getHeight() > charlie.getPISO()){
+            banderaScoreMA = false;
+            banderaScoreMM = false;
+        }
         if(!llegoAMeta){
             // Metodo que le da movimiento a ambos monos y detecta colisiones de los entre charlie y monos
             movimientoMonoYColision(delta);
@@ -139,7 +145,6 @@ public class Nivel2 extends Nivel{
         String imagenMonoAzul = "imagenes/JuegoCircusCharlie/ImagenNivel2/monoPolenta1.png";
         int numeroAleatorioPosX, cantMonosNormalesContinuos;
         int posXPixel = 850;
-
         MonoMarron primerMonito = new MonoMarron(imagenMonoMarron);
         primerMonito.setPosition(posXPixel, 240);
         listaDeMonosMarron.add(primerMonito);
@@ -202,6 +207,10 @@ public class Nivel2 extends Nivel{
                     choqueDelPersonaje(charlie);
                 }else if(DetectorColisiones.detectarArribaMonoAzul(mA, charlie)){
                     pasoXMonoAzul = true;
+                    if (!banderaScoreMA) {
+                        banderaScoreMA = true;
+                        circusCharlie.setTempScore(100, 100, 150);
+                    }
                 }
             }
             for (MonoMarron mM : listaDeMonosMarron){
@@ -217,6 +226,10 @@ public class Nivel2 extends Nivel{
                     choqueDelPersonaje(charlie);
                 }else if(DetectorColisiones.detectarArribaMonoMarron(mM, charlie)){
                     pasoXMonoAzul = true;
+                    if (!banderaScoreMM) {
+                        banderaScoreMM = true;
+                        circusCharlie.setTempScore(100, 100, 150);
+                    }
                 }
             }
         }

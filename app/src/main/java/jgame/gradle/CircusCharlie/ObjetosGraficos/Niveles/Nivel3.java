@@ -10,7 +10,9 @@ import java.awt.Graphics2D;
 public class Nivel3 extends Nivel{
     private static ArrayList<Pelota> listaDePelotas = new ArrayList<>();
     public static Charlie charlie;
-    public boolean charlieEnPelota, puntuacionOtorgada = true;
+    public boolean charlieEnPelota;
+    public boolean  puntuacionOtorgada = true;
+    private boolean banderaScorePelota;
 
     public Nivel3(CircusCharlie circusCharlie){
         super(circusCharlie);
@@ -201,6 +203,7 @@ public class Nivel3 extends Nivel{
                 puntuacionOtorgada = false;
             } else {
                 pelotita.setEstaMontado(false);
+                banderaScorePelota = false;
             }
         }
 
@@ -208,6 +211,10 @@ public class Nivel3 extends Nivel{
             if(charlie.getY() == charlie.getPISO()){
                 Score.sumarScore(100);
                 puntuacionOtorgada = true;
+                if (!banderaScorePelota) {
+                    banderaScorePelota = true;
+                    circusCharlie.setTempScore(100, 100, charlie.getY() - 50);
+                }
             }
         }
         charlie.setEnLaPelota(charlieEnPelota);

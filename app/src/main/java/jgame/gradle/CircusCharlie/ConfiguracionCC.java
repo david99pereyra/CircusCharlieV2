@@ -39,7 +39,7 @@ public class ConfiguracionCC extends JFrame {
         salto = new JComboBox<>(teclasSalto);
 
         JLabel cancionesLabel = new JLabel("Seleccionar cancion:");
-        String[] canciones = { "Leon" }; // Lista de canciones disponibles
+        String[] canciones = { "El peluca - leon" }; // Lista de canciones disponibles
         cancionesComboBox = new JComboBox<>(canciones);
 
         JLabel sonido = new JLabel("Sonido:");
@@ -66,7 +66,7 @@ public class ConfiguracionCC extends JFrame {
         });
         // Crear y configurar el panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(16, 2));
+        panel.setLayout(new GridLayout(16, 2, 10, 0));
         panel.add(ventanaTexto);
         panel.add(opcionesVentana);
         panel.add(new JLabel());
