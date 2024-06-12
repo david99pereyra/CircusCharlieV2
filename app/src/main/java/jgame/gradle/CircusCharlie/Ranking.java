@@ -21,6 +21,7 @@ import jgame.gradle.FontManager;
 public class Ranking extends JFrame{
     private ArrayList<String> nombres = new ArrayList<>();
     private ArrayList<Integer> puntuaciones = new ArrayList<>();
+    private ArrayList<String> fecha = new ArrayList<>();
     
     public Ranking() throws SQLException{
         obtenerDatos();
@@ -44,7 +45,11 @@ public class Ranking extends JFrame{
         panel.add(title);
         
         for(int i = 0; i<nombres.size(); i++){
-            JLabel scoreLabel = new JLabel((i + 1) + ". " + nombres.get(i) + " - " + puntuaciones.get(i), SwingConstants.CENTER);
+            JLabel scoreLabel = new JLabel((i + 1) + ". " 
+            + nombres.get(i) + " - " 
+            + puntuaciones.get(i) + " - " 
+            + fecha.get(i)
+            , SwingConstants.CENTER);
             scoreLabel.setForeground(Color.WHITE);
             scoreLabel.setFont(new Font("Pixel Emulator", Font.PLAIN, 18));
             panel.add(scoreLabel);
@@ -76,6 +81,7 @@ public class Ranking extends JFrame{
             while (rs != null && rs.next()) {
                 nombres.add(rs.getString("nombre"));
                 puntuaciones.add(rs.getInt("puntaje"));
+                fecha.add(rs.getString("fecha"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

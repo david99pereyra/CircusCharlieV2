@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Configuracion extends JFrame {
+public class ConfiguracionPong extends JFrame {
     private JComboBox<String> cancionesComboBox;
+    private JComboBox<String> desactivarSonido;
     private JComboBox<String> J1;
     private JComboBox<String> J2;
     private JComboBox<String> opcionesVentana;
@@ -17,10 +18,10 @@ public class Configuracion extends JFrame {
 
     // private RWproperties prop = new RWproperties();
 
-    public Configuracion() {
+    public ConfiguracionPong() {
         // Configurar la ventana
         setTitle("Configuracion de Pong");
-        setSize(400, 400);
+        setSize(400, 500);
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
         JLabel ventanaTexto = new JLabel("Opciones de ventanas");
@@ -52,7 +53,12 @@ public class Configuracion extends JFrame {
         String[] canciones = { "dbz", "muchachos" }; // Lista de canciones disponibles
         cancionesComboBox = new JComboBox<>(canciones);
 
-        JButton guardarButton = new JButton("Guardar");
+        JLabel sonido = new JLabel("Sonido:");
+        String[] des = { "Activado", "Desactivado" }; 
+        desactivarSonido = new JComboBox<>(des);
+        
+        JButton guardarButton = new JButton("GUARDAR");
+        
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -61,9 +67,19 @@ public class Configuracion extends JFrame {
             }
         });
 
+        JButton reset = new JButton("RESET");
+
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                configJuego = "configuracionPong.properties";
+                resetButton();
+            }
+        });
+
         // Crear y configurar el panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(16, 2));
+        panel.setLayout(new GridLayout(18, 2, 10, 0));
         panel.add(ventanaTexto);
         panel.add(opcionesVentana);
         panel.add(new JLabel());
@@ -88,10 +104,17 @@ public class Configuracion extends JFrame {
         panel.add(modoDeJuego);
         panel.add(new JLabel());
         panel.add(new JLabel());
+        panel.add(sonido);
+        panel.add(desactivarSonido);
+        panel.add(new JLabel());
+        panel.add(new JLabel());
         panel.add(cancionesLabel);
         panel.add(cancionesComboBox);
         panel.add(new JLabel());
+        panel.add(new JLabel());
         panel.add(guardarButton);
+        panel.add(reset);
+
 
         // Agregar el panel a la ventana
         getContentPane().add(panel);
@@ -109,6 +132,29 @@ public class Configuracion extends JFrame {
         RWproperties.writeProperties(configJuego,"ModoJuego", (String) modoDeJuego.getSelectedItem());
         RWproperties.writeProperties(configJuego,"Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego,"Ventana", (String) opcionesVentana.getSelectedItem());
+        RWproperties.writeProperties(configJuego,"Sonido", (String) desactivarSonido.getSelectedItem());
+
+        if(opcionesVentana.getSelectedItem().equals("Ventana")){
+            Pong.pantallaCompleta("false");
+        }else{
+            Pong.pantallaCompleta("true");
+        }
+
+        Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
+        
+        // Aquí puedes cerrar la ventana de configuración si es necesario
+        dispose();
+    }
+
+    private void resetButton(){
+        RWproperties.writeProperties(configJuego,"ColorJ1", "azul");
+        RWproperties.writeProperties(configJuego,"ColorJ2", "rojo");
+        RWproperties.writeProperties(configJuego,"TeclasJ1", "w - s");
+        RWproperties.writeProperties(configJuego,"TeclasJ2", "UP - DOWN");
+        RWproperties.writeProperties(configJuego,"ModoJuego", "facilito");
+        RWproperties.writeProperties(configJuego,"Musica", "dbz");
+        RWproperties.writeProperties(configJuego,"Ventana", "Ventana");
+        RWproperties.writeProperties(configJuego,"Sonido", "Activado");
 
         Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
         
@@ -117,6 +163,6 @@ public class Configuracion extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Configuracion());
+        SwingUtilities.invokeLater(() -> new ConfiguracionPong());
     }
 }

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import jgame.gradle.Pong.RWproperties;
 
 public class ConfiguracionCC extends JFrame {
+    private JComboBox<String> desactivarSonido;
     private JComboBox<String> cancionesComboBox;
     private JComboBox<String> movimiento;
     private JComboBox<String> salto;
@@ -38,14 +39,18 @@ public class ConfiguracionCC extends JFrame {
         movimiento = new JComboBox<>(teclasMov);
 
         JLabel textoSalto = new JLabel("Tecla de Salto");
-        String[] teclasSalto = { "ESPACE", "Flecha arriba", "W" };
+        String[] teclasSalto = { "Espacio", "Flecha arriba", "W" };
         salto = new JComboBox<>(teclasSalto);
 
         JLabel cancionesLabel = new JLabel("Seleccionar cancion:");
         String[] canciones = { "dbz", "muchachos" }; // Lista de canciones disponibles
         cancionesComboBox = new JComboBox<>(canciones);
 
-        JButton guardarButton = new JButton("Guardar");
+        JLabel sonido = new JLabel("Sonido:");
+        String[] des = { "Activado", "Desactivado" }; 
+        desactivarSonido = new JComboBox<>(des);
+
+        JButton guardarButton = new JButton("GUARDAR");
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -54,6 +59,15 @@ public class ConfiguracionCC extends JFrame {
             }
         });
 
+
+        JButton reset = new JButton("RESET");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                configJuego = "configuracionCharlie.properties";
+                resetButton();
+            }
+        });
         // Crear y configurar el panel
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(16, 2));
@@ -69,10 +83,16 @@ public class ConfiguracionCC extends JFrame {
         panel.add(salto);
         panel.add(new JLabel());
         panel.add(new JLabel());
+        panel.add(sonido);
+        panel.add(desactivarSonido);
+        panel.add(new JLabel());
+        panel.add(new JLabel());
         panel.add(cancionesLabel);
         panel.add(cancionesComboBox);
         panel.add(new JLabel());
+        panel.add(new JLabel());
         panel.add(guardarButton);
+        panel.add(reset);
 
         // Agregar el panel a la ventana
         getContentPane().add(panel);
@@ -83,10 +103,27 @@ public class ConfiguracionCC extends JFrame {
 
     private void guardarConfiguracion() {
 
+        RWproperties.writeProperties(configJuego, "Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Movimiento", (String) movimiento.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Salto", (String) salto.getSelectedItem());
-        RWproperties.writeProperties(configJuego, "Musica", (String) cancionesComboBox.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Ventana", (String) opcionesVentana.getSelectedItem());
+        RWproperties.writeProperties(configJuego, "Sonido", (String) desactivarSonido.getSelectedItem());
+
+        if(opcionesVentana.getSelectedItem().equals("Ventana")){
+            CircusCharlie.pantallaCompleta("false");
+        }else{
+            CircusCharlie.pantallaCompleta("true");
+        }
+        // Aquí puedes cerrar la ventana de configuración si es necesario
+        dispose();
+    }
+
+    private void resetButton(){
+        RWproperties.writeProperties(configJuego, "Musica", "dbz");
+        RWproperties.writeProperties(configJuego, "Movimiento", "Flecha izq - Flecha der");
+        RWproperties.writeProperties(configJuego, "Salto", "ESPACE");
+        RWproperties.writeProperties(configJuego, "Ventana", "Ventana");
+        RWproperties.writeProperties(configJuego, "Sonido", "Activado");
 
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();

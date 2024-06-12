@@ -1,6 +1,8 @@
 package jgame.gradle.CircusCharlie.ObjetosGraficos.Niveles;
 import jgame.gradle.CircusCharlie.*;
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.Pelota;
+import jgame.gradle.Pong.RWproperties;
+
 import java.awt.Graphics2D;
 import java.util.*;
 import com.entropyinteractive.Keyboard;
@@ -20,6 +22,10 @@ public abstract class Nivel{
     Date dInit = new Date();
     Date dReloj;
     Date dAhora;
+    private int izquieda;
+    private int derecha;
+    private int salto;
+    private String configProp = "configuracionCharlie.properties";
     
     public Nivel(CircusCharlie cc){
         this.circusCharlie = cc;
@@ -29,29 +35,49 @@ public abstract class Nivel{
     public abstract void gameUpdate(double delta, Keyboard keyboard);
     public abstract boolean colisiono();
 
+    public void configTeclas(){
+        if(RWproperties.readProperties(configProp, "Movimiento").equals("Flecha izq - Flecha der")){
+            this.izquieda = KeyEvent.VK_LEFT;
+            this.derecha = KeyEvent.VK_RIGHT;
+        }else{
+            this.izquieda = KeyEvent.VK_A;
+            this.derecha = KeyEvent.VK_D;
+        }
+
+        if(RWproperties.readProperties(configProp, "Salto").equals("Espacio")){
+            this.salto = KeyEvent.VK_SPACE;
+        }else if (RWproperties.readProperties(configProp, "Salto").equals("Flecha arriba")){
+            this.salto = KeyEvent.VK_UP;
+        }else {
+            this.salto = KeyEvent.VK_W;
+        }
+
+
+    }
     public void movimientoTeclas(double delta, Keyboard keyboard){
+        configTeclas();
         if(circusCharlie.getNivelActual() instanceof Nivel3){
             Pelota pelotaActual = Nivel3.getPelotaEnLaQueEstaParadoCharlie(circusCharlie.getCharlie());
-            if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+            if (keyboard.isKeyPressed(izquieda)) {
                 if(circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
                     pelotaActual.left();
                     pelotaActual.update(delta);
                 }
             }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            if (keyboard.isKeyPressed(derecha)) {
                 if(circusCharlie.getCharlie().getEnLaPelota() && pelotaActual != null){
                     pelotaActual.right();
                     pelotaActual.update(delta);
                 }
             }
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if (keyboard.isKeyPressed(izquieda)) {
             if (circusCharlie.getCharlie().getX() > 10){
                 circusCharlie.getCharlie().left();
                 circusCharlie.getCharlie().cambioImagen1();
             }
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        if (keyboard.isKeyPressed(derecha)) {
             if ((circusCharlie.getCharlie().getX() + circusCharlie.getCharlie().getWidth() < fondo.getWidth() && !Nivel2.llegoAMeta()) || (circusCharlie.getCharlie().getX() + circusCharlie.getCharlie().getWidth() < fondo.getWidth() && !Nivel3.llegoAMeta())) {
                 circusCharlie.getCharlie().right();
                 circusCharlie.getCharlie().cambioImagen1();
@@ -66,7 +92,7 @@ public abstract class Nivel{
             if ((event.getID() == KeyEvent.KEY_RELEASED)) {
                 circusCharlie.getCharlie().quieto();
             }
-            if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+            if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == salto)) {
                 if (Nivel3.llegoAMeta() == false || Nivel2.llegoAMeta() == false) {
                     circusCharlie.getCharlie().jump();
                     FXPlayer.FX00.play();
@@ -83,7 +109,8 @@ public abstract class Nivel{
     }
 
     public void movimientoTeclas(double delta, Keyboard keyboard, Leon leon){
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT)) {
+        configTeclas();
+        if (keyboard.isKeyPressed(izquieda)) {
             if (leon.getX() > 10 && Nivel1.llegoAMeta() == false) {
                 circusCharlie.getCharlie().left();
                 leon.left();
@@ -92,7 +119,7 @@ public abstract class Nivel{
                 }
             }
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        if (keyboard.isKeyPressed(derecha)) {
             if (leon.getX() + leon.getWidth() < fondo.getWidth() && Nivel1.llegoAMeta() == false) {
                 circusCharlie.getCharlie().right();
                 leon.right();
@@ -112,7 +139,7 @@ public abstract class Nivel{
                 circusCharlie.getCharlie().quieto();
                 leon.quieto();
             }
-            if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_SPACE)) {
+            if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == salto)) {
                 if (Nivel1.llegoAMeta() == false) {
                     circusCharlie.getCharlie().jump();
                     leon.jump();
@@ -135,9 +162,6 @@ public abstract class Nivel{
                 dReloj = new Date();
             }
             dAhora = new Date();
-            long diffSeconds = 0;
-            long dateDiff = dAhora.getTime() - dReloj.getTime();
-            diffSeconds = dateDiff / 1000 % 60;
             circusCharlie.getCharlie().updateLlegadaMeta(delta);
         }
     }
