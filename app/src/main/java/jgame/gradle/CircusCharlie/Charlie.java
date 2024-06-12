@@ -250,7 +250,7 @@ public class Charlie extends ObjetoGrafico implements ObjetoMovible {
 	}
 	
 	public int getScore(){
-		return puntosJugador.getScore();
+		return Score.getScore();
 	}
 
 	public void scorePred(){

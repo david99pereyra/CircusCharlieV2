@@ -1,4 +1,5 @@
 package jgame.gradle.Pong;
+
 import jgame.gradle.CircusCharlie.ObjetosGraficos.Obstaculos.*;
 import jgame.gradle.CircusCharlie.*;
 import com.entropyinteractive.JGame;
@@ -9,8 +10,9 @@ import java.awt.event.*; //eventos
 import java.util.*;
 import java.text.*;
 import java.awt.*;
+import java.io.*;
 
-public class Pong extends JGame{
+public class Pong extends JGame {
     Date dInit = new Date();
     Date dAhora;
     SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
@@ -40,6 +42,13 @@ public class Pong extends JGame{
 
     public Pong() {
         super("Pong", 800, 600);
+
+        if (RWproperties.readProperties(configJuego, "Ventana").equals("Pantalla Completa")) {
+
+            pantallaCompleta("true");
+        } else {
+            pantallaCompleta("false");
+        }
     }
 
     public void gameStartup() {
@@ -49,36 +58,36 @@ public class Pong extends JGame{
 
         newBall();
 
-        scoreJ1 = new Score(1, ((int)fondo.getWidth() / 2) - 85 );
-        scoreJ2 = new Score(2, ((int)fondo.getWidth() / 2) + 20);
+        scoreJ1 = new Score(1, ((int) fondo.getWidth() / 2) - 85);
+        scoreJ2 = new Score(2, ((int) fondo.getWidth() / 2) + 20);
     }
 
     public void gameUpdate(double delta) {
-        if(!finJuego){     
-            Keyboard keyboard = getKeyboard();   
+        if (!finJuego) {
+            Keyboard keyboard = getKeyboard();
             // Verificar si se presiona 'P' para pausar/reanudar el juego
             if (keyboard.isKeyPressed(KeyEvent.VK_P)) {
-                if(!pPresionado && !finJuego){
+                if (!pPresionado && !finJuego) {
                     enPausa = !enPausa;
                     pPresionado = true;
                 }
-            }else{
+            } else {
                 pPresionado = false;
             }
 
             // Verificar si se presiona 'Enter' para reiniciar el juego
             if (keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
-                if(!enterPresionado && finJuego){
+                if (!enterPresionado && finJuego) {
                     reiniciarJuego();
                     enterPresionado = true;
                 }
-            }else{
+            } else {
                 enterPresionado = false;
             }
-            if(!enPausa){
+            if (!enPausa) {
                 // Funcion movimiento de las paletas
                 movimientoTeclado(keyboard);
-        
+
                 // Check the list of key events for a pressed escape key
                 LinkedList<KeyEvent> keyEvents = keyboard.getEvents();
                 for (KeyEvent event : keyEvents) {
@@ -96,13 +105,13 @@ public class Pong extends JGame{
                 DetectorColisiones.colisionPelotaRaqueta(ball, raquetazo2);
                 // Colsiion de la pelota en los laterales
                 colisionLateral(ball);
-                
+
                 // Limitar movimiento de las raquetas
                 limitesPaletas(raquetazo1, raquetazo2);
             }
-        } else{
+        } else {
             Keyboard keyboard = getKeyboard();
-            if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
+            if (keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 reiniciarJuego();
             }
         }
@@ -133,7 +142,7 @@ public class Pong extends JGame{
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 50));
             FontMetrics metrics = g.getFontMetrics();
-            String mensajeFin = scoreJ1.getPuntos() >= 3 ? "Gana Jugador 1" : "Gana Jugador 2";
+            String mensajeFin = scoreJ1.getPuntos() >= 3 ? "Gana Jugador 2" : "Gana Jugador 1";
             int x = ((int) fondo.getWidth() - metrics.stringWidth(mensajeFin)) / 2;
             int y = (int) fondo.getHeight() / 2;
             g.drawString(mensajeFin, x, y);
@@ -143,7 +152,8 @@ public class Pong extends JGame{
             g.drawString(reiniciarMensaje, x, y);
         }
     }
-    public void newRaquetas(){
+
+    public void newRaquetas() {
         Color raquetaColorJ1;
         Color raquetaColorJ2;
         if (RWproperties.readProperties(Pong.configJuego, "ModoJuego").equals("facilito")) {
@@ -162,56 +172,56 @@ public class Pong extends JGame{
 
             raquetazo1 = new Raqueta(13, 280, 1, raquetaColorJ1);
             raquetazo2 = new Raqueta(790, 280, 2, raquetaColorJ2);
-        } else{
+        } else {
             raquetazo1 = new Raqueta(13, 280, 1, Color.black);
             raquetazo2 = new Raqueta(790, 280, 2, Color.black);
         }
     }
 
-    public void newBall(){
+    public void newBall() {
         ball = new Ball(400, 300);
     }
 
     public void gameShutdown() {
     }
 
-    public void reiniciarJuego(){
+    public void reiniciarJuego() {
         newRaquetas();
         scoreJ1.setPuntos(0);
         scoreJ2.setPuntos(0);
         finJuego = false;
         enPausa = false;
     }
-    
-    public void colisionLateral(Ball ball){
-        if(ball.getX() <= 0){
+
+    public void colisionLateral(Ball ball) {
+        if (ball.getX() <= 0) {
             scoreJ1.setPuntos(scoreJ1.getPuntos() + 1);
             newBall();
             newRaquetas();
             try {
-                Thread.sleep(80);  // Duerme el hilo durante 1000 milisegundos (1 segundo)
+                Thread.sleep(80); // Duerme el hilo durante 1000 milisegundos (1 segundo)
             } catch (InterruptedException e) {
                 // Maneja la excepción aquí, por ejemplo, imprimiendo un mensaje de error
                 e.printStackTrace();
             }
         }
-        if(DetectorColisiones.colisionPelotaContraLateralDerecha(ball, (int)fondo.getWidth())){
+        if (DetectorColisiones.colisionPelotaContraLateralDerecha(ball, (int) fondo.getWidth())) {
             scoreJ2.setPuntos(scoreJ2.getPuntos() + 1);
             newBall();
             newRaquetas();
             try {
-                Thread.sleep(80);  // Duerme el hilo durante 1000 milisegundos (1 segundo)
+                Thread.sleep(80); // Duerme el hilo durante 1000 milisegundos (1 segundo)
             } catch (InterruptedException e) {
                 // Maneja la excepción aquí, por ejemplo, imprimiendo un mensaje de error
                 e.printStackTrace();
             }
-        }  
-        if(scoreJ1.getPuntos() == 3 || scoreJ2.getPuntos() == 3){
+        }
+        if (scoreJ1.getPuntos() == 3 || scoreJ2.getPuntos() == 3) {
             finJuego = true;
-        }      
+        }
     }
-    
-    public void limitesPaletas(Raqueta raquetazo1, Raqueta raquetazo2){
+
+    public void limitesPaletas(Raqueta raquetazo1, Raqueta raquetazo2) {
         final int PADDING_TOP = 32;
         final int PADDING_BOTTOM = 0;
         if (raquetazo1.getY() < PADDING_TOP) {
@@ -228,7 +238,7 @@ public class Pong extends JGame{
         }
     }
 
-    public void movimientoTeclado(Keyboard keyboard){
+    public void movimientoTeclado(Keyboard keyboard) {
 
         if (RWproperties.readProperties(Pong.configJuego, "TeclasJ1").equals("w - s")) {
             this.arribaJ1 = KeyEvent.VK_W;
@@ -245,18 +255,36 @@ public class Pong extends JGame{
             this.arribaJ2 = KeyEvent.VK_O;
             this.abajoJ2 = KeyEvent.VK_L;
         }
-        
-        if(keyboard.isKeyPressed(arribaJ1)){
+
+        if (keyboard.isKeyPressed(arribaJ1)) {
             raquetazo1.up();
         }
-        if(keyboard.isKeyPressed(abajoJ1)){
+        if (keyboard.isKeyPressed(abajoJ1)) {
             raquetazo1.down();
         }
-        if(keyboard.isKeyPressed(arribaJ2)){
+        if (keyboard.isKeyPressed(arribaJ2)) {
             raquetazo2.up();
         }
-        if(keyboard.isKeyPressed(abajoJ2)){
+        if (keyboard.isKeyPressed(abajoJ2)) {
             raquetazo2.down();
+        }
+    }
+
+    private void pantallaCompleta(String valor) {
+        String resourseUrl = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath()
+                + "/jgame.properties";
+
+        System.out.println("Entro al writeProperties");
+        try (OutputStream input = new FileOutputStream(resourseUrl)) {
+
+            appProperties.setProperty("fullScreen", valor);
+
+            appProperties.store(input, null);
+
+            System.out.println(appProperties.getProperty("fullScreen"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error " + e);
         }
     }
 }

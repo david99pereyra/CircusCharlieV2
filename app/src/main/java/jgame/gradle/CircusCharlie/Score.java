@@ -22,7 +22,7 @@ public class Score extends ObjetoGrafico {
     private boolean descuentoBonusActivo = true;
 
     public Score() {
-        this.setPosition(5, 10);
+        this.setPosition(0, 10);
         iniciarTemporizador();
         cargarImagenVida();
     }

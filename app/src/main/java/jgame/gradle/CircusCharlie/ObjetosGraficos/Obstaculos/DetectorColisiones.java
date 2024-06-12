@@ -37,9 +37,9 @@ public class DetectorColisiones extends Rectangle {
                 return band;
         }
 
-        public static boolean colisionPelotaContraLateralDerecha(Ball pelotita, int tamañoFondo){
+        public static boolean colisionPelotaContraLateralDerecha(Ball pelotita, int tamanoFondo){
                 boolean band = false;
-                if(pelotita.getX() >= tamañoFondo - 15){// - pelotita.getWidth()){
+                if(pelotita.getX() >= tamanoFondo - 15){// - pelotita.getWidth()){
                         Sonido.iniciar("point");
                         band = true;
                 }
