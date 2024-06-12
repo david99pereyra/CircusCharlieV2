@@ -15,6 +15,6 @@ public class JuegoPong extends Juego{
 
     @Override
     public void run() {
-        new PantallaInicio();
+        new PantallaInicioPong();
     }
 }

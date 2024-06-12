@@ -8,10 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class PantallaInicio extends JFrame {
+public class PantallaInicioPong extends JFrame {
     private BufferedImage imagenFondo;
 
-    public PantallaInicio() {
+    public PantallaInicioPong() {
         setTitle("Inicio de Juego");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,600); // La pantalla tiene el mismo tamaño que el juego
@@ -67,7 +67,7 @@ public class PantallaInicio extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //JOptionPane.showMessageDialog(null, "La configuracion esta en desarrollo ", "Warning", JOptionPane.WARNING_MESSAGE);; // Al hacer clic en el texto, iniciar el juego
-                new Configuracion();
+                new ConfiguracionPong();
             }
 
             @Override
@@ -108,7 +108,7 @@ public class PantallaInicio extends JFrame {
     }
 
     public static void main(String[] args) {
-        new PantallaInicio();
+        new PantallaInicioPong();
     }
 
 }

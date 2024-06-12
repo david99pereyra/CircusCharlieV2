@@ -109,6 +109,11 @@ public class ConfiguracionCC extends JFrame {
         RWproperties.writeProperties(configJuego, "Ventana", (String) opcionesVentana.getSelectedItem());
         RWproperties.writeProperties(configJuego, "Sonido", (String) desactivarSonido.getSelectedItem());
 
+        if(opcionesVentana.getSelectedItem().equals("Ventana")){
+            CircusCharlie.pantallaCompleta("false");
+        }else{
+            CircusCharlie.pantallaCompleta("true");
+        }
         // Aquí puedes cerrar la ventana de configuración si es necesario
         dispose();
     }

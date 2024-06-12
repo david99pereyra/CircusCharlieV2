@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Configuracion extends JFrame {
+public class ConfiguracionPong extends JFrame {
     private JComboBox<String> cancionesComboBox;
     private JComboBox<String> desactivarSonido;
     private JComboBox<String> J1;
@@ -18,7 +18,7 @@ public class Configuracion extends JFrame {
 
     // private RWproperties prop = new RWproperties();
 
-    public Configuracion() {
+    public ConfiguracionPong() {
         // Configurar la ventana
         setTitle("Configuracion de Pong");
         setSize(400, 500);
@@ -134,6 +134,12 @@ public class Configuracion extends JFrame {
         RWproperties.writeProperties(configJuego,"Ventana", (String) opcionesVentana.getSelectedItem());
         RWproperties.writeProperties(configJuego,"Sonido", (String) desactivarSonido.getSelectedItem());
 
+        if(opcionesVentana.getSelectedItem().equals("Ventana")){
+            Pong.pantallaCompleta("false");
+        }else{
+            Pong.pantallaCompleta("true");
+        }
+
         Sonido.cambiarCancion((String) cancionesComboBox.getSelectedItem());
         
         // Aquí puedes cerrar la ventana de configuración si es necesario
@@ -157,6 +163,6 @@ public class Configuracion extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Configuracion());
+        SwingUtilities.invokeLater(() -> new ConfiguracionPong());
     }
 }

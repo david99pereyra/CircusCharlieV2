@@ -35,6 +35,8 @@ public class CircusCharlie extends JGame {
     private boolean pPresionado = false;
     private int puntos = 10000;
 
+    private static Properties prop = new Properties();
+
     public static void main(String[] args) {
         CircusCharlie game = new CircusCharlie();
         game.run(1.0 / 60.0);
@@ -45,11 +47,6 @@ public class CircusCharlie extends JGame {
         // call game constructor
         super("AppCamaracharlie ", WIDTH, HEIGHT);
 
-        if (RWproperties.readProperties("configuracionCharlie.properties", "Ventana").equals("Pantalla Completa")) {
-            pantallaCompleta("true");
-        }else{
-            pantallaCompleta("false");
-        }
     }
 
     public void gameStartup() {
@@ -222,18 +219,18 @@ public class CircusCharlie extends JGame {
         return charlie;
     }
 
-    private void pantallaCompleta(String valor) {
-        String resourseUrl = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath()
+    public static void pantallaCompleta(String valor) {
+        String resourseUrl = CircusCharlie.class.getProtectionDomain().getCodeSource().getLocation().getPath()
                 + "/jgame.properties";
 
         System.out.println("Entro al writeProperties");
         try (OutputStream input = new FileOutputStream(resourseUrl)) {
 
-            appProperties.setProperty("fullScreen", valor);
+            prop.setProperty("fullScreen", valor);
 
-            appProperties.store(input, null);
+            prop.store(input, null);
 
-            System.out.println(appProperties.getProperty("fullScreen"));
+            System.out.println(prop.getProperty("fullScreen"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error " + e);

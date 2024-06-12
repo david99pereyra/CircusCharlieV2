@@ -33,6 +33,7 @@ public class Pong extends JGame {
 
     private int arribaJ2;
     private int abajoJ2;
+    private static Properties prop = new Properties();
 
     public static void main(String[] args) {
         Pong game = new Pong();
@@ -43,12 +44,6 @@ public class Pong extends JGame {
     public Pong() {
         super("Pong", 800, 600);
 
-        if (RWproperties.readProperties(configJuego, "Ventana").equals("Pantalla Completa")) {
-
-            pantallaCompleta("true");
-        } else {
-            pantallaCompleta("false");
-        }
     }
 
     public void gameStartup() {
@@ -270,18 +265,18 @@ public class Pong extends JGame {
         }
     }
 
-    private void pantallaCompleta(String valor) {
-        String resourseUrl = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath()
+    public static void pantallaCompleta(String valor) {
+        String resourseUrl = Pong.class.getProtectionDomain().getCodeSource().getLocation().getPath()
                 + "/jgame.properties";
 
         System.out.println("Entro al writeProperties");
         try (OutputStream input = new FileOutputStream(resourseUrl)) {
 
-            appProperties.setProperty("fullScreen", valor);
+            prop.setProperty("fullScreen", valor);
 
-            appProperties.store(input, null);
+            prop.store(input, null);
 
-            System.out.println(appProperties.getProperty("fullScreen"));
+            System.out.println(prop.getProperty("fullScreen"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error " + e);
