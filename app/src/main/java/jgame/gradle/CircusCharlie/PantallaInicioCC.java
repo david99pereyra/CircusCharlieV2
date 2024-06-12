@@ -80,11 +80,16 @@ public class PantallaInicioCC extends JFrame {
             }
         });
 
+        FXPlayer.LEON.play();
+        FXPlayer.LEON.loop();
+
         add(panel);
         setVisible(true);
     }
 
     private void iniciarJuego() {
+
+        FXPlayer.LEON.stop();
         CircusCharlie game = new CircusCharlie();
         Thread t = new Thread(){
             public void run(){
