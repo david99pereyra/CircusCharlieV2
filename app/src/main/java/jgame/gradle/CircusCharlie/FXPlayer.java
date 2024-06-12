@@ -12,12 +12,7 @@ import javax.sound.sampled.*;
 
 
 public enum FXPlayer {
-   FIN_JUEGO("rick_morty.wav"),
-   TEMA1("spanish_flea.wav"),
-   TEMA2("muyun_brothers_the_kiffness.wav"),
-   FX00("fx00.wav"),
-   FX01("fx01.wav"),
-   FX02("fx02.wav"),
+   FX00("CircusCharlie/fx00.wav"),
    EVENTO1("CircusCharlie/CircusCharlieAudio1.wav"),
    EVENTO2("CircusCharlie/CircusCharlieAudio2.wav"),
    EVENTO3("CircusCharlie/CircusCharlieAudio3.wav"),
@@ -28,7 +23,8 @@ public enum FXPlayer {
    DBSUPER("CircusCharlie/DragonBallSuper.wav"),
    UI("CircusCharlie/UltraInstinto.wav"),
    PB("CircusCharlie/PeakyBlinders.wav"),
-   BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav");
+   BARDOCK("CircusCharlie/DragonBallZ_Bardock.wav"),
+   LEON("CircusCharlie/hola.wav");
 
    public static enum Volume {
       MUTE, LOW, MEDIUM, HIGH
